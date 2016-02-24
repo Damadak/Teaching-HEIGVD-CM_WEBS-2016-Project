@@ -11,9 +11,4 @@ var  TagSchema = new Schema({
   }
 });
 
-TagSchema.virtual('date')
-  .get(function(){
-    return this._id.getTimestamp();
-  });
-
 mongoose.model('Tag', TagSchema);

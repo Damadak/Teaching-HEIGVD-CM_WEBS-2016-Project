@@ -17,9 +17,4 @@ var  TypeSchema = new Schema({
   date: String // ???
 });
 
-TypeSchema.virtual('date')
-  .get(function(){
-    return this._id.getTimestamp();
-  });
-
 mongoose.model('Type', TypeSchema);

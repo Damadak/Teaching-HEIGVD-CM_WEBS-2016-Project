@@ -28,9 +28,5 @@ var  IssueSchema = new Schema({
   imgUrl: String
 });
 
-IssueSchema.virtual('date')
-  .get(function(){
-    return this._id.getTimestamp();
-  });
 
 mongoose.model('Issue', IssueSchema);
