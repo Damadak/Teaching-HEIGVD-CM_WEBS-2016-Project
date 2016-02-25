@@ -5,14 +5,29 @@ var mongoose = require('mongoose'),
 
 var  IssueSchema = new Schema({
   id: Number,
-  author: Number, // citizen id
+  author: {
+    type: Number,
+    required: true
+  }, // citizen id
   date: String, // ???
-  type: String,
+  type:{
+    type: String,
+    required: true
+  },
   tags:{}, // à vérifier
-  description: String,
+  description:{
+    type: String,
+    required: true
+  },
   coordinates: {
-    x: Number,
-    y: Number
+    x:{
+      type: Number,
+      required: true
+    },
+    y:{
+      type: Number,
+      required: true
+    },
   },
   status: String,
   actions: {
