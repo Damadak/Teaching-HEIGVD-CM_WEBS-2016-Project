@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 var  IssueSchema = new Schema({
-  authorId: {
+  author: {
     type: Schema.Types.ObjectId,
     required: true
   }, // citizen id
@@ -28,10 +28,10 @@ var  IssueSchema = new Schema({
     y:{
       type: Number,
       required: true
-    },
+    }
   },
   status: String,
-  actions: [
+  actions: [{
     action:{
       type: String,
       author: Schema.Types.ObjectId,
@@ -39,6 +39,7 @@ var  IssueSchema = new Schema({
       status: String,
       content: String
     }
+  }
   ],
   assignedTo: Schema.Types.ObjectId, // member staff id
   imgUrl: String
