@@ -32,16 +32,28 @@ router.get('/', function (req, res, next) {
 
 });
 
+function findType(req, res, next) {
+  Type.findById(req.params.id, function(err, user) {
+    if (err) {
+      res.status(500).send(err);
+      return;
+    } else if (!type) {
+      res.status(404).send('Type not found');
+      return;
+    }
+    req.type = type;
+    next();
+  });
+}
+
 // GET /api/types/:id
-router.get('/:id', function(req, res, next) {
-  var typeId = req.params.id;
-  Type.findById(typeId, function(err, types) {
+router.get('/:id', findType, function(req, res, next) {
+  
     if (err){
       res.status(500).send(err);
       return;
     }
-    res.send(type);
-  });
+    res.send(req.type);
 
 });
 
