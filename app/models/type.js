@@ -14,7 +14,7 @@ var  TypeSchema = new Schema({
     required: true
   },
   author: Number, // id staff
-  date: String // ???
+  date: Date 
 });
 
 mongoose.model('Type', TypeSchema);
