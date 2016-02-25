@@ -20,6 +20,28 @@ router.post('/', function (req, res, next) {
     });
 });
 
+<<<<<<< HEAD
+=======
+/**
+ * @api {get} /tags Request Tags Informations
+ * @apiName GetTags
+ * @apiGroup Tags
+ *
+ * @apiSuccess {ObjectId} _id Id of the Tag.
+ * @apiSuccess {String} keyword  keyword of the Tag.
+ *
+ * @apiSuccessExample Success-Response:
+ *     [
+        {
+          "_id": "56cece584a9f5ac80f820b68",
+          "keyword": "route abimée",
+          "__v": 0
+        }
+      ]
+ *
+
+ */
+>>>>>>> b5c353640dc2fe8f3cc61605797257e8d7698ed3
 router.get('/', function (req, res, next) {
   Tag.find(function(err, tags) {
     if (err){
@@ -34,7 +56,7 @@ router.get('/', function (req, res, next) {
 // GET /api/tags/:id
 router.get('/:id', function(req, res, next) {
   var tagId = req.params.id;
-  Tag.findById(tagId, function(err, tags) {
+  Tag.findById(tagId, function(err, tag) {
     if (err){
       res.status(500).send(err);
       return;
