@@ -48,7 +48,7 @@ router.get('/:id', function(req, res, next) {
 /*
 // PUT /api/issues/:id
 router.put('/:id', function(req, res, next) {
-  var issueId = req.params.id;
+  var issueId = req.params.id; 
 
   Issue.findById(issueId, function(err, issue) {
     if (err){
