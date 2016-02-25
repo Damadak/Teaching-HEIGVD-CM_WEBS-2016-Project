@@ -76,8 +76,6 @@ router.patch('/:id',findType, function(req, res, next) {
       res.send(updatedType);
     });
 
-
-
 });
 
 
