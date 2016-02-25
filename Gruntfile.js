@@ -17,6 +17,12 @@ module.exports = function (grunt) {
         file: 'app.js'
       }
     },
+    jshint: {
+      options: {
+ node: true
+ }, 
+      all: [ "Gruntfile.js", "app/**/*.js", "public/js/**/*.js", "app.js" ]
+         }, 
     stylus: {
       dist: {
         files: {
@@ -35,7 +41,7 @@ module.exports = function (grunt) {
           'app/**/*.js',
           'config/*.js'
         ],
-        tasks: ['develop', 'delayed-livereload']
+        tasks: ['jshint','develop', 'delayed-livereload']
       },
       css: {
         files: [
@@ -57,6 +63,7 @@ module.exports = function (grunt) {
   });
 
   grunt.config.requires('watch.js.files');
+  grunt.loadNpmTasks("grunt-contrib-jshint");
   files = grunt.config('watch.js.files');
   files = grunt.file.expand(files);
 
@@ -77,6 +84,7 @@ module.exports = function (grunt) {
   grunt.registerTask('default', [
     'stylus',
     'develop',
-    'watch'
+    'watch',
+    'jshint'
   ]);
 };

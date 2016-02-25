@@ -6,28 +6,28 @@ var config = {
   development: {
     root: rootPath,
     app: {
-      name: 'teaching-heigvd-cm-webs-2016-project'
+      name: 'tmp'
     },
-    port: 3000,
-    db: 'mongodb://localhost/teaching-heigvd-cm-webs-2016-project-development'
+    port: 3001,
+    db: 'mongodb://localhost/tmp-development'
   },
 
   test: {
     root: rootPath,
     app: {
-      name: 'teaching-heigvd-cm-webs-2016-project'
+      name: 'tmp'
     },
     port: 3000,
-    db: 'mongodb://localhost/teaching-heigvd-cm-webs-2016-project-test'
+    db: 'mongodb://localhost/tmp-test'
   },
 
   production: {
     root: rootPath,
     app: {
-      name: 'teaching-heigvd-cm-webs-2016-project'
+      name: 'tmp'
     },
     port: 3000,
-    db: 'mongodb://localhost/teaching-heigvd-cm-webs-2016-project-production'
+    db: 'mongodb://localhost/tmp-production'
   }
 };
 

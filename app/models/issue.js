@@ -31,8 +31,9 @@ var  IssueSchema = new Schema({
     }
   },
   status: String,
-  actions: [{
-    action:{
+  actions: [
+    {
+      action:{
       type: String,
       author: Schema.Types.ObjectId,
       date: Date,
@@ -41,6 +42,7 @@ var  IssueSchema = new Schema({
     }
   }
   ],
+
   assignedTo: Schema.Types.ObjectId, // member staff id
   imgUrl: String
 });
