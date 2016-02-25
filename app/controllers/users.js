@@ -129,6 +129,10 @@ router.patch('/:id', findUser, function(req, res, next) {
 // DELETE /api/people/:id
 router.delete('/:id', findUser, function(req, res, next) {
   User.remove({_id: req.user}, function(err, data) {
+    if (err){
+      res.status(500).send(err);
+      return;
+    }
     console.log('Deleted' + data + 'documents');
     res.send(204);
   });

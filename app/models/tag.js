@@ -7,7 +7,9 @@ var  TagSchema = new Schema({
   keyword: {
     type: String,
     required: true
-  }
+  },
+  createdAt: Date,
+  updatedAt: Date
 });
 
 mongoose.model('Tag', TagSchema);

@@ -20,7 +20,7 @@ module.exports = function (grunt) {
     jshint: {
       options: {
  node: true
- }, 
+ },
       all: [ "Gruntfile.js", "app/**/*.js", "public/js/**/*.js", "app.js" ]
          }, 
     stylus: {
