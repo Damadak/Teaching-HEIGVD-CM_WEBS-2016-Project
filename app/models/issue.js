@@ -4,9 +4,8 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 var  IssueSchema = new Schema({
-  id: Number,
-  author: {
-    type: Number,
+  authorId: {
+    type: Schema.Types.ObjectId,
     required: true
   }, // citizen id
   date: Date,
@@ -15,7 +14,7 @@ var  IssueSchema = new Schema({
     required: true
   },
   tags:[
-    Number
+    Schema.Types.ObjectId
   ],
   description:{
     type: String,
@@ -35,13 +34,13 @@ var  IssueSchema = new Schema({
   actions: [
     action:{
       type: String,
-      author: String,
+      author: Schema.Types.ObjectId,
       date: Date,
       status: String,
       content: String
     }
   ],
-  assignedTo: Number, // member staff id
+  assignedTo: Schema.Types.ObjectId, // member staff id
   imgUrl: String
 });
 

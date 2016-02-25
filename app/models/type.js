@@ -4,7 +4,6 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 var  TypeSchema = new Schema({
-  id: Number,
   name: {
     type: String,
     required: true
@@ -13,8 +12,8 @@ var  TypeSchema = new Schema({
     type: String,
     required: true
   },
-  author: Number, // id staff
-  date: Date 
+  author: Schema.Types.ObjectId, // id staff
+  date: Date
 });
 
 mongoose.model('Type', TypeSchema);
