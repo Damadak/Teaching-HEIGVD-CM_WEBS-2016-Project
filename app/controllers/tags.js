@@ -13,15 +13,13 @@ router.post('/', function (req, res, next) {
     tag.save(function(err, createdTag){
       if (err) {
         res.status(500).send(err);
-        return; 
+        return;
       }
       res.send(createdTag);
 
     });
 });
 
-<<<<<<< HEAD
-=======
 /**
  * @api {get} /tags Request Tags Informations
  * @apiName GetTags
@@ -41,7 +39,7 @@ router.post('/', function (req, res, next) {
  *
 
  */
->>>>>>> b5c353640dc2fe8f3cc61605797257e8d7698ed3
+
 router.get('/', function (req, res, next) {
   Tag.find(function(err, tags) {
     if (err){
