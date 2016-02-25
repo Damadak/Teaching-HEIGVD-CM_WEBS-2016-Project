@@ -20,7 +20,7 @@ router.post('/', function (req, res, next) {
     });
 });
 
-
+// GET /api/types
 router.get('/', function (req, res, next) {
   Type.find(function(err, types) {
     if (err){
@@ -32,17 +32,23 @@ router.get('/', function (req, res, next) {
 
 });
 
-// GET /api/types/:id
-router.get('/:id', function(req, res, next) {
-  var typeId = req.params.id;
-  Type.findById(typeId, function(err, types) {
-    if (err){
+function findTag(req, res, next) {
+  User.findById(req.params.id, function(err, tag) {
+    if (err) {
       res.status(500).send(err);
       return;
+    } else if (!tag) {
+      res.status(404).send('Tag not found');
+      return;
     }
-    res.send(type);
+    req.tag = tag;
+    next();
   });
+}
 
+// GET /api/types/:id
+router.get('/:id', findTag, function(req, res, next) {
+  res.send(req.user);
 });
 
 

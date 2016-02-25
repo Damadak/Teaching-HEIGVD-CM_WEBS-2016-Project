@@ -1,7 +1,8 @@
 var express = require('express'),
   router = express.Router(),
   mongoose = require('mongoose'),
-  User = mongoose.model('User');
+  User = mongoose.model('User'),
+  _=require("underscore");
 
   module.exports = function (app) {
   app.use('/api/users', router);
@@ -83,7 +84,7 @@ router.get('/:id', findUser, function(req, res, next) {
 
 // PATCH /api/users/:id
 router.patch('/:id', findUser, function(req, res, next) {
-  if(req.body.name){
+  /*if(req.body.name){
     req.user.name = req.body.name;
   }
   if(req.body.lastName){
@@ -103,6 +104,13 @@ router.patch('/:id', findUser, function(req, res, next) {
   }
   if(req.body.phoneNumber){
     req.user.phoneNumber = req.body.phoneNumber;
+  }*/
+
+  var adresse = _.clone(req.user.adresse);
+  _.extend(req.user, req.body);
+
+  if(req.body.adresse){
+    req.user.adresse = _.extend(adresse, req.body.adresse);
   }
 
     var now = new Date();
