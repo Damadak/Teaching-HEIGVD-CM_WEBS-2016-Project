@@ -13,31 +13,13 @@ router.post('/', function (req, res, next) {
     tag.save(function(err, createdTag){
       if (err) {
         res.status(500).send(err);
-        return;
+        return; 
       }
       res.send(createdTag);
 
     });
 });
 
-/**
- * @api {get} /tags Request Tags Informations
- * @apiName GetTags
- * @apiGroup Tags
- *
- * @apiSuccess {ObjectId} _id Id of the Tag.
- * @apiSuccess {String} keyword  keyword of the Tag.
- *
- * @apiSuccessExample Success-Response:
- *     [
-        {
-          "_id": "56cece584a9f5ac80f820b68",
-          "keyword": "route abimée",
-          "__v": 0
-        }
-      ]
- *
- */
 router.get('/', function (req, res, next) {
   Tag.find(function(err, tags) {
     if (err){
