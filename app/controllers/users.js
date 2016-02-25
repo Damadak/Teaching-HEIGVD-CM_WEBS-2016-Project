@@ -31,7 +31,7 @@ var express = require('express'),
 */
 
 /**
- * @api {post} /user Create a user
+ * @api {post} /users Create a user
  * @apiName CreateUser
  * @apiGroup User
  *
