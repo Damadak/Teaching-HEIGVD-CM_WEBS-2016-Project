@@ -25,17 +25,17 @@ var  UserSchema = new Schema({
     type: String,
     required: true
   },
-  createdAt: String,
-  updatedAt: String,
+  createdAt: Date,
+  updatedAt: Date,
   phoneNumber: {
     type: Number,
     required: true
   },
   adresse: {
-      street: String,
-      number: Number,
-      postal: Number,
-      country: String
+    street: String,
+    number: Number,
+    postal: Number,
+    country: String
   },
   role: {
     citizen: Boolean,
