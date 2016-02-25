@@ -29,17 +29,20 @@ var  IssueSchema = new Schema({
       type: Number,
       required: true
     },
-  },
-  status: String,
+      status: String,
   actions: [
-    action:{
+    {
+      action:{
       type: String,
       author: Schema.Types.ObjectId,
       date: Date,
       status: String,
       content: String
     }
+  }
   ],
+  },
+
   assignedTo: Schema.Types.ObjectId, // member staff id
   imgUrl: String
 });
