@@ -81,29 +81,41 @@ router.get('/:id', findUser, function(req, res, next) {
     res.send(req.user);
 });
 
-// PUT /api/users/:id
-router.put('/:id', findUser, function(req, res, next) {
-  User.findById(req.user, function(err, user) {
-    user.name = req.body.name;
-    user.lastName = req.body.lastName;
-    user.age = req.body.age;
-    user.email = req.body.email;
-    user.userName = req.body.userName;
-    user.password = req.body.password;
-    var now = new Date();
-    user.updatedAt = now;
-    user.phoneNumber = req.body.phoneNumber;
-    user.adresse.street = req.body.adresse.street;
-    user.adresse.number = req.body.adresse.number;
-    user.adresse.postal = req.body.adresse.postal;
-    user.adresse.country = req.body.adresse.country;
-    user.role.citizen = req.body.role.citizen;
-    user.role.staff = req.body.role.staff;
+// PATCH /api/users/:id
+router.patch('/:id', findUser, function(req, res, next) {
+  if(req.body.name){
+    req.user.name = req.body.name;
+  }
+  if(req.body.lastName){
+    req.user.lastName = req.body.lastName;
+  }
+  if(req.body.age){
+    req.user.age = req.body.age;
+  }
+  if(req.body.email){
+    req.user.email = req.body.email;
+  }
+  if(req.body.userName){
+    req.user.userName = req.body.userName;
+  }
+  if(req.body.password){
+    req.user.password = req.body.password;
+  }
+  if(req.body.phoneNumber){
+    req.user.phoneNumber = req.body.phoneNumber;
+  }
 
-    user.save(req.body, function(err, updatedUser){
+    var now = new Date();
+    req.user.updatedAt = now;
+
+    req.user.save(function(err, updatedUser){
+      if (err) {
+        res.status(500).send(err);
+        return;
+      }
       res.send(updatedUser);
     });
-  });
+
 });
 
 // DELETE /api/people/:id
