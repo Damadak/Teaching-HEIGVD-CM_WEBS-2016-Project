@@ -2,25 +2,35 @@ var express = require('express'),
   router = express.Router(),
   mongoose = require('mongoose'),
   Issue = mongoose.model('Issue');
+  _=require("underscore");
 
 module.exports = function (app) {
   app.use('/api/issues', router);
 };
 
+/**
+ * @api {post} /users Create an issue
+ * @apiName CreateIssue
+ * @apiGroup Issue
+ *
+ * @apiSuccess {String} age Age of the person.
+ */
 router.post('/', function (req, res, next) {
-    var issue = new Issue(req.body); //on lui passe la requête JSOn
+    var issue = new Issue(req.body);
+    var now = new Date();
+    issue.createdAt = now;
 
     issue.save(function(err, createdIssue){
       if (err) {
         res.status(500).send(err);
-        return; // arrête la fonction s'il y a une erreur Content-Type: application/json dans le header de Postman
+        return;
       }
       res.send(createdIssue);
 
-    }); // on lui passe un callback
+    });
 });
 
-
+// GET /api/issues
 router.get('/', function (req, res, next) {
   Issue.find(function(err, issues) {
     if (err){
@@ -32,51 +42,49 @@ router.get('/', function (req, res, next) {
 
 });
 
-// GET /api/issues/:id
-router.get('/:id', function(req, res, next) {
-  var issueId = req.params.id;
-  Issue.findById(issueId, function(err, issue) {
-    if (err){
+function findIssue(req, res, next) {
+  User.findById(req.params.id, function(err, issue) {
+    if (err) {
       res.status(500).send(err);
       return;
+    } else if (!issue) {
+      res.status(404).send('Issue not found');
+      return;
     }
-    res.send(issue);
+    req.issue = issue;
+    next();
+  });
+}
+
+// GET /api/issues/:id
+router.get('/:id', findIssue, function(req, res, next) {
+    res.send(req.issue);
   });
 
-});
+// PATCH /api/issues/:id
+router.patch('/:id', findIssue, function(req, res, next) {
+  var actions = _.clone(req.issue.actions);
+  _.extend(req.issue, req.body);
 
-/*
-// PUT /api/issues/:id
-router.put('/:id', function(req, res, next) {
-  var issueId = req.params.id; 
+  if(req.body.actions){
+    req.issue.actions = _.extend(actions, req.body.issue);
+  }
+  var now = new Date();
+  req.user.updatedAt = now;
 
-  Issue.findById(issueId, function(err, issue) {
-    if (err){
-      res.status(500).send(err);
-      return;
-    }
-
-    issue.name = req.body.name;
-    issue.age = req.body.age;
-
-    issue.save(req.body, function(err, updatedIssue){
+    req.issue.save(req.body, function(err, updatedIssue){
       if (err){
         res.status(500).send(err);
         return;
       }
       res.send(updatedIssue);
     });
-
-  });
-
 });
-*/
+
 
 // DELETE /api/issues/:id
-router.delete('/:id', function(req, res, next) {
-  var issueId = req.params.id;
-
-  Issue.remove({_id: issueId}, function(err, data) {
+router.delete('/:id', findIssue, function(req, res, next) {
+  Issue.remove({_id: req.issue}, function(err, data) {
     if (err){
       res.status(500).send(err);
       return;

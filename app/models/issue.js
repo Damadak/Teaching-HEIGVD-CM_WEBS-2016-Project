@@ -44,7 +44,9 @@ var  IssueSchema = new Schema({
   ],
 
   assignedTo: Schema.Types.ObjectId, // member staff id
-  imgUrl: String
+  imgUrl: String,
+  createdAt: Date,
+  updatedAt: Date
 });
 
 
