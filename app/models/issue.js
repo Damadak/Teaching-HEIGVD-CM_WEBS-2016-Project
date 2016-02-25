@@ -9,12 +9,14 @@ var  IssueSchema = new Schema({
     type: Number,
     required: true
   }, // citizen id
-  date: String, // ???
+  date: Date,
   type:{
     type: String,
     required: true
   },
-  tags:{}, // à vérifier
+  tags:[
+    Number
+  ],
   description:{
     type: String,
     required: true
@@ -30,15 +32,15 @@ var  IssueSchema = new Schema({
     },
   },
   status: String,
-  actions: {
+  actions: [
     action:{
       type: String,
       author: String,
-      date: String, // ???
+      date: Date,
       status: String,
       content: String
     }
-  },
+  ],
   assignedTo: Number, // member staff id
   imgUrl: String
 });
