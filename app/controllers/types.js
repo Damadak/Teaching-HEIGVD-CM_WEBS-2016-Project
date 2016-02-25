@@ -1,7 +1,8 @@
 var express = require('express'),
   router = express.Router(),
   mongoose = require('mongoose'),
-  Type = mongoose.model('Type');
+  Type = mongoose.model('Type'),
+  _=require("underscore");
 
 module.exports = function (app) {
   app.use('/api/types', router);
@@ -9,8 +10,10 @@ module.exports = function (app) {
 
 router.post('/', function (req, res, next) {
     var type = new Type(req.body); //on lui passe la requête JSOn
+    var now = new Date();
+    type.createdAt = now;
 
-    type.save(function(err, createdType){
+    type.save(function (err, createdType){
       if (err) {
         res.status(500).send(err);
         return;
@@ -33,7 +36,7 @@ router.get('/', function (req, res, next) {
 });
 
 function findType(req, res, next) {
-  Type.findById(req.params.id, function(err, user) {
+  Type.findById(req.params.id, function(err, type) {
     if (err) {
       res.status(500).send(err);
       return;
@@ -48,7 +51,7 @@ function findType(req, res, next) {
 
 // GET /api/types/:id
 router.get('/:id', findType, function(req, res, next) {
-  
+
     if (err){
       res.status(500).send(err);
       return;
@@ -58,23 +61,14 @@ router.get('/:id', findType, function(req, res, next) {
 });
 
 
-// PUT /api/types/:id
-router.put('/:id', function(req, res, next) {
-  var typeId = req.params.id;
+// PATCH /api/types/:id
+router.patch('/:id',findType, function(req, res, next) {
+  _.extend(req.type, req.body);
+    var now = new Date();
+    req.type.updatedAt = now;
+    console.log("yeahhhh");
 
-  Type.findById(typeId, function(err, type) {
-    if (err){
-      res.status(500).send(err);
-      return;
-    }
-
-    type.id = req.body.id;
-    type.description = req.body.description;
-    type.author = req.body.author;
-    type.name = req.body.name;
-    type.date = req.body.date;
-
-    type.save(req.body, function(err, updatedType){
+    req.type.save(function(err, updatedType){
       if (err){
         res.status(500).send(err);
         return;
@@ -82,7 +76,7 @@ router.put('/:id', function(req, res, next) {
       res.send(updatedType);
     });
 
-  });
+
 
 });
 

@@ -13,7 +13,8 @@ var  TypeSchema = new Schema({
     required: true
   },
   author: Schema.Types.ObjectId, // id staff
-  date: Date
+  createdAt: Date,
+  updatedAt: Date
 });
 
 mongoose.model('Type', TypeSchema);
