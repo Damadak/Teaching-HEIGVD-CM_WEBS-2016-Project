@@ -32,23 +32,17 @@ router.get('/', function (req, res, next) {
 
 });
 
-function findTag(req, res, next) {
-  User.findById(req.params.id, function(err, tag) {
-    if (err) {
+// GET /api/types/:id
+router.get('/:id', function(req, res, next) {
+  var typeId = req.params.id;
+  Type.findById(typeId, function(err, types) {
+    if (err){
       res.status(500).send(err);
       return;
-    } else if (!tag) {
-      res.status(404).send('Tag not found');
-      return;
     }
-    req.tag = tag;
-    next();
+    res.send(type);
   });
-}
 
-// GET /api/types/:id
-router.get('/:id', findTag, function(req, res, next) {
-  res.send(req.user);
 });
 
 
