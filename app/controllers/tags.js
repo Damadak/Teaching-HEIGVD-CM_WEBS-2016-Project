@@ -37,6 +37,7 @@ router.post('/', function (req, res, next) {
         }
       ]
  *
+
  */
 router.get('/', function (req, res, next) {
   Tag.find(function(err, tags) {
@@ -52,7 +53,7 @@ router.get('/', function (req, res, next) {
 // GET /api/tags/:id
 router.get('/:id', function(req, res, next) {
   var tagId = req.params.id;
-  Tag.findById(tagId, function(err, tags) {
+  Tag.findById(tagId, function(err, tag) {
     if (err){
       res.status(500).send(err);
       return;
