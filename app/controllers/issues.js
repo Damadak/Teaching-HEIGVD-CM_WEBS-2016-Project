@@ -143,3 +143,20 @@ router.post('/:id/actions', findIssue, function(req, res) {
 router.get('/:id/actions', findIssue, function(req, res) {
   res.send(req.issue.actions);
 });
+
+function findIssuesUser(req, res, next) {
+  if(!req.body.user){
+    res.status(400).send('User ID is required');
+    return;
+  }else if(!mongoose.Types.ObjectId.isValid(req.body.user)){
+    res.status(400).send('No user with ID ' + req.body.user);
+    return;
+  }
+
+  User.findById(req.body.user, function(err, user){
+    if(err){
+      res.status(500).send(err);
+      return;
+    }else if(!user){
+      res.status(400).send }
+  })
