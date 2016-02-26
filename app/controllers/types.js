@@ -80,10 +80,8 @@ router.patch('/:id',findType, function(req, res, next) {
 
 
 // DELETE /api/types/:id
-router.delete('/:id', function(req, res, next) {
-  var typeId = req.params.id;
-
-  Type.remove({_id: typeId}, function(err, data) {
+router.delete('/:id', findType, function(req, res, next) {
+  Type.remove({_id: req.type}, function(err, data) {
     if (err){
       res.status(500).send(err);
       return;
