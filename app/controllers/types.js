@@ -18,6 +18,7 @@ router.post('/', function (req, res, next) {
         res.status(500).send(err);
         return;
       }
+
       res.send(createdType);
 
     });
@@ -25,7 +26,14 @@ router.post('/', function (req, res, next) {
 
 // GET /api/types
 router.get('/', function (req, res, next) {
-  Type.find(function(err, types) {
+  var query = Type.find()
+  .sort('name');
+
+  if (req.query.embed == 'author') {
+    query = query.populate('author');
+  }
+
+  query.exec(function(err, types) {
     if (err){
       res.status(500).send(err);
       return;
@@ -51,13 +59,11 @@ function findType(req, res, next) {
 
 // GET /api/types/:id
 router.get('/:id', findType, function(req, res, next) {
-
     if (err){
       res.status(500).send(err);
       return;
     }
     res.send(req.type);
-
 });
 
 

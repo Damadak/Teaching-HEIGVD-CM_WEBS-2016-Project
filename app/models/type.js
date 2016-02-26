@@ -12,7 +12,11 @@ var  TypeSchema = new Schema({
     type: String,
     required: true
   },
-  author: Schema.Types.ObjectId, // id staff
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  }, // id staff
   createdAt: Date,
   updatedAt: Date
 });
