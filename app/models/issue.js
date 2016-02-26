@@ -8,9 +8,8 @@ var  IssueSchema = new Schema({
     type: Schema.Types.ObjectId,
     required: true
   }, // citizen id
-  date: Date,
   type:{
-    type: String,
+    type: Schema.Types.ObjectId,
     required: true
   },
   tags:[

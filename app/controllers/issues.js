@@ -7,6 +7,34 @@ var express = require('express'),
 module.exports = function (app) {
   app.use('/api/issues', router);
 };
+/*
+"author": "",
+"date": "",
+"type":"",
+"tags":[
+  ""
+],
+"description":"",
+"coordinates": {
+  "x":"",
+  "y":""
+},
+"status": "",
+"actions": [
+  {
+    "action":{
+    "type": "",
+    "author": "",
+    "date": "",
+    "status": "",
+    "content": ""
+  }
+}
+],
+
+"assignedTo": "",
+"imgUrl": ""
+*/
 
 /**
  * @api {post} /users Create an issue
@@ -19,6 +47,7 @@ router.post('/', function (req, res, next) {
     var issue = new Issue(req.body);
     var now = new Date();
     issue.createdAt = now;
+    issue.status = "created";
 
     issue.save(function(err, createdIssue){
       if (err) {
@@ -43,7 +72,7 @@ router.get('/', function (req, res, next) {
 });
 
 function findIssue(req, res, next) {
-  User.findById(req.params.id, function(err, issue) {
+  Issue.findById(req.params.id, function(err, issue) {
     if (err) {
       res.status(500).send(err);
       return;
@@ -70,7 +99,7 @@ router.patch('/:id', findIssue, function(req, res, next) {
     req.issue.actions = _.extend(actions, req.body.issue);
   }
   var now = new Date();
-  req.user.updatedAt = now;
+  req.issue.updatedAt = now;
 
     req.issue.save(req.body, function(err, updatedIssue){
       if (err){
