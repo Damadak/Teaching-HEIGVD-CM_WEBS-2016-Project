@@ -57,6 +57,41 @@ router.post('/', function (req, res, next) {
     });
 });
 
+// http://localhost:3001/api/issues?latitude=46.778744&longitude=6.657598&distance=10000000
+router.get('/', function(req, res, next) {
+  var criteria = {};
+  var latitude = req.query.latitude,
+  longitude = req.query.longitude,
+  distance = req.query.distance;
+  if (latitude && longitude && distance) {
+    criteria.location = {
+      $near: {
+        $geometry: {
+        type: 'Point',
+        coordinates: [
+          parseFloat(longitude),
+          parseFloat(latitude)
+        ]
+      },
+      $maxDistance: parseInt(distance, 10)
+      }
+    };
+  }
+
+  console.log(req.query.latitude);
+  console.log(req.query.longitude);
+  console.log(req.query.distance);
+
+  Issue.find(criteria, function(err, issues) {
+    if (err){
+      res.status(500).send(err);
+      return;
+    }
+    console.log(issues);
+    res.send(issues);
+  });
+});
+
 // GET /api/issues
 router.get('/', function (req, res, next) {
   Issue.find(function(err, issues) {
@@ -83,10 +118,15 @@ function findIssue(req, res, next) {
   });
 }
 
+
+
+
 // GET /api/issues/:id
 router.get('/:id', findIssue, function(req, res, next) {
     res.send(req.issue);
   });
+
+
 
 // PATCH /api/issues/:id
 router.patch('/:id', findIssue, function(req, res, next) {
@@ -134,7 +174,7 @@ router.post('/:id/actions', findIssue, function(req, res) {
       res.status(500).send(err);
       return;
     }
-    
+
     res.send(updatedIssue.actions[updatedIssue.actions.length - 1]);
   });
 });
@@ -143,20 +183,3 @@ router.post('/:id/actions', findIssue, function(req, res) {
 router.get('/:id/actions', findIssue, function(req, res) {
   res.send(req.issue.actions);
 });
-
-function findIssuesUser(req, res, next) {
-  if(!req.body.user){
-    res.status(400).send('User ID is required');
-    return;
-  }else if(!mongoose.Types.ObjectId.isValid(req.body.user)){
-    res.status(400).send('No user with ID ' + req.body.user);
-    return;
-  }
-
-  User.findById(req.body.user, function(err, user){
-    if(err){
-      res.status(500).send(err);
-      return;
-    }else if(!user){
-      res.status(400).send }
-  })

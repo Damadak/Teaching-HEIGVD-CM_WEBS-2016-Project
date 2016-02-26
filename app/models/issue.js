@@ -19,16 +19,12 @@ var  IssueSchema = new Schema({
     type: String,
     required: true
   },
-  coordinates: {
-    x:{
-      type: Number,
-      required: true
+  location: {
+    type: {
+      type: String 
     },
-    y:{
-      type: Number,
-      required: true
-    }
-  },
+    coordinates: [Number]
+    },
   status: String,
   actions: [
     {
@@ -46,5 +42,8 @@ var  IssueSchema = new Schema({
   updatedAt: Date
 });
 
+IssueSchema.index({
+  location: '2dsphere'
+});
 
 mongoose.model('Issue', IssueSchema);
