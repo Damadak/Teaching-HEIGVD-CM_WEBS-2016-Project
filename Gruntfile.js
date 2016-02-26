@@ -19,15 +19,21 @@ module.exports = function (grunt) {
     },
     jshint: {
       options: {
- node: true
- },
+     node: true
+     },
       all: [ "Gruntfile.js", "app/**/*.js", "public/js/**/*.js", "app.js" ]
-         }, 
+         },
     stylus: {
       dist: {
         files: {
           'public/css/style.css': 'public/css/style.styl'
         }
+      }
+    },
+    apidoc: {
+      all: {
+        src: "app/",
+        dest: "public/apidoc/"
       }
     },
     watch: {

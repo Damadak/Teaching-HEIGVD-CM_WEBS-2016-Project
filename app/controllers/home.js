@@ -8,6 +8,7 @@ module.exports = function (app) {
 };
 
 router.get('/', function (req, res, next) {
+  res.redirect('/apidoc');
   Article.find(function (err, articles) {
     if (err) return next(err);
     res.render('index', {

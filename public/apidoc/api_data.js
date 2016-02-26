@@ -1,4 +1,27 @@
-[
+define({ "api": [
+  {
+    "type": "post",
+    "url": "/users",
+    "title": "Create an issue",
+    "name": "CreateIssue",
+    "group": "Issue",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "age",
+            "description": "<p>Age of the person.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/issues.js",
+    "groupTitle": "Issue"
+  },
   {
     "type": "delete",
     "url": "/tags/:id",
@@ -180,4 +203,4 @@
     "filename": "app/controllers/users.js",
     "groupTitle": "User"
   }
-]
+] });
