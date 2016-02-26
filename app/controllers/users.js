@@ -2,6 +2,7 @@ var express = require('express'),
   router = express.Router(),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
+  Issue=mongoose.model('Issue'),
   _=require("underscore");
 
   module.exports = function (app) {
@@ -81,6 +82,16 @@ function findUser(req, res, next) {
 router.get('/:id', findUser, function(req, res, next) {
     res.send(req.user);
 });
+
+//GET /api/users/id/issues
+router.get('/:id/issues', findUser, function(req, res, next){
+  Issue.find({"author":req.params.id},function(err, issues){
+    res.send(issues);
+  });
+
+});
+
+//GET /api/users
 
 // PATCH /api/users/:id
 router.patch('/:id', findUser, function(req, res, next) {
