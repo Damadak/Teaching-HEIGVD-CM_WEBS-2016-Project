@@ -22,14 +22,12 @@ module.exports = function (app) {
 "status": "",
 "actions": [
   {
-    "action":{
     "type": "",
     "author": "",
     "date": "",
     "status": "",
     "content": ""
   }
-}
 ],
 
 "assignedTo": "",
@@ -122,4 +120,26 @@ router.delete('/:id', findIssue, function(req, res, next) {
     res.send(204);
   });
 
+});
+
+// POST /api/issues/:id/actions
+router.post('/:id/actions', findIssue, function(req, res) {
+  console.log(req.body);
+  console.log(req.issue);
+
+  req.issue.actions.push(req.body);
+
+  req.issue.save(function(err, updatedIssue) {
+    if (err) {
+      res.status(500).send(err);
+      return;
+    }
+    
+    res.send(updatedIssue.actions[updatedIssue.actions.length - 1]);
+  });
+});
+
+// GET /api/issues/:id/actions
+router.get('/:id/actions', findIssue, function(req, res) {
+  res.send(req.issue.actions);
 });

@@ -32,14 +32,12 @@ var  IssueSchema = new Schema({
   status: String,
   actions: [
     {
-      action:{
-      type: String,
+      type: { type: String },
       author: Schema.Types.ObjectId,
       date: Date,
       status: String,
       content: String
     }
-  }
   ],
 
   assignedTo: Schema.Types.ObjectId, // member staff id
