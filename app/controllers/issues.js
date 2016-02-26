@@ -57,7 +57,7 @@ router.post('/', function (req, res, next) {
     });
 });
 
-// http://localhost:3001/api/issues?latitude=46.778744&longitude=6.657598&distance=10000000
+// http://localhost:3001/api/issues?longitude=46.778744&latitude=6.657598&distance=10000000
 router.get('/', function(req, res, next) {
   var criteria = {};
   var latitude = req.query.latitude,
