@@ -35,11 +35,38 @@ module.exports = function (app) {
 */
 
 /**
- * @api {post} /users Create an issue
+ * @api {post} /issues Create an Issue
+ * @apiVersion 0.0.0
  * @apiName CreateIssue
  * @apiGroup Issue
  *
- * @apiSuccess {String} age Age of the person.
+ * @apiDescription This allow to create an issue with the right parameters
+ *
+ * @apiExample Example usage:
+ * http://localhost/users
+ *
+ * @apiSuccess {Schema.Types.ObjectId}   author            The Author-Id who create the Issue
+ * @apiSuccess {Schema.Types.ObjectId} type     The Type-Id of the Issue
+ * @apiSuccess {Schema.Types.ObjectId[]}   tags       The Tag-Id related to the Issue
+ * @apiSuccess {String}   description   The description of the Issue
+ * @apiSuccess {String}   location The type of the geographic coordinates
+ * @apiSuccess {Number[]} location.coordinates       The geographic coordinates of the Issue
+ * @apiSuccess {String}   status  The status of the Issue
+ * @apiSuccess {[]}   actions The actions done on the Issue
+ * @apiSuccess {String}   actions.type The type of the action (Comment or Status Change)
+ * @apiSuccess {Schema.Types.ObjectId}   actions.author The Author-Id of the action
+ * @apiSuccess {Date}   actions.date The date of the action
+ * @apiSuccess {String}   actions.status The new status of the issue (only if its a Status Change)
+ * @apiSuccess {String}   actions.content The content of the comment (only if its a Comment)
+ *
+ * @apiError ValidationError One or more of the data have not the correct type or are required
+ * @apiError Error404   The server has an unexpected error
+ *
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 401 Not Authenticated
+ *     {
+ *       "error": "NoAccessRight"
+ *     }
  */
 router.post('/', function (req, res, next) {
     var issue = new Issue(req.body);
