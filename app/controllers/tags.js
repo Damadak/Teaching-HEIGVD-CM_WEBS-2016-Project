@@ -7,6 +7,40 @@ module.exports = function (app) {
   app.use('/api/tags', router);
 };
 
+/**
+ * @api {post} /tags Create a Tag
+ * @apiVersion 0.0.0
+ * @apiName CreateTag
+ * @apiGroup Tag
+ *
+ * @apiDescription This allow to create an tag with the right parameters
+ *
+ * @apiExample Example usage:
+ * http://localhost/tags
+ *
+ * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the tag
+ * @apiSuccess {String}   keyword   The keyword of the tag
+ * @apiSuccess {Date}   createdAt The date of the creation of the tag
+ *
+ * @apiSuccessExample Success-Response:
+ *     [
+        {
+          "_id": "56cece584a9f5ac80f820b68",
+          "keyword": "route abimée",
+          "__v": 0
+        }
+      ]
+ *
+ *
+ * @apiError ValidationError The keyword(s) doesn't have the correct type or is required
+ * @apiError Error404   The server has an unexpected error
+ *
+ * @apiErrorExample Response (example):
+ *     HTTP/1.1 401 Not Authenticated
+ *     {
+ *       "error": "NoAccessRight"
+ *     }
+ */
 router.post('/', function (req, res, next) {
     var tag = new Tag(req.body); //on lui passe la requête JSOn
     var now = new Date();
@@ -23,12 +57,19 @@ router.post('/', function (req, res, next) {
 });
 
 /**
- * @api {get} /tags Request Tags Informations
+ * @api {get} /tags Get all the Tags
+ * @apiVersion 0.0.0
  * @apiName GetTags
- * @apiGroup Tags
+ * @apiGroup Tag
  *
- * @apiSuccess {ObjectId} _id id of the Tag
- * @apiSuccess {String} keyword  keyword of the Tag
+ * @apiDescription This allow to get all the existed tags on the server
+ *
+ * @apiExample Example usage:
+ * http://localhost/tags
+ *
+ * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the tag
+ * @apiSuccess {String} keyword   The keyword of the tag
+ * @apiSuccess {Date}   createdAt The date of the creation of the tag
  *
  * @apiSuccessExample Success-Response:
  *     [
@@ -39,7 +80,8 @@ router.post('/', function (req, res, next) {
         }
       ]
  *
-
+ * @apiError Error404   The server has an unexpected error
+ *
  */
 
 // GET api/tags
@@ -55,12 +97,19 @@ router.get('/', function (req, res, next) {
 });
 
 /**
- * @api Find Tag
+ * @api {get} /tags Fin a specific Tag
+ * @apiVersion 0.0.0
  * @apiName FindTag
- * @apiGroup Tags
+ * @apiGroup Tag
  *
- * @apiSuccess {ObjectId} _id id of the Tag
- * @apiSuccess {String} keyword  keyword of the Tag
+ * @apiDescription This allow to get a specific tag with its id
+ *
+ * @apiExample Example usage:
+ * http://localhost/tags/56cece584a9f5ac80f820b68
+ *
+ * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the tag
+ * @apiSuccess {String} keyword   The keyword of the tag
+ * @apiSuccess {Date}   createdAt The date of the creation of the tag
  *
  * @apiSuccessExample Success-Response:
  *     [
@@ -71,7 +120,9 @@ router.get('/', function (req, res, next) {
         }
       ]
  *
-
+ * @apiError Error404  The server has an unexpected error
+ * @apiError NotFound  The tag doesn't exist
+ *
  */
 function findTag(req, res, next) {
   Tag.findById(req.params.id, function(err, tag) {
@@ -89,12 +140,19 @@ function findTag(req, res, next) {
 }
 
 /**
- * @api {get} /tags/:id Get a Tag with ID
- * @apiName GetTag
- * @apiGroup Tags
+ * @api {get} /tags Fin a specific Tag
+ * @apiVersion 0.0.0
+ * @apiName FindTag
+ * @apiGroup Tag
  *
- * @apiSuccess {ObjectId} _id id of the Tag
- * @apiSuccess {String} keyword  keyword of the Tag
+ * @apiDescription This allow to get a specific tag with its id
+ *
+ * @apiExample Example usage:
+ * http://localhost/tags/56cece584a9f5ac80f820b68
+ *
+ * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the tag
+ * @apiSuccess {String} keyword   The keyword of the tag
+ * @apiSuccess {Date}   createdAt The date of the creation of the tag
  *
  * @apiSuccessExample Success-Response:
  *     [
@@ -105,7 +163,9 @@ function findTag(req, res, next) {
         }
       ]
  *
-
+ * @apiError Error404  The server has an unexpected error
+ * @apiError NotFound  The tag doesn't exist
+ *
  */
 // GET /api/tags/:id
 router.get('/:id', findTag, function(req, res, next) {
@@ -114,8 +174,9 @@ router.get('/:id', findTag, function(req, res, next) {
 
 /**
  * @api {patch} /tags/:id Update a Tag
+ * @apiVersion 0.0.0
  * @apiName UpdateTag
- * @apiGroup Tags
+ * @apiGroup Tag
  *
  * @apiSuccess {ObjectId} _id id of the Tag
  * @apiSuccess {String} keyword  keyword of the Tag
@@ -129,7 +190,9 @@ router.get('/:id', findTag, function(req, res, next) {
         }
       ]
  *
-
+ * @apiError Error404  The server has an unexpected error
+ * @apiError NotFound  The tag doesn't exist
+ * @apiError ValidationError  You have send wrong parameters or send a wrong type of data
  */
 // PATCH /api/tags/:id
 router.patch('/:id', findTag, function(req, res, next) {
@@ -148,11 +211,25 @@ router.patch('/:id', findTag, function(req, res, next) {
 });
 
 /**
- * @api {delete} /tags/:id Delete a Tag
+ * @api {patch} /tags/:id Delete a Tag
+ * @apiVersion 0.0.0
  * @apiName DeleteTag
- * @apiGroup Tags
+ * @apiGroup Tag
  *
-
+ * @apiSuccess {204} 204 id of the Tag
+ *
+ * @apiSuccessExample Success-Response:
+ *     [
+        {
+          "_id": "56cece584a9f5ac80f820b68",
+          "keyword": "route abimée",
+          "__v": 0
+        }
+      ]
+ *
+ * @apiError Error404  The server has an unexpected error
+ * @apiError NotFound  The tag doesn't exist
+ * @apiError ValidationError  You have send wrong parameters or send a wrong type of data
  */
 // DELETE /api/tags/:id
 router.delete('/:id', findTag, function(req, res, next) {

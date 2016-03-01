@@ -58,6 +58,7 @@ module.exports = function (app) {
  * @apiSuccess {Date}   actions.date The date of the action
  * @apiSuccess {String}   actions.status The new status of the issue (only if its a Status Change)
  * @apiSuccess {String}   actions.content The content of the comment (only if its a Comment)
+ * @apiSuccess {Date}   createdAt The date of creation of the issue
  *
  * @apiError ValidationError One or more of the data have not the correct type or are required
  * @apiError Error404   The server has an unexpected error
