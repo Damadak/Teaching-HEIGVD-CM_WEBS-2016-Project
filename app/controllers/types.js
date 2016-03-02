@@ -140,7 +140,7 @@ function findType(req, res, next) {
 }
 
 /**
- * @api {get} /types Find a specific Type
+ * @api {get} /types Find a Type
  * @apiVersion 0.0.0
  * @apiName GetType
  * @apiGroup Type
@@ -185,7 +185,7 @@ router.get('/:id', findType, function(req, res, next) {
 
 
 /**
- * @api {patch} /types Update a specific Tag
+ * @api {patch} /types Update a Tag
  * @apiVersion 0.0.0
  * @apiName UpdateType
  * @apiGroup Type
