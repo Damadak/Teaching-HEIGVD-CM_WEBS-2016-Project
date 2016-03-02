@@ -97,12 +97,12 @@ router.get('/', function (req, res, next) {
 });
 
 /**
- * @api {get} /tags Fin a specific Tag
+ * @api {function} /tags Verify the Tag exists
  * @apiVersion 0.0.0
- * @apiName FindTag
+ * @apiName VerifyTag
  * @apiGroup Tag
  *
- * @apiDescription This allow to get a specific tag with its id
+ * @apiDescription This allow to test if the tag sended is on the server. This function is used in all the routes who need a tag verification
  *
  * @apiExample Example usage:
  * http://localhost/tags/56cece584a9f5ac80f820b68
@@ -111,17 +111,8 @@ router.get('/', function (req, res, next) {
  * @apiSuccess {String} keyword   The keyword of the tag
  * @apiSuccess {Date}   createdAt The date of the creation of the tag
  *
- * @apiSuccessExample Success-Response:
- *     [
-        {
-          "_id": "56cece584a9f5ac80f820b68",
-          "keyword": "route abimée",
-          "__v": 0
-        }
-      ]
- *
  * @apiError Error404  The server has an unexpected error
- * @apiError NotFound  The tag doesn't exist
+ * @apiError NotFound  The tag not found
  *
  */
 function findTag(req, res, next) {
@@ -140,7 +131,7 @@ function findTag(req, res, next) {
 }
 
 /**
- * @api {get} /tags Fin a specific Tag
+ * @api {get} /tags Find a specific Tag
  * @apiVersion 0.0.0
  * @apiName FindTag
  * @apiGroup Tag
@@ -178,6 +169,11 @@ router.get('/:id', findTag, function(req, res, next) {
  * @apiName UpdateTag
  * @apiGroup Tag
  *
+ * @apiDescription This allow to update a specific tag with its id
+ *
+ * @apiExample Example usage:
+ * http://localhost/tags/56cece584a9f5ac80f820b68
+ *
  * @apiSuccess {ObjectId} _id id of the Tag
  * @apiSuccess {String} keyword  keyword of the Tag
  *
@@ -211,10 +207,15 @@ router.patch('/:id', findTag, function(req, res, next) {
 });
 
 /**
- * @api {patch} /tags/:id Delete a Tag
+ * @api {delete} /tags/:id Delete a Tag
  * @apiVersion 0.0.0
  * @apiName DeleteTag
  * @apiGroup Tag
+ *
+ * @apiDescription This allow to delete a specific tag with its id
+ *
+ * @apiExample Example usage:
+ * http://localhost/tags/56cece584a9f5ac80f820b68
  *
  * @apiSuccess {204} 204 id of the Tag
  *
@@ -229,7 +230,6 @@ router.patch('/:id', findTag, function(req, res, next) {
  *
  * @apiError Error404  The server has an unexpected error
  * @apiError NotFound  The tag doesn't exist
- * @apiError ValidationError  You have send wrong parameters or send a wrong type of data
  */
 // DELETE /api/tags/:id
 router.delete('/:id', findTag, function(req, res, next) {

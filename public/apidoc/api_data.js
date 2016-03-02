@@ -107,6 +107,13 @@ define({ "api": [
             "optional": false,
             "field": "actions.content",
             "description": "<p>The content of the comment (only if its a Comment)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "createdAt",
+            "description": "<p>The date of creation of the issue</p>"
           }
         ]
       }
@@ -118,13 +125,13 @@ define({ "api": [
             "group": "Error 4xx",
             "optional": false,
             "field": "ValidationError",
-            "description": "<p>One or more of the data have not the correct type</p>"
+            "description": "<p>One or more of the data have not the correct type or are required</p>"
           },
           {
             "group": "Error 4xx",
             "optional": false,
             "field": "Error404",
-            "description": "<p>The server has an unexpected erro</p>"
+            "description": "<p>The server has an unexpected error</p>"
           }
         ]
       },
@@ -140,37 +147,106 @@ define({ "api": [
     "groupTitle": "Issue"
   },
   {
+    "type": "post",
+    "url": "/tags",
+    "title": "Create a Tag",
+    "version": "0.0.0",
+    "name": "CreateTag",
+    "group": "Tag",
+    "description": "<p>This allow to create an tag with the right parameters</p>",
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "http://localhost/tags",
+        "type": "json"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Schema.Types.ObjectId",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>The id of the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "keyword",
+            "description": "<p>The keyword of the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "createdAt",
+            "description": "<p>The date of the creation of the tag</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "[\n    {\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n    }\n  ]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ValidationError",
+            "description": "<p>The keyword(s) doesn't have the correct type or is required</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Error404",
+            "description": "<p>The server has an unexpected error</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 401 Not Authenticated\n{\n  \"error\": \"NoAccessRight\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/controllers/tags.js",
+    "groupTitle": "Tag"
+  },
+  {
     "type": "delete",
     "url": "/tags/:id",
     "title": "Delete a Tag",
+    "version": "0.0.0",
     "name": "DeleteTag",
-    "group": "Tags",
-    "version": "0.0.0",
-    "filename": "app/controllers/tags.js",
-    "groupTitle": "Tags"
-  },
-  {
-    "type": "",
-    "url": "Find",
-    "title": "Tag",
-    "name": "FindTag",
-    "group": "Tags",
+    "group": "Tag",
+    "description": "<p>This allow to delete a specific tag with its id</p>",
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "http://localhost/tags/56cece584a9f5ac80f820b68",
+        "type": "json"
+      }
+    ],
     "success": {
       "fields": {
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "ObjectId",
+            "type": "204",
             "optional": false,
-            "field": "_id",
+            "field": "204",
             "description": "<p>id of the Tag</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "keyword",
-            "description": "<p>keyword of the Tag</p>"
           }
         ]
       },
@@ -182,69 +258,65 @@ define({ "api": [
         }
       ]
     },
-    "version": "0.0.0",
-    "filename": "app/controllers/tags.js",
-    "groupTitle": "Tags"
-  },
-  {
-    "type": "get",
-    "url": "/tags/:id",
-    "title": "Get a Tag with ID",
-    "name": "GetTag",
-    "group": "Tags",
-    "success": {
+    "error": {
       "fields": {
-        "Success 200": [
+        "Error 4xx": [
           {
-            "group": "Success 200",
-            "type": "ObjectId",
+            "group": "Error 4xx",
             "optional": false,
-            "field": "_id",
-            "description": "<p>id of the Tag</p>"
+            "field": "Error404",
+            "description": "<p>The server has an unexpected error</p>"
           },
           {
-            "group": "Success 200",
-            "type": "String",
+            "group": "Error 4xx",
             "optional": false,
-            "field": "keyword",
-            "description": "<p>keyword of the Tag</p>"
+            "field": "NotFound",
+            "description": "<p>The tag doesn't exist</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "[\n    {\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n    }\n  ]",
-          "type": "json"
-        }
-      ]
+      }
     },
-    "version": "0.0.0",
     "filename": "app/controllers/tags.js",
-    "groupTitle": "Tags"
+    "groupTitle": "Tag"
   },
   {
     "type": "get",
     "url": "/tags",
-    "title": "Request Tags Informations",
-    "name": "GetTags",
-    "group": "Tags",
+    "title": "Find a specific Tag",
+    "version": "0.0.0",
+    "name": "FindTag",
+    "group": "Tag",
+    "description": "<p>This allow to get a specific tag with its id</p>",
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "http://localhost/tags/56cece584a9f5ac80f820b68",
+        "type": "json"
+      }
+    ],
     "success": {
       "fields": {
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "ObjectId",
+            "type": "Schema.Types.ObjectId",
             "optional": false,
             "field": "_id",
-            "description": "<p>id of the Tag</p>"
+            "description": "<p>The id of the tag</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "keyword",
-            "description": "<p>keyword of the Tag</p>"
+            "description": "<p>The keyword of the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "createdAt",
+            "description": "<p>The date of the creation of the tag</p>"
           }
         ]
       },
@@ -256,16 +328,106 @@ define({ "api": [
         }
       ]
     },
-    "version": "0.0.0",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Error404",
+            "description": "<p>The server has an unexpected error</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>The tag doesn't exist</p>"
+          }
+        ]
+      }
+    },
     "filename": "app/controllers/tags.js",
-    "groupTitle": "Tags"
+    "groupTitle": "Tag"
+  },
+  {
+    "type": "get",
+    "url": "/tags",
+    "title": "Get all the Tags",
+    "version": "0.0.0",
+    "name": "GetTags",
+    "group": "Tag",
+    "description": "<p>This allow to get all the existed tags on the server</p>",
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "http://localhost/tags",
+        "type": "json"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Schema.Types.ObjectId",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>The id of the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "keyword",
+            "description": "<p>The keyword of the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "createdAt",
+            "description": "<p>The date of the creation of the tag</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "[\n    {\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n    }\n  ]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Error404",
+            "description": "<p>The server has an unexpected error</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/controllers/tags.js",
+    "groupTitle": "Tag"
   },
   {
     "type": "patch",
     "url": "/tags/:id",
     "title": "Update a Tag",
+    "version": "0.0.0",
     "name": "UpdateTag",
-    "group": "Tags",
+    "group": "Tag",
+    "description": "<p>This allow to update a specific tag with its id</p>",
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "http://localhost/tags/56cece584a9f5ac80f820b68",
+        "type": "json"
+      }
+    ],
     "success": {
       "fields": {
         "Success 200": [
@@ -293,9 +455,543 @@ define({ "api": [
         }
       ]
     },
-    "version": "0.0.0",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Error404",
+            "description": "<p>The server has an unexpected error</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>The tag doesn't exist</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ValidationError",
+            "description": "<p>You have send wrong parameters or send a wrong type of data</p>"
+          }
+        ]
+      }
+    },
     "filename": "app/controllers/tags.js",
-    "groupTitle": "Tags"
+    "groupTitle": "Tag"
+  },
+  {
+    "type": "function",
+    "url": "/tags",
+    "title": "Verify the Tag exists",
+    "version": "0.0.0",
+    "name": "VerifyTag",
+    "group": "Tag",
+    "description": "<p>This allow to test if the tag sended is on the server. This function is used in all the routes who need a tag verification</p>",
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "http://localhost/tags/56cece584a9f5ac80f820b68",
+        "type": "json"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Schema.Types.ObjectId",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>The id of the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "keyword",
+            "description": "<p>The keyword of the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "createdAt",
+            "description": "<p>The date of the creation of the tag</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Error404",
+            "description": "<p>The server has an unexpected error</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>The tag not found</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/controllers/tags.js",
+    "groupTitle": "Tag"
+  },
+  {
+    "type": "post",
+    "url": "/types",
+    "title": "Create a Type",
+    "version": "0.0.0",
+    "name": "CreateType",
+    "group": "Type",
+    "description": "<p>This allow to create a type with the right parameters</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Schema.Types.ObjectId",
+            "optional": false,
+            "field": "author",
+            "description": "<p>The id of the author of the type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The name of the type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>The description of the type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "createdAt",
+            "description": "<p>The date of the creation of the type</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "[\n    {\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n    }\n  ]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ValidationError",
+            "description": "<p>The type has some parameters with uncorrect type or  missing required parameters</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Error404",
+            "description": "<p>The server has an unexpected error</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 401 Not Authenticated\n{\n  \"error\": \"NoAccessRight\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/controllers/types.js",
+    "groupTitle": "Type"
+  },
+  {
+    "type": "delete",
+    "url": "/types",
+    "title": "Delete a specific Tag",
+    "version": "0.0.0",
+    "name": "DeleteType",
+    "group": "Type",
+    "description": "<p>This allow to delete a Tag with its id</p>",
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "http://localhost/types/56cece584a9f5ac80f820b68",
+        "type": "json"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "204",
+            "optional": false,
+            "field": "204",
+            "description": "<p>id of the Tag</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "[\n    {\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n    }\n  ]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Error404",
+            "description": "<p>The server has an unexpected error</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>Type not found</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 401 Not Authenticated\n{\n  \"error\": \"NoAccessRight\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/controllers/types.js",
+    "groupTitle": "Type"
+  },
+  {
+    "type": "get",
+    "url": "/types",
+    "title": "Find a specific Type",
+    "version": "0.0.0",
+    "name": "GetType",
+    "group": "Type",
+    "description": "<p>This allow to find a Tag with its id</p>",
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "http://localhost/types/56cece584a9f5ac80f820b68",
+        "type": "json"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Schema.Types.ObjectId",
+            "optional": false,
+            "field": "author",
+            "description": "<p>The id of the author of the type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The name of the type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>The description of the type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "createdAt",
+            "description": "<p>The date of the creation of the type</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "[\n    {\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n    }\n  ]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Error404",
+            "description": "<p>The server has an unexpected error</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>Type not found</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 401 Not Authenticated\n{\n  \"error\": \"NoAccessRight\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/controllers/types.js",
+    "groupTitle": "Type"
+  },
+  {
+    "type": "get",
+    "url": "/types",
+    "title": "Get all the Types",
+    "version": "0.0.0",
+    "name": "GetTypes",
+    "group": "Type",
+    "description": "<p>This allow to get all the Types found on the server</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Schema.Types.ObjectId",
+            "optional": false,
+            "field": "author",
+            "description": "<p>The id of the author of the type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The name of the type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>The description of the type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "createdAt",
+            "description": "<p>The date of the creation of the type</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "[\n    {\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n    }\n  ]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Error404",
+            "description": "<p>The server has an unexpected error</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 401 Not Authenticated\n{\n  \"error\": \"NoAccessRight\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/controllers/types.js",
+    "groupTitle": "Type"
+  },
+  {
+    "type": "patch",
+    "url": "/types",
+    "title": "Update a specific Tag",
+    "version": "0.0.0",
+    "name": "UpdateType",
+    "group": "Type",
+    "description": "<p>This allow to find a Tag with its id</p>",
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "http://localhost/types/56cece584a9f5ac80f820b68",
+        "type": "json"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Schema.Types.ObjectId",
+            "optional": false,
+            "field": "author",
+            "description": "<p>The id of the author of the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The name of the type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>The description of the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "createdAt",
+            "description": "<p>The date of the creation of the type</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "[\n    {\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n    }\n  ]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Error404",
+            "description": "<p>The server has an unexpected error</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ValidationError",
+            "description": "<p>The type has some parameters with uncorrect type or missing required parameters</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>Type not found</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response (example):",
+          "content": "HTTP/1.1 401 Not Authenticated\n{\n  \"error\": \"NoAccessRight\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/controllers/types.js",
+    "groupTitle": "Type"
+  },
+  {
+    "type": "get",
+    "url": "/types",
+    "title": "Verify the Type exists",
+    "version": "0.0.0",
+    "name": "VerifyType",
+    "group": "Type",
+    "description": "<p>This allow to test if the type sended is on the server. This function is used in all the routes who need a type verification</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Schema.Types.ObjectId",
+            "optional": false,
+            "field": "author",
+            "description": "<p>The id of the author of the type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The name of the type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>The description of the type</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "createdAt",
+            "description": "<p>The date of the creation of the type</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Error404",
+            "description": "<p>The server has an unexpected error</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>Type not found</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/controllers/types.js",
+    "groupTitle": "Type"
   },
   {
     "type": "post",
