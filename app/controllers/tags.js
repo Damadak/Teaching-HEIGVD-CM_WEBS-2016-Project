@@ -15,9 +15,6 @@ module.exports = function (app) {
  *
  * @apiDescription This allow to create an tag with the right parameters
  *
- * @apiExample Example usage:
- * http://localhost/tags
- *
  * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the tag
  * @apiSuccess {String}   keyword   The keyword of the tag
  * @apiSuccess {Date}   createdAt The date of the creation of the tag
