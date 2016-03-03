@@ -60,14 +60,32 @@ module.exports = function (app) {
  * @apiSuccess {String}   actions.content The content of the comment (only if its a Comment)
  * @apiSuccess {Date}   createdAt The date of creation of the issue
  *
- * @apiError ValidationError One or more of the data have not the correct type or are required
+ * @apiError UnexpectedToken The issue has some parameters with uncorrect type
+ * @apiError ValidationError There are missing parameters
  * @apiError Error404   The server has an unexpected error
  *
- * @apiErrorExample Response (example):
- *     HTTP/1.1 401 Not Authenticated
- *     {
- *       "error": "NoAccessRight"
- *     }
+ * @apiErrorExample Response (Unexpected Token):
+ *    <h1>Unexpected token j</h1>
+      <h2>400</h2>
+      <pre>SyntaxError: Unexpected token j
+ *
+ * @apiErrorExample {json} Response (Validation Error):
+ * {"message": "Issue validation failed",
+  "name": "ValidationError",
+  "errors": {
+    "description": {
+      "properties": {
+        "type": "required",
+        "message": "Path `{PATH}` is required.",
+        "path": "description"
+      },
+      "message": "Path `description` is required.",
+      "name": "ValidatorError",
+      "kind": "required",
+      "path": "description"
+    }
+  }
+}
  */
 router.post('/', function (req, res, next) {
     var issue = new Issue(req.body);

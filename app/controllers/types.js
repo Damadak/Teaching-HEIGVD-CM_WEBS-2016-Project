@@ -24,23 +24,44 @@ module.exports = function (app) {
  * @apiSuccess {Date}   createdAt The date of the creation of the type
  *
  * @apiSuccessExample Success-Response:
- *     [
-        {
-          "_id": "56cece584a9f5ac80f820b68",
-          "keyword": "route abimée",
-          "__v": 0
-        }
-      ]
+ *
+     {
+    "__v": 0,
+    "createdAt": "2016-03-03T19:09:04.598Z",
+    "name": "Route 2",
+    "description": "Tous les problèmes liés à la route",
+    "author": "56cef06ac636642c090819e9",
+    "_id": "56d88bd0ed816d3014765b17"
+    }
  *
  *
- * @apiError ValidationError The type has some parameters with uncorrect type or  missing required parameters
+ * @apiError UnexpectedToken The type has some parameters with uncorrect type
+ * @apiError ValidationError There are missing parameters
  * @apiError Error404   The server has an unexpected error
  *
- * @apiErrorExample Response (example):
- *     HTTP/1.1 401 Not Authenticated
- *     {
- *       "error": "NoAccessRight"
- *     }
+ * @apiErrorExample Response (Unexpected Token):
+ *    <h1>Unexpected token j</h1>
+      <h2>400</h2>
+      <pre>SyntaxError: Unexpected token j
+ *
+ * @apiErrorExample {json} Response (Validation Error):
+ * {
+  "message": "Type validation failed",
+  "name": "ValidationError",
+  "errors": {
+    "author": {
+      "properties": {
+        "type": "required",
+        "message": "Path `{PATH}` is required.",
+        "path": "author"
+      },
+      "message": "Path `author` is required.",
+      "name": "ValidatorError",
+      "kind": "required",
+      "path": "author"
+    }
+  }
+}
  */
 router.post('/', function (req, res, next) {
     var type = new Type(req.body); //on lui passe la requête JSOn
@@ -73,21 +94,19 @@ router.post('/', function (req, res, next) {
  *
  * @apiSuccessExample Success-Response:
  *     [
-        {
-          "_id": "56cece584a9f5ac80f820b68",
-          "keyword": "route abimée",
-          "__v": 0
+         {
+        "__v": 0,
+        "createdAt": "2016-03-03T19:09:04.598Z",
+        "name": "Route 2",
+        "description": "Tous les problèmes liés à la route",
+        "author": "56cef06ac636642c090819e9",
+        "_id": "56d88bd0ed816d3014765b17"
         }
       ]
  *
  *
  * @apiError Error404   The server has an unexpected error
  *
- * @apiErrorExample Response (example):
- *     HTTP/1.1 401 Not Authenticated
- *     {
- *       "error": "NoAccessRight"
- *     }
  */
 // GET /api/types
 router.get('/', function (req, res, next) {
@@ -145,7 +164,7 @@ function findType(req, res, next) {
  * @apiName GetType
  * @apiGroup Type
  *
- * @apiDescription This allow to find a Tag with its id
+ * @apiDescription This allow to find a Type with its id
 *
  * @apiExample Example usage:
  * http://localhost/types/56cece584a9f5ac80f820b68
@@ -156,23 +175,19 @@ function findType(req, res, next) {
  * @apiSuccess {Date}   createdAt The date of the creation of the type
  *
  * @apiSuccessExample Success-Response:
- *     [
-        {
-          "_id": "56cece584a9f5ac80f820b68",
-          "keyword": "route abimée",
-          "__v": 0
-        }
-      ]
+ *     {
+    "__v": 0,
+    "createdAt": "2016-03-03T19:09:04.598Z",
+    "name": "Route 2",
+    "description": "Tous les problèmes liés à la route",
+    "author": "56cef06ac636642c090819e9",
+    "_id": "56d88bd0ed816d3014765b17"
+  }
  *
  *
  * @apiError Error404   The server has an unexpected error
  * @apiError NotFound   Type not found
  *
- * @apiErrorExample Response (example):
- *     HTTP/1.1 401 Not Authenticated
- *     {
- *       "error": "NoAccessRight"
- *     }
  */
 // GET /api/types/:id
 router.get('/:id', findType, function(req, res, next) {
@@ -185,40 +200,36 @@ router.get('/:id', findType, function(req, res, next) {
 
 
 /**
- * @api {patch} /types Update a Tag
+ * @api {patch} /types Update a Type
  * @apiVersion 0.0.0
  * @apiName UpdateType
  * @apiGroup Type
  *
- * @apiDescription This allow to find a Tag with its id
+ * @apiDescription This allow to find a Type with its id
 *
  * @apiExample Example usage:
  * http://localhost/types/56cece584a9f5ac80f820b68
  *
- * @apiSuccess {Schema.Types.ObjectId}   author   The id of the author of the tag
+ * @apiSuccess {Schema.Types.ObjectId}   author   The id of the author of the Type
  * @apiSuccess {String}   name   The name of the type
- * @apiSuccess {String}   description   The description of the tag
+ * @apiSuccess {String}   description   The description of the Type
  * @apiSuccess {Date}   createdAt The date of the creation of the type
  *
  * @apiSuccessExample Success-Response:
- *     [
-        {
-          "_id": "56cece584a9f5ac80f820b68",
-          "keyword": "route abimée",
-          "__v": 0
-        }
-      ]
+ *     {
+      "__v": 0,
+      "createdAt": "2016-03-03T19:09:04.598Z",
+      "name": "Route 3",
+      "description": "Tous les problèmes liés à la route",
+      "author": "56cef06ac636642c090819e9",
+      "_id": "56d88bd0ed816d3014765b17"
+    }
  *
  *
  * @apiError Error404   The server has an unexpected error
  * @apiError ValidationError The type has some parameters with uncorrect type or missing required parameters
  * @apiError NotFound   Type not found
  *
- * @apiErrorExample Response (example):
- *     HTTP/1.1 401 Not Authenticated
- *     {
- *       "error": "NoAccessRight"
- *     }
  */
 // PATCH /api/types/:id
 router.patch('/:id',findType, function(req, res, next) {
@@ -239,27 +250,17 @@ router.patch('/:id',findType, function(req, res, next) {
 
 
 /**
- * @api {delete} /types Delete a specific Tag
+ * @api {delete} /types Delete a specific Type
  * @apiVersion 0.0.0
  * @apiName DeleteType
  * @apiGroup Type
  *
- * @apiDescription This allow to delete a Tag with its id
+ * @apiDescription This allow to delete a Type with its id
 *
  * @apiExample Example usage:
  * http://localhost/types/56cece584a9f5ac80f820b68
  *
- * @apiSuccess {204} 204 id of the Tag
- *
- * @apiSuccessExample Success-Response:
- *     [
-        {
-          "_id": "56cece584a9f5ac80f820b68",
-          "keyword": "route abimée",
-          "__v": 0
-        }
-      ]
- *
+ * @apiSuccess {204} 204
  *
  * @apiError Error404   The server has an unexpected error
  * @apiError NotFound   Type not found

@@ -20,23 +20,39 @@ module.exports = function (app) {
  * @apiSuccess {Date}   createdAt The date of the creation of the tag
  *
  * @apiSuccessExample Success-Response:
- *     [
-        {
+ *  {
           "_id": "56cece584a9f5ac80f820b68",
           "keyword": "route abimée",
           "__v": 0
         }
-      ]
  *
  *
  * @apiError ValidationError The keyword(s) doesn't have the correct type or is required
  * @apiError Error404   The server has an unexpected error
  *
- * @apiErrorExample Response (example):
- *     HTTP/1.1 401 Not Authenticated
- *     {
- *       "error": "NoAccessRight"
- *     }
+ * @apiErrorExample Response (Unexpected Token):
+ *    <h1>Unexpected token j</h1>
+      <h2>400</h2>
+      <pre>SyntaxError: Unexpected token j
+ *
+ * @apiErrorExample {json} Response (Validation Error):
+ * {
+  "message": "Tag validation failed",
+  "name": "ValidationError",
+  "errors": {
+    "keyword": {
+      "properties": {
+        "type": "required",
+        "message": "Path `{PATH}` is required.",
+        "path": "keyword"
+      },
+      "message": "Path `keyword` is required.",
+      "name": "ValidatorError",
+      "kind": "required",
+      "path": "keyword"
+    }
+  }
+}
  */
 router.post('/', function (req, res, next) {
     var tag = new Tag(req.body); //on lui passe la requête JSOn
@@ -128,7 +144,7 @@ function findTag(req, res, next) {
 }
 
 /**
- * @api {get} /tags Find a specific Tag
+ * @api {get} /tags/:id Find a specific Tag
  * @apiVersion 0.0.0
  * @apiName FindTag
  * @apiGroup Tag
@@ -143,13 +159,11 @@ function findTag(req, res, next) {
  * @apiSuccess {Date}   createdAt The date of the creation of the tag
  *
  * @apiSuccessExample Success-Response:
- *     [
-        {
-          "_id": "56cece584a9f5ac80f820b68",
-          "keyword": "route abimée",
-          "__v": 0
-        }
-      ]
+ * {
+      "_id": "56cece584a9f5ac80f820b68",
+      "keyword": "route abimée",
+      "__v": 0
+    }
  *
  * @apiError Error404  The server has an unexpected error
  * @apiError NotFound  The tag doesn't exist
@@ -175,13 +189,13 @@ router.get('/:id', findTag, function(req, res, next) {
  * @apiSuccess {String} keyword  keyword of the Tag
  *
  * @apiSuccessExample Success-Response:
- *     [
-        {
-          "_id": "56cece584a9f5ac80f820b68",
-          "keyword": "route abimée",
-          "__v": 0
-        }
-      ]
+ *
+    {
+      "_id": "56cece584a9f5ac80f820b68",
+      "keyword": "route abimée",
+      "__v": 0
+    }
+
  *
  * @apiError Error404  The server has an unexpected error
  * @apiError NotFound  The tag doesn't exist
@@ -214,16 +228,7 @@ router.patch('/:id', findTag, function(req, res, next) {
  * @apiExample Example usage:
  * http://localhost/tags/56cece584a9f5ac80f820b68
  *
- * @apiSuccess {204} 204 id of the Tag
- *
- * @apiSuccessExample Success-Response:
- *     [
-        {
-          "_id": "56cece584a9f5ac80f820b68",
-          "keyword": "route abimée",
-          "__v": 0
-        }
-      ]
+ * @apiSuccess {204} 204 
  *
  * @apiError Error404  The server has an unexpected error
  * @apiError NotFound  The tag doesn't exist

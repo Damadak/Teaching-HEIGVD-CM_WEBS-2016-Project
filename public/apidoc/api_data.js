@@ -124,8 +124,14 @@ define({ "api": [
           {
             "group": "Error 4xx",
             "optional": false,
+            "field": "UnexpectedToken",
+            "description": "<p>The issue has some parameters with uncorrect type</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
             "field": "ValidationError",
-            "description": "<p>One or more of the data have not the correct type or are required</p>"
+            "description": "<p>There are missing parameters</p>"
           },
           {
             "group": "Error 4xx",
@@ -137,8 +143,13 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Response (example):",
-          "content": "HTTP/1.1 401 Not Authenticated\n{\n  \"error\": \"NoAccessRight\"\n}",
+          "title": "Response (Unexpected Token):",
+          "content": "<h1>Unexpected token j</h1>\n   <h2>400</h2>\n   <pre>SyntaxError: Unexpected token j",
+          "type": "json"
+        },
+        {
+          "title": "Response (Validation Error):",
+          "content": "{\"message\": \"Issue validation failed\",\n  \"name\": \"ValidationError\",\n  \"errors\": {\n    \"description\": {\n      \"properties\": {\n        \"type\": \"required\",\n        \"message\": \"Path `{PATH}` is required.\",\n        \"path\": \"description\"\n      },\n      \"message\": \"Path `description` is required.\",\n      \"name\": \"ValidatorError\",\n      \"kind\": \"required\",\n      \"path\": \"description\"\n    }\n  }\n}",
           "type": "json"
         }
       ]
@@ -183,7 +194,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "[\n    {\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n    }\n  ]",
+          "content": "{\n         \"_id\": \"56cece584a9f5ac80f820b68\",\n         \"keyword\": \"route abimée\",\n         \"__v\": 0\n       }",
           "type": "json"
         }
       ]
@@ -207,8 +218,13 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Response (example):",
-          "content": "HTTP/1.1 401 Not Authenticated\n{\n  \"error\": \"NoAccessRight\"\n}",
+          "title": "Response (Unexpected Token):",
+          "content": "<h1>Unexpected token j</h1>\n   <h2>400</h2>\n   <pre>SyntaxError: Unexpected token j",
+          "type": "json"
+        },
+        {
+          "title": "Response (Validation Error):",
+          "content": "{\n  \"message\": \"Tag validation failed\",\n  \"name\": \"ValidationError\",\n  \"errors\": {\n    \"keyword\": {\n      \"properties\": {\n        \"type\": \"required\",\n        \"message\": \"Path `{PATH}` is required.\",\n        \"path\": \"keyword\"\n      },\n      \"message\": \"Path `keyword` is required.\",\n      \"name\": \"ValidatorError\",\n      \"kind\": \"required\",\n      \"path\": \"keyword\"\n    }\n  }\n}",
           "type": "json"
         }
       ]
@@ -239,17 +255,10 @@ define({ "api": [
             "type": "204",
             "optional": false,
             "field": "204",
-            "description": "<p>id of the Tag</p>"
+            "description": ""
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "[\n    {\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n    }\n  ]",
-          "type": "json"
-        }
-      ]
+      }
     },
     "error": {
       "fields": {
@@ -274,7 +283,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/tags",
+    "url": "/tags/:id",
     "title": "Find a specific Tag",
     "version": "0.0.0",
     "name": "FindTag",
@@ -316,7 +325,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "[\n    {\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n    }\n  ]",
+          "content": "{\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n    }",
           "type": "json"
         }
       ]
@@ -443,7 +452,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "[\n    {\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n    }\n  ]",
+          "content": "\n{\n  \"_id\": \"56cece584a9f5ac80f820b68\",\n  \"keyword\": \"route abimée\",\n  \"__v\": 0\n}",
           "type": "json"
         }
       ]
@@ -582,7 +591,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "[\n    {\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n    }\n  ]",
+          "content": "\n {\n\"__v\": 0,\n\"createdAt\": \"2016-03-03T19:09:04.598Z\",\n\"name\": \"Route 2\",\n\"description\": \"Tous les problèmes liés à la route\",\n\"author\": \"56cef06ac636642c090819e9\",\n\"_id\": \"56d88bd0ed816d3014765b17\"\n}",
           "type": "json"
         }
       ]
@@ -593,8 +602,14 @@ define({ "api": [
           {
             "group": "Error 4xx",
             "optional": false,
+            "field": "UnexpectedToken",
+            "description": "<p>The type has some parameters with uncorrect type</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
             "field": "ValidationError",
-            "description": "<p>The type has some parameters with uncorrect type or  missing required parameters</p>"
+            "description": "<p>There are missing parameters</p>"
           },
           {
             "group": "Error 4xx",
@@ -606,8 +621,13 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Response (example):",
-          "content": "HTTP/1.1 401 Not Authenticated\n{\n  \"error\": \"NoAccessRight\"\n}",
+          "title": "Response (Unexpected Token):",
+          "content": "<h1>Unexpected token j</h1>\n   <h2>400</h2>\n   <pre>SyntaxError: Unexpected token j",
+          "type": "json"
+        },
+        {
+          "title": "Response (Validation Error):",
+          "content": "{\n  \"message\": \"Type validation failed\",\n  \"name\": \"ValidationError\",\n  \"errors\": {\n    \"author\": {\n      \"properties\": {\n        \"type\": \"required\",\n        \"message\": \"Path `{PATH}` is required.\",\n        \"path\": \"author\"\n      },\n      \"message\": \"Path `author` is required.\",\n      \"name\": \"ValidatorError\",\n      \"kind\": \"required\",\n      \"path\": \"author\"\n    }\n  }\n}",
           "type": "json"
         }
       ]
@@ -618,11 +638,11 @@ define({ "api": [
   {
     "type": "delete",
     "url": "/types",
-    "title": "Delete a specific Tag",
+    "title": "Delete a specific Type",
     "version": "0.0.0",
     "name": "DeleteType",
     "group": "Type",
-    "description": "<p>This allow to delete a Tag with its id</p>",
+    "description": "<p>This allow to delete a Type with its id</p>",
     "examples": [
       {
         "title": "Example usage:",
@@ -638,17 +658,10 @@ define({ "api": [
             "type": "204",
             "optional": false,
             "field": "204",
-            "description": "<p>id of the Tag</p>"
+            "description": ""
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "[\n    {\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n    }\n  ]",
-          "type": "json"
-        }
-      ]
+      }
     },
     "error": {
       "fields": {
@@ -685,7 +698,7 @@ define({ "api": [
     "version": "0.0.0",
     "name": "GetType",
     "group": "Type",
-    "description": "<p>This allow to find a Tag with its id</p>",
+    "description": "<p>This allow to find a Type with its id</p>",
     "examples": [
       {
         "title": "Example usage:",
@@ -729,7 +742,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "[\n    {\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n    }\n  ]",
+          "content": "  {\n  \"__v\": 0,\n  \"createdAt\": \"2016-03-03T19:09:04.598Z\",\n  \"name\": \"Route 2\",\n  \"description\": \"Tous les problèmes liés à la route\",\n  \"author\": \"56cef06ac636642c090819e9\",\n  \"_id\": \"56d88bd0ed816d3014765b17\"\n}",
           "type": "json"
         }
       ]
@@ -750,14 +763,7 @@ define({ "api": [
             "description": "<p>Type not found</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Response (example):",
-          "content": "HTTP/1.1 401 Not Authenticated\n{\n  \"error\": \"NoAccessRight\"\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "filename": "app/controllers/types.js",
     "groupTitle": "Type"
@@ -806,7 +812,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "[\n    {\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n    }\n  ]",
+          "content": "[\n     {\n    \"__v\": 0,\n    \"createdAt\": \"2016-03-03T19:09:04.598Z\",\n    \"name\": \"Route 2\",\n    \"description\": \"Tous les problèmes liés à la route\",\n    \"author\": \"56cef06ac636642c090819e9\",\n    \"_id\": \"56d88bd0ed816d3014765b17\"\n    }\n  ]",
           "type": "json"
         }
       ]
@@ -821,14 +827,7 @@ define({ "api": [
             "description": "<p>The server has an unexpected error</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Response (example):",
-          "content": "HTTP/1.1 401 Not Authenticated\n{\n  \"error\": \"NoAccessRight\"\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "filename": "app/controllers/types.js",
     "groupTitle": "Type"
@@ -836,11 +835,11 @@ define({ "api": [
   {
     "type": "patch",
     "url": "/types",
-    "title": "Update a Tag",
+    "title": "Update a Type",
     "version": "0.0.0",
     "name": "UpdateType",
     "group": "Type",
-    "description": "<p>This allow to find a Tag with its id</p>",
+    "description": "<p>This allow to find a Type with its id</p>",
     "examples": [
       {
         "title": "Example usage:",
@@ -856,7 +855,7 @@ define({ "api": [
             "type": "Schema.Types.ObjectId",
             "optional": false,
             "field": "author",
-            "description": "<p>The id of the author of the tag</p>"
+            "description": "<p>The id of the author of the Type</p>"
           },
           {
             "group": "Success 200",
@@ -870,7 +869,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "description",
-            "description": "<p>The description of the tag</p>"
+            "description": "<p>The description of the Type</p>"
           },
           {
             "group": "Success 200",
@@ -884,7 +883,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "[\n    {\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n    }\n  ]",
+          "content": "{\n  \"__v\": 0,\n  \"createdAt\": \"2016-03-03T19:09:04.598Z\",\n  \"name\": \"Route 3\",\n  \"description\": \"Tous les problèmes liés à la route\",\n  \"author\": \"56cef06ac636642c090819e9\",\n  \"_id\": \"56d88bd0ed816d3014765b17\"\n}",
           "type": "json"
         }
       ]
@@ -911,14 +910,7 @@ define({ "api": [
             "description": "<p>Type not found</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Response (example):",
-          "content": "HTTP/1.1 401 Not Authenticated\n{\n  \"error\": \"NoAccessRight\"\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "filename": "app/controllers/types.js",
     "groupTitle": "Type"
@@ -1100,7 +1092,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "[\n    {\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n    }\n  ]",
+          "content": "    {\n  \"__v\": 0,\n  \"createdAt\": \"2016-03-03T19:27:06.372Z\",\n  \"name\": \"Tab\",\n  \"lastName\": \"H\",\n  \"email\": \"test@gmail.com\",\n  \"userName\": \"Tabata\",\n  \"password\": \"123456\",\n  \"phoneNumber\": 22456789,\n  \"_id\": \"56d8900a05bd2b841f89139f\",\n  \"role\": {\n    \"citizen\": true,\n    \"staff\": false\n  },\n  \"adresse\": {\n    \"street\": \"Route\",\n    \"number\": 38,\n    \"postal\": 1258,\n    \"country\": \"Suisse\"\n  }\n}",
           "type": "json"
         }
       ]
@@ -1156,17 +1148,10 @@ define({ "api": [
             "type": "204",
             "optional": false,
             "field": "204",
-            "description": "<p>id of the User</p>"
+            "description": ""
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "[\n    {\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n    }\n  ]",
-          "type": "json"
-        }
-      ]
+      }
     },
     "error": {
       "fields": {
@@ -1184,20 +1169,13 @@ define({ "api": [
             "description": "<p>The user doesn't exist</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Response (example):",
-          "content": "HTTP/1.1 401 Not Authenticated\n{\n  \"error\": \"NoAccessRight\"\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "filename": "app/controllers/users.js",
     "groupTitle": "User"
   },
   {
-    "type": "post",
+    "type": "get",
     "url": "/users",
     "title": "Find a specific User",
     "version": "0.0.0",
@@ -1317,7 +1295,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "[\n    {\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n    }\n  ]",
+          "content": "   {\n \"__v\": 0,\n \"createdAt\": \"2016-03-03T19:27:06.372Z\",\n \"name\": \"Tab\",\n \"lastName\": \"H\",\n \"email\": \"test@gmail.com\",\n \"userName\": \"Tabata\",\n \"password\": \"123456\",\n \"phoneNumber\": 22456789,\n \"_id\": \"56d8900a05bd2b841f89139f\",\n \"role\": {\n   \"citizen\": true,\n   \"staff\": false\n },\n \"adresse\": {\n   \"street\": \"Route\",\n   \"number\": 38,\n   \"postal\": 1258,\n   \"country\": \"Suisse\"\n }\n}",
           "type": "json"
         }
       ]
@@ -1492,14 +1470,7 @@ define({ "api": [
             "description": "<p>The user doesn't exist</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Response (example):",
-          "content": "HTTP/1.1 401 Not Authenticated\n{\n  \"error\": \"NoAccessRight\"\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "filename": "app/controllers/users.js",
     "groupTitle": "User"
@@ -1511,7 +1482,7 @@ define({ "api": [
     "version": "0.0.0",
     "name": "GetUsers",
     "group": "User",
-    "description": "<p>This allow to get all the existed tags on the server</p>",
+    "description": "<p>This allow to get all the existed users on the server</p>",
     "success": {
       "fields": {
         "Success 200": [
@@ -1618,7 +1589,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "[\n    {\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n    }\n  ]",
+          "content": "   {\n \"__v\": 0,\n \"createdAt\": \"2016-03-03T19:27:06.372Z\",\n \"name\": \"Tab\",\n \"lastName\": \"H\",\n \"email\": \"test@gmail.com\",\n \"userName\": \"Tabata\",\n \"password\": \"123456\",\n \"phoneNumber\": 22456789,\n \"_id\": \"56d8900a05bd2b841f89139f\",\n \"role\": {\n   \"citizen\": true,\n   \"staff\": false\n },\n \"adresse\": {\n   \"street\": \"Route\",\n   \"number\": 38,\n   \"postal\": 1258,\n   \"country\": \"Suisse\"\n }\n}",
           "type": "json"
         }
       ]
@@ -1633,14 +1604,7 @@ define({ "api": [
             "description": "<p>The server has an unexpected error</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Response (example):",
-          "content": "HTTP/1.1 401 Not Authenticated\n{\n  \"error\": \"NoAccessRight\"\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "filename": "app/controllers/users.js",
     "groupTitle": "User"
@@ -1766,7 +1730,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "[\n    {\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n    }\n  ]",
+          "content": "    {\n  \"__v\": 0,\n  \"createdAt\": \"2016-03-03T19:27:06.372Z\",\n  \"name\": \"Tab\",\n  \"lastName\": \"H\",\n  \"email\": \"test@gmail.com\",\n  \"userName\": \"Tabata\",\n  \"password\": \"123456\",\n  \"phoneNumber\": 22456789,\n  \"_id\": \"56d8900a05bd2b841f89139f\",\n  \"role\": {\n    \"citizen\": true,\n    \"staff\": false\n  },\n  \"adresse\": {\n    \"street\": \"Route\",\n    \"number\": 38,\n    \"postal\": 1258,\n    \"country\": \"Suisse\"\n  }\n}",
           "type": "json"
         }
       ]
@@ -1793,14 +1757,7 @@ define({ "api": [
             "description": "<p>The user doesn't exist</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Response (example):",
-          "content": "HTTP/1.1 401 Not Authenticated\n{\n  \"error\": \"NoAccessRight\"\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "filename": "app/controllers/users.js",
     "groupTitle": "User"
@@ -1934,14 +1891,7 @@ define({ "api": [
             "description": "<p>The server has an unexpected error</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Response (example):",
-          "content": "HTTP/1.1 401 Not Authenticated\n{\n  \"error\": \"NoAccessRight\"\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "filename": "app/controllers/users.js",
     "groupTitle": "User"

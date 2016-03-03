@@ -56,13 +56,27 @@ var express = require('express'),
  * @apiSuccess {Boolean}   role.staff   If the user is a staff
  *
  * @apiSuccessExample Success-Response:
- *     [
-        {
-          "_id": "56cece584a9f5ac80f820b68",
-          "keyword": "route abimée",
-          "__v": 0
-        }
-      ]
+ *     {
+  "__v": 0,
+  "createdAt": "2016-03-03T19:27:06.372Z",
+  "name": "Tab",
+  "lastName": "H",
+  "email": "test@gmail.com",
+  "userName": "Tabata",
+  "password": "123456",
+  "phoneNumber": 22456789,
+  "_id": "56d8900a05bd2b841f89139f",
+  "role": {
+    "citizen": true,
+    "staff": false
+  },
+  "adresse": {
+    "street": "Route",
+    "number": 38,
+    "postal": 1258,
+    "country": "Suisse"
+  }
+}
  *
  *
  * @apiError ValidationError The parameters don't have the correct type or there are missing required parameters
@@ -94,7 +108,7 @@ router.post('/', function (req, res, next) {
  * @apiName GetUsers
  * @apiGroup User
  *
- * @apiDescription This allow to get all the existed tags on the server
+ * @apiDescription This allow to get all the existed users on the server
  *
  * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the user
  * @apiSuccess {String}   name   The name of the user
@@ -112,22 +126,31 @@ router.post('/', function (req, res, next) {
  * @apiSuccess {Boolean}   role.staff   If the user is a staff
  *
  * @apiSuccessExample Success-Response:
- *     [
-        {
-          "_id": "56cece584a9f5ac80f820b68",
-          "keyword": "route abimée",
-          "__v": 0
-        }
-      ]
+ *     {
+  "__v": 0,
+  "createdAt": "2016-03-03T19:27:06.372Z",
+  "name": "Tab",
+  "lastName": "H",
+  "email": "test@gmail.com",
+  "userName": "Tabata",
+  "password": "123456",
+  "phoneNumber": 22456789,
+  "_id": "56d8900a05bd2b841f89139f",
+  "role": {
+    "citizen": true,
+    "staff": false
+  },
+  "adresse": {
+    "street": "Route",
+    "number": 38,
+    "postal": 1258,
+    "country": "Suisse"
+  }
+ }
  *
  *
  * @apiError Error404   The server has an unexpected error
  *
- * @apiErrorExample Response (example):
- *     HTTP/1.1 401 Not Authenticated
- *     {
- *       "error": "NoAccessRight"
- *     }
  */
 // GET /api/users
 router.get('/', function (req, res, next) {
@@ -168,11 +191,6 @@ router.get('/', function (req, res, next) {
  *
  * @apiError Error404   The server has an unexpected error
  *
- * @apiErrorExample Response (example):
- *     HTTP/1.1 401 Not Authenticated
- *     {
- *       "error": "NoAccessRight"
- *     }
  */
 function findUser(req, res, next) {
   User.findById(req.params.id, function(err, user) {
@@ -189,7 +207,7 @@ function findUser(req, res, next) {
 }
 
 /**
- * @api {post} /users Find a specific User
+ * @api {get} /users Find a specific User
  * @apiVersion 0.0.0
  * @apiName FindUser
  * @apiGroup User
@@ -215,13 +233,28 @@ function findUser(req, res, next) {
  * @apiSuccess {Boolean}   role.staff   If the user is a staff
  *
  * @apiSuccessExample Success-Response:
- *     [
-        {
-          "_id": "56cece584a9f5ac80f820b68",
-          "keyword": "route abimée",
-          "__v": 0
-        }
-      ]
+ *     {
+  "__v": 0,
+  "createdAt": "2016-03-03T19:27:06.372Z",
+  "name": "Tab",
+  "lastName": "H",
+  "email": "test@gmail.com",
+  "userName": "Tabata",
+  "password": "123456",
+  "phoneNumber": 22456789,
+  "_id": "56d8900a05bd2b841f89139f",
+  "role": {
+    "citizen": true,
+    "staff": false
+  },
+  "adresse": {
+    "street": "Route",
+    "number": 38,
+    "postal": 1258,
+    "country": "Suisse"
+  }
+ }
+
  *
  *
  * @apiError Error404   The server has an unexpected error
@@ -277,11 +310,6 @@ router.get('/:id', findUser, function(req, res, next) {
  * @apiError Error404   The server has an unexpected error
  * @apiError NotFound  The user doesn't exist
  *
- * @apiErrorExample Response (example):
- *     HTTP/1.1 401 Not Authenticated
- *     {
- *       "error": "NoAccessRight"
- *     }
  */
 //GET /api/users/id/issues
 router.get('/:id/issues', findUser, function(req, res, next){
@@ -321,24 +349,33 @@ router.get('/:id/issues', findUser, function(req, res, next){
  * @apiSuccess {Boolean}   role.staff   If the user is a staff
  *
  * @apiSuccessExample Success-Response:
- *     [
-        {
-          "_id": "56cece584a9f5ac80f820b68",
-          "keyword": "route abimée",
-          "__v": 0
-        }
-      ]
+ *     {
+  "__v": 0,
+  "createdAt": "2016-03-03T19:27:06.372Z",
+  "name": "Tab",
+  "lastName": "H",
+  "email": "test@gmail.com",
+  "userName": "Tabata",
+  "password": "123456",
+  "phoneNumber": 22456789,
+  "_id": "56d8900a05bd2b841f89139f",
+  "role": {
+    "citizen": true,
+    "staff": false
+  },
+  "adresse": {
+    "street": "Route",
+    "number": 38,
+    "postal": 1258,
+    "country": "Suisse"
+  }
+}
  *
  *
  * @apiError Error404   The server has an unexpected error
  * @apiError ValidationError The parameter(s) doesn't have the correct type or is missing
  * @apiError NotFound  The user doesn't exist
  *
- * @apiErrorExample Response (example):
- *     HTTP/1.1 401 Not Authenticated
- *     {
- *       "error": "NoAccessRight"
- *     }
  */
 // PATCH /api/users/:id
 router.patch('/:id', findUser, function(req, res, next) {
@@ -395,25 +432,11 @@ router.patch('/:id', findUser, function(req, res, next) {
  * @apiExample Example usage:
  * http://localhost/users/56cece584a9f5ac80f820b68
  *
- * @apiSuccess {204} 204 id of the User
- * @apiSuccessExample Success-Response:
- *     [
-        {
-          "_id": "56cece584a9f5ac80f820b68",
-          "keyword": "route abimée",
-          "__v": 0
-        }
-      ]
- *
+ * @apiSuccess {204} 204
  *
  * @apiError Error404   The server has an unexpected error
  * @apiError NotFound  The user doesn't exist
  *
- * @apiErrorExample Response (example):
- *     HTTP/1.1 401 Not Authenticated
- *     {
- *       "error": "NoAccessRight"
- *     }
  */
 // DELETE /api/people/:id
 router.delete('/:id', findUser, function(req, res, next) {
