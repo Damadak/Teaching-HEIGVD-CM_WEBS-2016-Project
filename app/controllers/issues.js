@@ -89,7 +89,7 @@ module.exports = function (app) {
  */
 router.post('/', function (req, res, next) {
     var issue = new Issue(req.body);
-    var now = new Date();
+    var now = new Date().toISOString().replace('T', ' ').substr(0, 19);
     issue.createdAt = now;
     issue.status = "created";
 
@@ -150,15 +150,6 @@ router.get('/', function (req, res, next) {
 
 });
 
-//GET /api/types/id/issues
-router.get('/date', function(req, res, next){
-  Issue.find({"createdAt":req.params.id},function(err, issues){
-    res.send(issues);
-  });
-
-});
-
-
 
 
 // GET /api/issues/:id
@@ -204,9 +195,16 @@ router.delete('/:id', findIssue, function(req, res, next) {
 
 // POST /api/issues/:id/actions
 router.post('/:id/actions', findIssue, function(req, res) {
-  console.log(req.body);
-  console.log(req.issue);
-
+  //console.log(req.body);
+  //console.log(req.issue);
+ var issueChange=req.issue;
+ var action = req.body.type;
+ var status = req.body.status;
+ //console.log(issueChange);
+ //console.log(action);
+if(action=="Status change"){
+    issueChange.status=status;
+}
   req.issue.actions.push(req.body);
 
   req.issue.save(function(err, updatedIssue) {
@@ -237,3 +235,42 @@ function findIssue(req, res, next) {
     next();
   });
 }
+
+  //POST /api/issues/periodSolved
+  router.post('/periodSolved', function (req,res,next){
+    var status = req.body.status;
+    var startDate = new Date(req.body.startDate);
+    var endDate = new Date(req.body.endDate);
+
+    console.log(status);
+    console.log(startDate);
+    console.log(endDate);
+
+    Issue.find({'status':status, "createdAt": {'$gte': startDate, '$lt': endDate}}, function(err, issues){
+      if (err){
+        res.status(500).send(err);
+        return;
+      }
+      res.send(issues);
+    });
+  });
+
+
+  //POST /api/issues/period
+  router.post('/period', function (req,res,next){
+
+    var startDate = new Date(req.body.startDate);
+    var endDate = new Date(req.body.endDate);
+
+    console.log(status);
+    console.log(startDate);
+    console.log(endDate);
+
+    Issue.find({ "createdAt": {'$gte': startDate, '$lt': endDate}}, function(err, issues){
+      if (err){
+        res.status(500).send(err);
+        return;
+      }
+      res.send(issues);
+    });
+  });
