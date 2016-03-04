@@ -35,11 +35,57 @@ module.exports = function (app) {
 */
 
 /**
- * @api {post} /users Create an issue
+ * @api {post} /issues Create an Issue
+ * @apiVersion 0.0.0
  * @apiName CreateIssue
  * @apiGroup Issue
  *
- * @apiSuccess {String} age Age of the person.
+ * @apiDescription This allow to create an issue with the right parameters
+ *
+ * @apiExample Example usage:
+ * http://localhost/users
+ *
+ * @apiSuccess {Schema.Types.ObjectId}   author            The Author-Id who create the Issue
+ * @apiSuccess {Schema.Types.ObjectId} type     The Type-Id of the Issue
+ * @apiSuccess {Schema.Types.ObjectId[]}   tags       The Tag-Id related to the Issue
+ * @apiSuccess {String}   description   The description of the Issue
+ * @apiSuccess {String}   location The type of the geographic coordinates
+ * @apiSuccess {Number[]} location.coordinates       The geographic coordinates of the Issue
+ * @apiSuccess {String}   status  The status of the Issue
+ * @apiSuccess {[]}   actions The actions done on the Issue
+ * @apiSuccess {String}   actions.type The type of the action (Comment or Status Change)
+ * @apiSuccess {Schema.Types.ObjectId}   actions.author The Author-Id of the action
+ * @apiSuccess {Date}   actions.date The date of the action
+ * @apiSuccess {String}   actions.status The new status of the issue (only if its a Status Change)
+ * @apiSuccess {String}   actions.content The content of the comment (only if its a Comment)
+ * @apiSuccess {Date}   createdAt The date of creation of the issue
+ *
+ * @apiError UnexpectedToken The issue has some parameters with uncorrect type
+ * @apiError ValidationError There are missing parameters
+ * @apiError Error404   The server has an unexpected error
+ *
+ * @apiErrorExample Response (Unexpected Token):
+ *    <h1>Unexpected token j</h1>
+      <h2>400</h2>
+      <pre>SyntaxError: Unexpected token j
+ *
+ * @apiErrorExample {json} Response (Validation Error):
+ * {"message": "Issue validation failed",
+  "name": "ValidationError",
+  "errors": {
+    "description": {
+      "properties": {
+        "type": "required",
+        "message": "Path `{PATH}` is required.",
+        "path": "description"
+      },
+      "message": "Path `description` is required.",
+      "name": "ValidatorError",
+      "kind": "required",
+      "path": "description"
+    }
+  }
+}
  */
 router.post('/', function (req, res, next) {
     var issue = new Issue(req.body);
