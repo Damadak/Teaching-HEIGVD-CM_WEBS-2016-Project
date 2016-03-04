@@ -152,6 +152,23 @@ router.get('/', function (req, res, next) {
 
 
 
+//GET /api/issues/solved
+router.get('/solved', function(req,res,next){
+
+ 
+Issue.find({"status":"solved"},function(err, issues){
+        if (err){
+        res.status(500).send(err);
+        return;
+      }
+      res.(issues);
+    });
+
+
+});
+
+
+
 // GET /api/issues/:id
 router.get('/:id', findIssue, function(req, res, next) {
     res.send(req.issue);
@@ -222,19 +239,7 @@ router.get('/:id/actions', findIssue, function(req, res) {
   res.send(req.issue.actions);
 });
 
-function findIssue(req, res, next) {
-  Issue.findById(req.params.id, function(err, issue) {
-    if (err) {
-      res.status(500).send(err);
-      return;
-    } else if (!issue) {
-      res.status(404).send('Issue not found');
-      return;
-    }
-    req.issue = issue;
-    next();
-  });
-}
+
 
   //POST /api/issues/periodSolved
   router.post('/periodSolved', function (req,res,next){
@@ -274,3 +279,18 @@ function findIssue(req, res, next) {
       res.send(issues);
     });
   });
+
+
+  function findIssue(req, res, next) {
+  Issue.findById(req.params.id, function(err, issue) {
+    if (err) {
+      res.status(500).send(err);
+      return;
+    } else if (!issue) {
+      res.status(404).send('Issue not found');
+      return;
+    }
+    req.issue = issue;
+    next();
+  });
+}

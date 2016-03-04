@@ -3,7 +3,7 @@ router = express.Router(),
 mongoose = require('mongoose'),
 User = mongoose.model('User'),
 Issue=mongoose.model('Issue'),
-_=require("underscore");
+_=require("underscore"), util = require('util');
 
 module.exports = function (app) {
   app.use('/api/users', router);
@@ -42,7 +42,10 @@ router.get('/', function (req, res, next) {
   });
 });
 
-router.get('/what', function (req, res, next){
+
+
+
+router.get('/mostIssues', function (req, res, next){
   countIssues(function(err, issueCounts){
 
     var usersIds=[];
@@ -196,6 +199,7 @@ function countIssues(callback){
     }
   });
 }
+
 
 /**
  * @api {post} /users Get all the Users
