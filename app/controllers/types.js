@@ -59,11 +59,16 @@ function findType(req, res, next) {
 
 // GET /api/types/:id
 router.get('/:id', findType, function(req, res, next) {
-    if (err){
-      res.status(500).send(err);
-      return;
-    }
+  
     res.send(req.type);
+});
+
+//GET /api/types/id/issues
+router.get('/:id/issues', findType, function(req, res, next){
+  Type.find({"type":req.params.id},function(err, issues){
+    res.send(issues);
+  });
+
 });
 
 
@@ -83,6 +88,8 @@ router.patch('/:id',findType, function(req, res, next) {
     });
 
 });
+
+
 
 
 // DELETE /api/types/:id

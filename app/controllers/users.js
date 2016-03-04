@@ -1,11 +1,11 @@
 var express = require('express'),
-  router = express.Router(),
-  mongoose = require('mongoose'),
-  User = mongoose.model('User'),
-  Issue=mongoose.model('Issue'),
-  _=require("underscore");
+router = express.Router(),
+mongoose = require('mongoose'),
+User = mongoose.model('User'),
+Issue=mongoose.model('Issue'),
+_=require("underscore");
 
-  module.exports = function (app) {
+module.exports = function (app) {
   app.use('/api/users', router);
 };
 
@@ -31,6 +31,73 @@ var express = require('express'),
 
 */
 
+// GET /api/users
+router.get('/', function (req, res, next) {
+  User.find(function(err, users) {
+    if (err){
+      res.status(500).send(err);
+      return;
+    }
+    res.send(users);
+  });
+});
+
+router.get('/what', function (req, res, next){
+  countIssues(function(err, issueCounts){
+
+    var usersIds=[];
+    for(var i=0;i <issueCounts.length; i++){
+      usersIds.push(issueCounts[i]._id);
+    }
+
+    var criteria={
+      _id:{$in:usersIds}
+    };
+
+    User.find(function(err, users){
+
+      var responseBody=[];
+      for(var i=0; i<issueCounts.length; i++){
+
+        var result=getUser(issueCounts[i]._id, users).toJSON();
+        result.numberOfIssues=issueCounts[i].total;
+
+        responseBody.push(result);
+      }
+      res.send(responseBody);
+      console.log("bon");
+    });
+
+  });
+  /**
+
+      // Extract the IDs of the publishers into an array.
+    var mostIds = [];
+    for (var i = 0; i < responseBody.length; i++) {
+      responseBody.push(mostIds[i]._id);
+    }
+    res.send(mostIds);
+**/
+});
+
+
+
+// GET /api/users/:id
+router.get('/:id', findUser, function(req, res, next) {
+  res.send(req.user);
+});
+
+//GET /api/users/id/issues
+router.get('/:id/issues', findUser, function(req, res, next){
+  Issue.find({"author":req.params.id},function(err, issues){
+    res.send(issues);
+  });
+
+});
+
+
+
+
 /**
  * @api {post} /users Create a user
  * @apiName CreateUser
@@ -38,7 +105,7 @@ var express = require('express'),
  *
  * @apiSuccess {String} age Age of the person.
  */
-router.post('/', function (req, res, next) {
+ router.post('/', function (req, res, next) {
 
   var user = new User(req.body);
   var now = new Date();
@@ -53,16 +120,43 @@ router.post('/', function (req, res, next) {
   });
 });
 
-// GET /api/users
-router.get('/', function (req, res, next) {
-  User.find(function(err, users) {
-    if (err){
-      res.status(500).send(err);
-      return;
+
+
+ function getUser(id, users) {
+  for (var i = 0; i < users.length; i++) {
+    if (users[i]._id.toString() == id) {
+      return users[i];
     }
-    res.send(users);
+  }
+
+  return null;
+}
+
+
+
+function countIssues(callback){
+  Issue.aggregate([
+  {
+    $group:{
+      _id:'$author',
+      total:{$sum:1}
+    }
+  },
+  {
+    $sort:{total:-1}
+  }
+  ], function(err, issueCounts){
+    if(err){
+      callback(err);
+    }else{
+      callback(undefined, issueCounts);
+    }
   });
-});
+}
+
+
+
+
 
 function findUser(req, res, next) {
   User.findById(req.params.id, function(err, user) {
@@ -78,18 +172,12 @@ function findUser(req, res, next) {
   });
 }
 
-// GET /api/users/:id
-router.get('/:id', findUser, function(req, res, next) {
-    res.send(req.user);
-});
 
-//GET /api/users/id/issues
-router.get('/:id/issues', findUser, function(req, res, next){
-  Issue.find({"author":req.params.id},function(err, issues){
-    res.send(issues);
-  });
 
-});
+
+
+
+
 
 //GET /api/users
 
@@ -124,16 +212,16 @@ router.patch('/:id', findUser, function(req, res, next) {
     req.user.adresse = _.extend(adresse, req.body.adresse);
   }
 
-    var now = new Date();
-    req.user.updatedAt = now;
+  var now = new Date();
+  req.user.updatedAt = now;
 
-    req.user.save(function(err, updatedUser){
-      if (err) {
-        res.status(500).send(err);
-        return;
-      }
-      res.send(updatedUser);
-    });
+  req.user.save(function(err, updatedUser){
+    if (err) {
+      res.status(500).send(err);
+      return;
+    }
+    res.send(updatedUser);
+  });
 
 });
 
