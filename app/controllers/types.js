@@ -254,10 +254,7 @@ router.patch('/:id',findType, function(req, res, next) {
 });
 
 
-<<<<<<< HEAD
 
-
-=======
 /**
  * @api {delete} /types Delete a specific Type
  * @apiVersion 0.0.0
@@ -280,7 +277,6 @@ router.patch('/:id',findType, function(req, res, next) {
  *       "error": "NoAccessRight"
  *     }
  */
->>>>>>> 7c0bf5945f2708e682d83696337ad6469cc55918
 // DELETE /api/types/:id
 router.delete('/:id', findType, function(req, res, next) {
   Type.remove({_id: req.type}, function(err, data) {

@@ -150,7 +150,13 @@ router.get('/', function (req, res, next) {
 
 });
 
+//GET /api/types/id/issues
+router.get('/date', function(req, res, next){
+  Issue.find({"createdAt":req.params.id},function(err, issues){
+    res.send(issues);
+  });
 
+});
 
 
 

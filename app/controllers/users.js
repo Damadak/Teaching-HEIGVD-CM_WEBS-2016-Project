@@ -69,15 +69,7 @@ router.get('/what', function (req, res, next){
     });
 
   });
-  /**
 
-      // Extract the IDs of the publishers into an array.
-    var mostIds = [];
-    for (var i = 0; i < responseBody.length; i++) {
-      responseBody.push(mostIds[i]._id);
-    }
-    res.send(mostIds);
-**/
 });
 
 
@@ -155,12 +147,8 @@ router.get('/:id/issues', findUser, function(req, res, next){
  *       "error": "NoAccessRight"
  *     }
  */
-<<<<<<< HEAD
- router.post('/', function (req, res, next) {
 
-=======
 router.post('/', function (req, res, next) {
->>>>>>> 7c0bf5945f2708e682d83696337ad6469cc55918
   var user = new User(req.body);
   var now = new Date();
   user.createdAt = now;
@@ -174,7 +162,7 @@ router.post('/', function (req, res, next) {
   });
 });
 
-<<<<<<< HEAD
+
 
 
  function getUser(id, users) {
@@ -205,7 +193,10 @@ function countIssues(callback){
       callback(err);
     }else{
       callback(undefined, issueCounts);
-=======
+    }
+  });
+}
+
 /**
  * @api {post} /users Get all the Users
  * @apiVersion 0.0.0
@@ -262,10 +253,9 @@ router.get('/', function (req, res, next) {
     if (err){
       res.status(500).send(err);
       return;
->>>>>>> 7c0bf5945f2708e682d83696337ad6469cc55918
     }
   });
-}
+});
 
 
 
@@ -300,6 +290,8 @@ router.get('/', function (req, res, next) {
  * @apiError Error404   The server has an unexpected error
  *
  */
+
+
 function findUser(req, res, next) {
   User.findById(req.params.id, function(err, user) {
     if (err) {
@@ -314,9 +306,7 @@ function findUser(req, res, next) {
   });
 }
 
-<<<<<<< HEAD
 
-=======
 /**
  * @api {get} /users Find a specific User
  * @apiVersion 0.0.0
@@ -422,15 +412,17 @@ router.get('/:id', findUser, function(req, res, next) {
  * @apiError NotFound  The user doesn't exist
  *
  */
+
 //GET /api/users/id/issues
+/**
 router.get('/:id/issues', findUser, function(req, res, next){
   Issue.find({"author":req.params.id},function(err, issues){
     res.send(issues);
   });
->>>>>>> 7c0bf5945f2708e682d83696337ad6469cc55918
 
 
 
+**/
 
 
 
