@@ -112,7 +112,7 @@ module.exports = function (app) {
  */
 router.post('/', function (req, res, next) {
     var issue = new Issue(req.body);
-    var now = new Date();
+    var now = new Date().toISOString().replace('T', ' ').substr(0, 19);
     issue.createdAt = now;
     issue.status = "created";
 
@@ -128,7 +128,7 @@ router.post('/', function (req, res, next) {
 
 
 /**
- * @api {get} /issues Get the Issues near the georgraphic coordinates
+ * @api {get} /issues?longitude=valuelatitude=value&distance=value Get the Issues near the georgraphic coordinates
  * @apiVersion 0.0.0
  * @apiName GetIssuesByCoordinates
  * @apiGroup Issue
@@ -305,25 +305,195 @@ router.get('/', function (req, res, next) {
 
 });
 
-
+/*
 //GET /api/types/id/issues
 router.get('/date', function(req, res, next){
   Issue.find({"createdAt":req.params.id},function(err, issues){
     res.send(issues);
   });
+*/
 
+
+/**
+ * @api {get} /issues/solved Get all the solved Issues
+ * @apiVersion 0.0.0
+ * @apiName GetSolvedIssues
+ * @apiGroup Issue
+ *
+ * @apiDescription This allow to get all the solved issues
+ *
+ * @apiExample Example usage:
+ * http://localhost/api/issues/solved
+ *
+ * @apiSuccess {Schema.Types.ObjectId}   author            The Author-Id who create the Issue
+ * @apiSuccess {Schema.Types.ObjectId} type     The Type-Id of the Issue
+ * @apiSuccess {Schema.Types.ObjectId[]}   tags       The Tag-Id related to the Issue
+ * @apiSuccess {String}   description   The description of the Issue
+ * @apiSuccess {String}   location The type of the geographic coordinates
+ * @apiSuccess {Number[]} location.coordinates       The geographic coordinates of the Issue
+ * @apiSuccess {String}   status  The status of the Issue
+ * @apiSuccess {[]}   actions The actions done on the Issue
+ * @apiSuccess {String}   actions.type The type of the action (Comment or Status Change)
+ * @apiSuccess {Schema.Types.ObjectId}   actions.author The Author-Id of the action
+ * @apiSuccess {Date}   actions.date The date of the action
+ * @apiSuccess {String}   actions.status The new status of the issue (only if its a Status Change)
+ * @apiSuccess {String}   actions.content The content of the comment (only if its a Comment)
+ * @apiSuccess {Date}   createdAt The date of creation of the issue
+ *
+ * @apiSuccessExample Success-Response:
+ *[{
+    "__v": 0,
+    "status": "created",
+    "createdAt": "2016-03-04T13:13:12.038Z",
+    "author": "56cef06ac636642c090819e9",
+    "type": "56d00c958b514ca41df60499",
+    "description": "Test test",
+    "imgUrl": "img/photo.jpg",
+    "_id": "56d989e834b00920244c2bbb",
+    "actions": [],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        46.78067,
+        6.647367
+      ]
+    },
+    "tags": [
+      "56cece584a9f5ac80f820b68"
+    ]
+  }]
+ *
+ *
+ * @apiError Error404   The server has an unexpected error
+ *
+ */
+//GET /api/issues/solved
+router.get('/solved', function(req,res,next){
+Issue.find({"status":"solved"},function(err, issues){
+        if (err){
+        res.status(500).send(err);
+        return;
+      }
+      res.send(issues);
+    });
 });
 
 
 
+/**
+ * @api {get} /issues/:id Find a specific Issues
+ * @apiVersion 0.0.0
+ * @apiName GetIssue
+ * @apiGroup Issue
+ *
+ * @apiDescription This allow to get a specific Issue with its Id
+ *
+ * @apiExample Example usage:
+ * http://localhost/api/issues/56d989e834b00920244c2bbb
+ *
+ * @apiSuccess {Schema.Types.ObjectId}   author            The Author-Id who create the Issue
+ * @apiSuccess {Schema.Types.ObjectId} type     The Type-Id of the Issue
+ * @apiSuccess {Schema.Types.ObjectId[]}   tags       The Tag-Id related to the Issue
+ * @apiSuccess {String}   description   The description of the Issue
+ * @apiSuccess {String}   location The type of the geographic coordinates
+ * @apiSuccess {Number[]} location.coordinates       The geographic coordinates of the Issue
+ * @apiSuccess {String}   status  The status of the Issue
+ * @apiSuccess {[]}   actions The actions done on the Issue
+ * @apiSuccess {String}   actions.type The type of the action (Comment or Status Change)
+ * @apiSuccess {Schema.Types.ObjectId}   actions.author The Author-Id of the action
+ * @apiSuccess {Date}   actions.date The date of the action
+ * @apiSuccess {String}   actions.status The new status of the issue (only if its a Status Change)
+ * @apiSuccess {String}   actions.content The content of the comment (only if its a Comment)
+ * @apiSuccess {Date}   createdAt The date of creation of the issue
+ *
+ * @apiSuccessExample Success-Response:
+ *[{
+    "__v": 0,
+    "status": "created",
+    "createdAt": "2016-03-04T13:13:12.038Z",
+    "author": "56cef06ac636642c090819e9",
+    "type": "56d00c958b514ca41df60499",
+    "description": "Test test",
+    "imgUrl": "img/photo.jpg",
+    "_id": "56d989e834b00920244c2bbb",
+    "actions": [],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        46.78067,
+        6.647367
+      ]
+    },
+    "tags": [
+      "56cece584a9f5ac80f820b68"
+    ]
+  }]
+ *
+ *
+ * @apiError IssueNotFound Not found the Issue
+ * @apiError Error404   The server has an unexpected error
 
+ */
 // GET /api/issues/:id
 router.get('/:id', findIssue, function(req, res, next) {
     res.send(req.issue);
   });
 
 
-
+  /**
+   * @api {patch} /issues/:id Update a Issue
+   * @apiVersion 0.0.0
+   * @apiName UpdateIssue
+   * @apiGroup Issue
+   *
+   * @apiDescription This allow to update a specific Issue with its Id
+   *
+   * @apiExample Example usage:
+   * http://localhost/api/issues/56d989e834b00920244c2bbb
+   *
+   * @apiSuccess {Schema.Types.ObjectId}   author            The Author-Id who create the Issue
+   * @apiSuccess {Schema.Types.ObjectId} type     The Type-Id of the Issue
+   * @apiSuccess {Schema.Types.ObjectId[]}   tags       The Tag-Id related to the Issue
+   * @apiSuccess {String}   description   The description of the Issue
+   * @apiSuccess {String}   location The type of the geographic coordinates
+   * @apiSuccess {Number[]} location.coordinates       The geographic coordinates of the Issue
+   * @apiSuccess {String}   status  The status of the Issue
+   * @apiSuccess {[]}   actions The actions done on the Issue
+   * @apiSuccess {String}   actions.type The type of the action (Comment or Status Change)
+   * @apiSuccess {Schema.Types.ObjectId}   actions.author The Author-Id of the action
+   * @apiSuccess {Date}   actions.date The date of the action
+   * @apiSuccess {String}   actions.status The new status of the issue (only if its a Status Change)
+   * @apiSuccess {String}   actions.content The content of the comment (only if its a Comment)
+   * @apiSuccess {Date}   createdAt The date of creation of the issue
+   *
+   * @apiSuccessExample Success-Response:
+   *[{
+      "__v": 0,
+      "status": "created",
+      "createdAt": "2016-03-04T13:13:12.038Z",
+      "author": "56cef06ac636642c090819e9",
+      "type": "56d00c958b514ca41df60499",
+      "description": "Test test",
+      "imgUrl": "img/photo.jpg",
+      "_id": "56d989e834b00920244c2bbb",
+      "actions": [],
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          46.78067,
+          6.647367
+        ]
+      },
+      "tags": [
+        "56cece584a9f5ac80f820b68"
+      ]
+    }]
+   *
+   *
+   * @apiError IssueNotFound Not found the Issue
+   * @apiError Error404   The server has an unexpected error
+   *
+   */
 // PATCH /api/issues/:id
 router.patch('/:id', findIssue, function(req, res, next) {
   var actions = _.clone(req.issue.actions);
@@ -345,6 +515,21 @@ router.patch('/:id', findIssue, function(req, res, next) {
 });
 
 
+/**
+ * @api {delete} /issues/:id Delete a Issue
+ * @apiVersion 0.0.0
+ * @apiName DeleteIssue
+ * @apiGroup Issue
+ *
+ * @apiDescription This allow to delete a specific Issue with its Id
+ *
+ * @apiExample Example usage:
+ * http://localhost/api/issues/56d989e834b00920244c2bbb
+ *
+ * @apiError IssueNotFound Not found the Issue
+ * @apiError Error404   The server has an unexpected error
+ *
+ */
 // DELETE /api/issues/:id
 router.delete('/:id', findIssue, function(req, res, next) {
   Issue.remove({_id: req.issue}, function(err, data) {
@@ -358,11 +543,74 @@ router.delete('/:id', findIssue, function(req, res, next) {
 
 });
 
+/**
+ * @api {post} /issues/:id/actions Create an Action on a Issue
+ * @apiVersion 0.0.0
+ * @apiName CreateActionIssue
+ * @apiGroup Issue
+ *
+ * @apiDescription This allow to create an Action (Status Change or Comment) to an Issue
+ *
+ * @apiExample Example usage:
+ * http://localhost/api/issues/56d989e834b00920244c2bbb/actions
+ *
+ * @apiSuccess {Schema.Types.ObjectId}   author            The Author-Id who create the Issue
+ * @apiSuccess {Schema.Types.ObjectId} type     The Type-Id of the Issue
+ * @apiSuccess {Schema.Types.ObjectId[]}   tags       The Tag-Id related to the Issue
+ * @apiSuccess {String}   description   The description of the Issue
+ * @apiSuccess {String}   location The type of the geographic coordinates
+ * @apiSuccess {Number[]} location.coordinates       The geographic coordinates of the Issue
+ * @apiSuccess {String}   status  The status of the Issue
+ * @apiSuccess {[]}   actions The actions done on the Issue
+ * @apiSuccess {String}   actions.type The type of the action (Comment or Status Change)
+ * @apiSuccess {Schema.Types.ObjectId}   actions.author The Author-Id of the action
+ * @apiSuccess {Date}   actions.date The date of the action
+ * @apiSuccess {String}   actions.status The new status of the issue (only if its a Status Change)
+ * @apiSuccess {String}   actions.content The content of the comment (only if its a Comment)
+ * @apiSuccess {Date}   createdAt The date of creation of the issue
+ *
+ * @apiSuccessExample Success-Response:
+ *[{
+    "__v": 0,
+    "status": "created",
+    "createdAt": "2016-03-04T13:13:12.038Z",
+    "author": "56cef06ac636642c090819e9",
+    "type": "56d00c958b514ca41df60499",
+    "description": "Test test",
+    "imgUrl": "img/photo.jpg",
+    "_id": "56d989e834b00920244c2bbb",
+    "actions": [],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        46.78067,
+        6.647367
+      ]
+    },
+    "tags": [
+      "56cece584a9f5ac80f820b68"
+    ]
+  }]
+ *
+ *
+ * @apiError IssueNotFound Not found the Issue
+ * @apiError UnexpectedToken The issue has some parameters with uncorrect type
+ * @apiError ValidationError There are missing parameters
+ * @apiError Error404   The server has an unexpected error
+ *
+ */
 // POST /api/issues/:id/actions
 router.post('/:id/actions', findIssue, function(req, res) {
-  console.log(req.body);
-  console.log(req.issue);
-
+  //console.log(req.body);
+  //console.log(req.issue);
+ var issueChange=req.issue;
+ var action = req.body.type;
+ var status = req.body.status;
+ //console.log(issueChange);
+ //console.log(action);
+if(action=="Status change"){
+    issueChange.status=status;
+}
   req.issue.actions.push(req.body);
 
   req.issue.save(function(err, updatedIssue) {
@@ -375,10 +623,107 @@ router.post('/:id/actions', findIssue, function(req, res) {
   });
 });
 
+
+/**
+ * @api {get} /issues/:id/actions Get all the actions of an Issue
+ * @apiVersion 0.0.0
+ * @apiName GetActionIssue
+ * @apiGroup Issue
+ *
+ * @apiDescription This allow to get all Actions (Status Change or Comment) of an Issue
+ *
+ * @apiExample Example usage:
+ * http://localhost/api/issues/56d989e834b00920244c2bbb/actions
+ *
+ * @apiSuccess {Schema.Types.ObjectId}   author            The Author-Id who create the Issue
+ * @apiSuccess {Schema.Types.ObjectId} type     The Type-Id of the Issue
+ * @apiSuccess {Schema.Types.ObjectId[]}   tags       The Tag-Id related to the Issue
+ * @apiSuccess {String}   description   The description of the Issue
+ * @apiSuccess {String}   location The type of the geographic coordinates
+ * @apiSuccess {Number[]} location.coordinates       The geographic coordinates of the Issue
+ * @apiSuccess {String}   status  The status of the Issue
+ * @apiSuccess {[]}   actions The actions done on the Issue
+ * @apiSuccess {String}   actions.type The type of the action (Comment or Status Change)
+ * @apiSuccess {Schema.Types.ObjectId}   actions.author The Author-Id of the action
+ * @apiSuccess {Date}   actions.date The date of the action
+ * @apiSuccess {String}   actions.status The new status of the issue (only if its a Status Change)
+ * @apiSuccess {String}   actions.content The content of the comment (only if its a Comment)
+ * @apiSuccess {Date}   createdAt The date of creation of the issue
+ *
+ * @apiSuccessExample Success-Response:
+ *[{
+    "__v": 0,
+    "status": "created",
+    "createdAt": "2016-03-04T13:13:12.038Z",
+    "author": "56cef06ac636642c090819e9",
+    "type": "56d00c958b514ca41df60499",
+    "description": "Test test",
+    "imgUrl": "img/photo.jpg",
+    "_id": "56d989e834b00920244c2bbb",
+    "actions": [],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        46.78067,
+        6.647367
+      ]
+    },
+    "tags": [
+      "56cece584a9f5ac80f820b68"
+    ]
+  }]
+ *
+ *
+ * @apiError IssueNotFound Not found the Issue
+ * @apiError Error404   The server has an unexpected error
+ *
+ */
 // GET /api/issues/:id/actions
 router.get('/:id/actions', findIssue, function(req, res) {
   res.send(req.issue.actions);
 });
+
+
+
+//POST /api/issues/periodSolved
+router.post('/periodSolved', function (req,res,next){
+  var status = req.body.status;
+  var startDate = new Date(req.body.startDate);
+  var endDate = new Date(req.body.endDate);
+
+  console.log(status);
+  console.log(startDate);
+  console.log(endDate);
+
+  Issue.find({'status':status, "createdAt": {'$gte': startDate, '$lt': endDate}}, function(err, issues){
+    if (err){
+      res.status(500).send(err);
+      return;
+    }
+    res.send(issues);
+  });
+});
+
+
+  //POST /api/issues/period
+  router.post('/period', function (req,res,next){
+
+    var startDate = new Date(req.body.startDate);
+    var endDate = new Date(req.body.endDate);
+
+    console.log(status);
+    console.log(startDate);
+    console.log(endDate);
+
+    Issue.find({ "createdAt": {'$gte': startDate, '$lt': endDate}}, function(err, issues){
+      if (err){
+        res.status(500).send(err);
+        return;
+      }
+      res.send(issues);
+    });
+  });
+
 
 function findIssue(req, res, next) {
   Issue.findById(req.params.id, function(err, issue) {

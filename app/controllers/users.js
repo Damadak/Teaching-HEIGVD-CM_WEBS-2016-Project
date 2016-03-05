@@ -3,7 +3,7 @@ router = express.Router(),
 mongoose = require('mongoose'),
 User = mongoose.model('User'),
 Issue=mongoose.model('Issue'),
-_=require("underscore");
+_=require("underscore"), util = require('util');
 
 module.exports = function (app) {
   app.use('/api/users', router);
@@ -42,7 +42,10 @@ router.get('/', function (req, res, next) {
   });
 });
 
-router.get('/what', function (req, res, next){
+
+
+
+router.get('/mostIssues', function (req, res, next){
   countIssues(function(err, issueCounts){
 
     var usersIds=[];
@@ -197,8 +200,9 @@ function countIssues(callback){
   });
 }
 
+
 /**
- * @api {post} /users Get all the Users
+ * @api {get} /users Get all the Users
  * @apiVersion 0.0.0
  * @apiName GetUsers
  * @apiGroup User
@@ -308,7 +312,7 @@ function findUser(req, res, next) {
 
 
 /**
- * @api {get} /users Find a specific User
+ * @api {get} /users/:id Find a specific User
  * @apiVersion 0.0.0
  * @apiName FindUser
  * @apiGroup User
@@ -373,7 +377,7 @@ router.get('/:id', findUser, function(req, res, next) {
 });
 
 /**
- * @api {post} /users Get all the issues posted by a user
+ * @api {get} /users Get all the issues posted by a user
  * @apiVersion 0.0.0
  * @apiName GetUserIssues
  * @apiGroup User
@@ -430,7 +434,7 @@ router.get('/:id/issues', findUser, function(req, res, next){
 
 
 /**
- * @api {patch} /users Update a User
+ * @api {patch} /users/:id Update a User
  * @apiVersion 0.0.0
  * @apiName UpdateUser
  * @apiGroup User
@@ -529,7 +533,7 @@ router.patch('/:id', findUser, function(req, res, next) {
 });
 
 /**
- * @api {patch} /users Delete a User
+ * @api {delete} /users/:id Delete a User
  * @apiVersion 0.0.0
  * @apiName DeleteUser
  * @apiGroup User

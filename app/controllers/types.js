@@ -128,7 +128,7 @@ router.get('/', function (req, res, next) {
 });
 
 /**
- * @api {get} /types Verify the Type exists
+ * @api {function} /types/:id Verify the Type exists
  * @apiVersion 0.0.0
  * @apiName VerifyType
  * @apiGroup Type
@@ -159,7 +159,7 @@ function findType(req, res, next) {
 }
 
 /**
- * @api {get} /types Find a Type
+ * @api {get} /types/:id Find a Type
  * @apiVersion 0.0.0
  * @apiName GetType
  * @apiGroup Type
@@ -191,10 +191,63 @@ function findType(req, res, next) {
  */
 // GET /api/types/:id
 router.get('/:id', findType, function(req, res, next) {
-  
     res.send(req.type);
 });
 
+
+/**
+ * @api {get} /types/:id/issues Get all the issues with the id type
+ * @apiVersion 0.0.0
+ * @apiName GetIssuesType
+ * @apiGroup Type
+ *
+ * @apiDescription This allow to find all the Issues with the Id Type sended
+*
+ * @apiExample Example usage:
+ * http://localhost/types/56cece584a9f5ac80f820b68/issues
+ *
+ * @apiSuccess {Schema.Types.ObjectId}   author            The Author-Id who create the Issue
+ * @apiSuccess {Schema.Types.ObjectId} type     The Type-Id of the Issue
+ * @apiSuccess {Schema.Types.ObjectId[]}   tags       The Tag-Id related to the Issue
+ * @apiSuccess {String}   description   The description of the Issue
+ * @apiSuccess {String}   location The type of the geographic coordinates
+ * @apiSuccess {Number[]} location.coordinates       The geographic coordinates of the Issue
+ * @apiSuccess {String}   status  The status of the Issue
+ * @apiSuccess {[]}   actions The actions done on the Issue
+ * @apiSuccess {String}   actions.type The type of the action (Comment or Status Change)
+ * @apiSuccess {Schema.Types.ObjectId}   actions.author The Author-Id of the action
+ * @apiSuccess {Date}   actions.date The date of the action
+ * @apiSuccess {String}   actions.status The new status of the issue (only if its a Status Change)
+ * @apiSuccess {String}   actions.content The content of the comment (only if its a Comment)
+ * @apiSuccess {Date}   createdAt The date of creation of the issue
+ *
+ * @apiSuccessExample Success-Response:
+ *{
+  "__v": 0,
+  "status": "created",
+  "createdAt": "2016-03-04T13:13:12.038Z",
+  "author": "56cef06ac636642c090819e9",
+  "type": "56d00c958b514ca41df60499",
+  "description": "Test test",
+  "imgUrl": "img/photo.jpg",
+  "_id": "56d989e834b00920244c2bbb",
+  "actions": [],
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      46.78067,
+      6.647367
+    ]
+  },
+  "tags": [
+    "56cece584a9f5ac80f820b68"
+  ]
+}
+ *
+ * @apiError Error404   The server has an unexpected error
+ * @apiError NotFound   Type not found
+ *
+ */
 //GET /api/types/id/issues
 router.get('/:id/issues', findType, function(req, res, next){
   Type.find({"type":req.params.id},function(err, issues){
@@ -205,7 +258,7 @@ router.get('/:id/issues', findType, function(req, res, next){
 
 
 /**
- * @api {patch} /types Update a Type
+ * @api {patch} /types/:id Update a Type
  * @apiVersion 0.0.0
  * @apiName UpdateType
  * @apiGroup Type
@@ -256,7 +309,7 @@ router.patch('/:id',findType, function(req, res, next) {
 
 
 /**
- * @api {delete} /types Delete a specific Type
+ * @api {delete} /types/:id Delete a specific Type
  * @apiVersion 0.0.0
  * @apiName DeleteType
  * @apiGroup Type
