@@ -43,7 +43,7 @@ module.exports = function (app) {
  * @apiDescription This allow to create an issue with the right parameters
  *
  * @apiExample Example usage:
- * http://localhost/users
+ * http://localhost/issues
  *
  * @apiSuccess {Schema.Types.ObjectId}   author            The Author-Id who create the Issue
  * @apiSuccess {Schema.Types.ObjectId} type     The Type-Id of the Issue
@@ -59,6 +59,29 @@ module.exports = function (app) {
  * @apiSuccess {String}   actions.status The new status of the issue (only if its a Status Change)
  * @apiSuccess {String}   actions.content The content of the comment (only if its a Comment)
  * @apiSuccess {Date}   createdAt The date of creation of the issue
+ *
+ * @apiSuccessExample Success-Response:
+ *{
+  "__v": 0,
+  "status": "created",
+  "createdAt": "2016-03-04T13:13:12.038Z",
+  "author": "56cef06ac636642c090819e9",
+  "type": "56d00c958b514ca41df60499",
+  "description": "Test test",
+  "imgUrl": "img/photo.jpg",
+  "_id": "56d989e834b00920244c2bbb",
+  "actions": [],
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      46.78067,
+      6.647367
+    ]
+  },
+  "tags": [
+    "56cece584a9f5ac80f820b68"
+  ]
+}
  *
  * @apiError UnexpectedToken The issue has some parameters with uncorrect type
  * @apiError ValidationError There are missing parameters
@@ -103,7 +126,61 @@ router.post('/', function (req, res, next) {
     });
 });
 
-// http://localhost:3001/api/issues?longitude=46.778744&latitude=6.657598&distance=10000000
+
+/**
+ * @api {get} /issues Get the Issues near the georgraphic coordinates
+ * @apiVersion 0.0.0
+ * @apiName GetIssuesByCoordinates
+ * @apiGroup Issue
+ *
+ * @apiDescription This allow to search the near Issues with geographic coordinates
+ *
+ * @apiExample Example usage:
+ * http://localhost:3001/api/issues?longitude=46.778744&latitude=6.657598&distance=10000000
+ *
+ * @apiSuccess {Schema.Types.ObjectId}   author            The Author-Id who create the Issue
+ * @apiSuccess {Schema.Types.ObjectId} type     The Type-Id of the Issue
+ * @apiSuccess {Schema.Types.ObjectId[]}   tags       The Tag-Id related to the Issue
+ * @apiSuccess {String}   description   The description of the Issue
+ * @apiSuccess {String}   location The type of the geographic coordinates
+ * @apiSuccess {Number[]} location.coordinates       The geographic coordinates of the Issue
+ * @apiSuccess {String}   status  The status of the Issue
+ * @apiSuccess {[]}   actions The actions done on the Issue
+ * @apiSuccess {String}   actions.type The type of the action (Comment or Status Change)
+ * @apiSuccess {Schema.Types.ObjectId}   actions.author The Author-Id of the action
+ * @apiSuccess {Date}   actions.date The date of the action
+ * @apiSuccess {String}   actions.status The new status of the issue (only if its a Status Change)
+ * @apiSuccess {String}   actions.content The content of the comment (only if its a Comment)
+ * @apiSuccess {Date}   createdAt The date of creation of the issue
+ *
+ * @apiSuccessExample Success-Response:
+ *{
+  "__v": 0,
+  "status": "created",
+  "createdAt": "2016-03-04T13:13:12.038Z",
+  "author": "56cef06ac636642c090819e9",
+  "type": "56d00c958b514ca41df60499",
+  "description": "Test test",
+  "imgUrl": "img/photo.jpg",
+  "_id": "56d989e834b00920244c2bbb",
+  "actions": [],
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      46.78067,
+      6.647367
+    ]
+  },
+  "tags": [
+    "56cece584a9f5ac80f820b68"
+  ]
+}
+ *
+ *
+ * @apiError Error404   The server has an unexpected error
+ *
+ */
+//
 router.get('/', function(req, res, next) {
   var criteria = {};
   var latitude = req.query.latitude,
@@ -138,6 +215,84 @@ router.get('/', function(req, res, next) {
   });
 });
 
+/**
+ * @api {get} /issues Get all the Issues
+ * @apiVersion 0.0.0
+ * @apiName GetIssues
+ * @apiGroup Issue
+ *
+ * @apiDescription This allow to get all the issues
+ *
+ * @apiExample Example usage:
+ * http://localhost/api/issues
+ *
+ * @apiSuccess {Schema.Types.ObjectId}   author            The Author-Id who create the Issue
+ * @apiSuccess {Schema.Types.ObjectId} type     The Type-Id of the Issue
+ * @apiSuccess {Schema.Types.ObjectId[]}   tags       The Tag-Id related to the Issue
+ * @apiSuccess {String}   description   The description of the Issue
+ * @apiSuccess {String}   location The type of the geographic coordinates
+ * @apiSuccess {Number[]} location.coordinates       The geographic coordinates of the Issue
+ * @apiSuccess {String}   status  The status of the Issue
+ * @apiSuccess {[]}   actions The actions done on the Issue
+ * @apiSuccess {String}   actions.type The type of the action (Comment or Status Change)
+ * @apiSuccess {Schema.Types.ObjectId}   actions.author The Author-Id of the action
+ * @apiSuccess {Date}   actions.date The date of the action
+ * @apiSuccess {String}   actions.status The new status of the issue (only if its a Status Change)
+ * @apiSuccess {String}   actions.content The content of the comment (only if its a Comment)
+ * @apiSuccess {Date}   createdAt The date of creation of the issue
+ *
+ * @apiSuccessExample Success-Response:
+ *[{
+    "__v": 0,
+    "status": "created",
+    "createdAt": "2016-03-04T13:13:12.038Z",
+    "author": "56cef06ac636642c090819e9",
+    "type": "56d00c958b514ca41df60499",
+    "description": "Test test",
+    "imgUrl": "img/photo.jpg",
+    "_id": "56d989e834b00920244c2bbb",
+    "actions": [],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        46.78067,
+        6.647367
+      ]
+    },
+    "tags": [
+      "56cece584a9f5ac80f820b68"
+    ]
+  }]
+ *
+ *
+ * @apiError UnexpectedToken The issue has some parameters with uncorrect type
+ * @apiError ValidationError There are missing parameters
+ * @apiError Error404   The server has an unexpected error
+ *
+ * @apiErrorExample Response (Unexpected Token):
+ *    <h1>Unexpected token j</h1>
+      <h2>400</h2>
+      <pre>SyntaxError: Unexpected token j
+ *
+ * @apiErrorExample {json} Response (Validation Error):
+ * {"message": "Issue validation failed",
+  "name": "ValidationError",
+  "errors": {
+    "description": {
+      "properties": {
+        "type": "required",
+        "message": "Path `{PATH}` is required.",
+        "path": "description"
+      },
+      "message": "Path `description` is required.",
+      "name": "ValidatorError",
+      "kind": "required",
+      "path": "description"
+    }
+  }
+}
+*
+ */
 // GET /api/issues
 router.get('/', function (req, res, next) {
   Issue.find(function(err, issues) {
@@ -149,6 +304,7 @@ router.get('/', function (req, res, next) {
   });
 
 });
+
 
 //GET /api/types/id/issues
 router.get('/date', function(req, res, next){
