@@ -19,7 +19,17 @@ To install the database MongoDb, download here https://www.mongodb.org/ and foll
 ## Modules
 After you've installed Node.js and MongoDb, you need to install modules.
 
-Yo express
+### Yeoman
+```
+npm install -g npm
+npm install -g bower grunt-cli yo
+
+```
+###Express
+```
+npm install -g generator-express
+
+```
 Grunt
 
 ## Run the project
@@ -38,3 +48,24 @@ cd /c/
 "C:/YourPath/MongoDB/Server/3.2/bin/mongo.exe"
 
 ```
+
+### Run the Node.js
+
+```
+cd "YourPathToTheProject"
+grunt
+
+```
+
+Oder
+
+```
+cd "YourPathToTheProject"
+npm start
+
+```
+
+## API Documentation
+You can find the Api documentation in public/apidoc with all the routes
+
+It will appear at launch of the project : http://localhost:3000 (for exemple)
