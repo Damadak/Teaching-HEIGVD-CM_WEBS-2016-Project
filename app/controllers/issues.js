@@ -7,33 +7,6 @@ var express = require('express'),
 module.exports = function (app) {
   app.use('/api/issues', router);
 };
-/*
-"author": "",
-"date": "",
-"type":"",
-"tags":[
-  ""
-],
-"description":"",
-"coordinates": {
-  "x":"",
-  "y":""
-},
-"status": "",
-"actions": [
-  {
-    "type": "",
-    "author": "",
-    "date": "",
-    "status": "",
-    "content": ""
-  }
-],
-
-"assignedTo": "",
-"imgUrl": ""
-*/
-
 /**
  * @api {post} /issues Create an Issue
  * @apiVersion 0.0.0
@@ -43,7 +16,33 @@ module.exports = function (app) {
  * @apiDescription This allow to create an issue with the right parameters
  *
  * @apiExample Example usage:
- * http://localhost/issues
+ * Post in JSOn
+ {
+ "author": "",
+ "date": "",
+ "type":"",
+ "tags":[
+   ""
+ ],
+ "description":"",
+ "coordinates": {
+   "x":"",
+   "y":""
+ },
+ "status": "",
+ "actions": [
+   {
+     "type": "",
+     "author": "",
+     "date": "",
+     "status": "",
+     "content": ""
+   }
+ ],
+
+ "assignedTo": "",
+ "imgUrl": ""
+}
  *
  * @apiSuccess {Schema.Types.ObjectId}   author            The Author-Id who create the Issue
  * @apiSuccess {Schema.Types.ObjectId} type     The Type-Id of the Issue
@@ -83,8 +82,8 @@ module.exports = function (app) {
   ]
 }
  *
- * @apiError UnexpectedToken The issue has some parameters with uncorrect type
- * @apiError ValidationError There are missing parameters
+ * @apiError UnexpectedToken The issue has some parameters with unexpected token
+ * @apiError ValidationError There are missing parameters or uncorrect types
  * @apiError Error404   The server has an unexpected error
  *
  * @apiErrorExample Response (Unexpected Token):
@@ -176,7 +175,6 @@ router.post('/', function (req, res, next) {
   ]
 }
  *
- *
  * @apiError Error404   The server has an unexpected error
  *
  */
@@ -265,7 +263,7 @@ router.get('/', function(req, res, next) {
   }]
  *
  *
- * @apiError UnexpectedToken The issue has some parameters with uncorrect type
+ * @apiError UnexpectedToken The issue has some parameters with unexpected token
  * @apiError ValidationError There are missing parameters
  * @apiError Error404   The server has an unexpected error
  *
@@ -594,7 +592,7 @@ router.delete('/:id', findIssue, function(req, res, next) {
  *
  *
  * @apiError IssueNotFound Not found the Issue
- * @apiError UnexpectedToken The issue has some parameters with uncorrect type
+ * @apiError UnexpectedToken The issue has some parameters with unexpected token
  * @apiError ValidationError There are missing parameters
  * @apiError Error404   The server has an unexpected error
  *
@@ -684,9 +682,66 @@ router.get('/:id/actions', findIssue, function(req, res) {
 });
 
 
-
+/**
+ * @api {post} /issues/getIssuesBetweenDatesWIthStatus Get solved Issues in a period of two dates
+ * @apiVersion 0.0.0
+ * @apiName getIssuesBetweenDatesWIthStatus
+ * @apiGroup Issue
+ *
+ * @apiDescription This allow to get all the solved Issues in a period of two dates. You can change solved by all other types of status
+ *
+ * @apiExample Example usage:
+ * Post JSOn
+ {
+ "status":"solved",
+ "startDate":"2015-12-12",
+ "endDate":"2016-12-12"
+ }
+ *
+ * @apiSuccess {Schema.Types.ObjectId}   author            The Author-Id who create the Issue
+ * @apiSuccess {Schema.Types.ObjectId} type     The Type-Id of the Issue
+ * @apiSuccess {Schema.Types.ObjectId[]}   tags       The Tag-Id related to the Issue
+ * @apiSuccess {String}   description   The description of the Issue
+ * @apiSuccess {String}   location The type of the geographic coordinates
+ * @apiSuccess {Number[]} location.coordinates       The geographic coordinates of the Issue
+ * @apiSuccess {String}   status  The status of the Issue
+ * @apiSuccess {[]}   actions The actions done on the Issue
+ * @apiSuccess {String}   actions.type The type of the action (Comment or Status Change)
+ * @apiSuccess {Schema.Types.ObjectId}   actions.author The Author-Id of the action
+ * @apiSuccess {Date}   actions.date The date of the action
+ * @apiSuccess {String}   actions.status The new status of the issue (only if its a Status Change)
+ * @apiSuccess {String}   actions.content The content of the comment (only if its a Comment)
+ * @apiSuccess {Date}   createdAt The date of creation of the issue
+ *
+ * @apiSuccessExample Success-Response:
+ *[{
+    "__v": 0,
+    "status": "created",
+    "createdAt": "2016-03-04T13:13:12.038Z",
+    "author": "56cef06ac636642c090819e9",
+    "type": "56d00c958b514ca41df60499",
+    "description": "Test test",
+    "imgUrl": "img/photo.jpg",
+    "_id": "56d989e834b00920244c2bbb",
+    "actions": [],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        46.78067,
+        6.647367
+      ]
+    },
+    "tags": [
+      "56cece584a9f5ac80f820b68"
+    ]
+  }]
+ *
+ *
+ * @apiError Error404   The server has an unexpected error
+ *
+ */
 //POST /api/issues/periodSolved
-router.post('/periodSolved', function (req,res,next){
+router.post('/getIssuesBetweenDatesWIthStatus', function (req,res,next){
   var status = req.body.status;
   var startDate = new Date(req.body.startDate);
   var endDate = new Date(req.body.endDate);
@@ -705,25 +760,113 @@ router.post('/periodSolved', function (req,res,next){
 });
 
 
-  //POST /api/issues/period
-  router.post('/period', function (req,res,next){
+/**
+ * @api {post} /issues/getIssuesBetweenDates Get Issues in a period
+ * @apiVersion 0.0.0
+ * @apiName GetIssuesBetweenDates
+ * @apiGroup Issue
+ *
+ * @apiDescription This allow to get all the Issues in a period of two dates
+ *
+ * @apiExample Example usage:
+ * Post JSOn
+ {
+ "startDate":"2015-12-12",
+ "endDate":"2016-12-12"
+}
+ *
+ * @apiSuccess {Schema.Types.ObjectId}   author            The Author-Id who create the Issue
+ * @apiSuccess {Schema.Types.ObjectId} type     The Type-Id of the Issue
+ * @apiSuccess {Schema.Types.ObjectId[]}   tags       The Tag-Id related to the Issue
+ * @apiSuccess {String}   description   The description of the Issue
+ * @apiSuccess {String}   location The type of the geographic coordinates
+ * @apiSuccess {Number[]} location.coordinates       The geographic coordinates of the Issue
+ * @apiSuccess {String}   status  The status of the Issue
+ * @apiSuccess {[]}   actions The actions done on the Issue
+ * @apiSuccess {String}   actions.type The type of the action (Comment or Status Change)
+ * @apiSuccess {Schema.Types.ObjectId}   actions.author The Author-Id of the action
+ * @apiSuccess {Date}   actions.date The date of the action
+ * @apiSuccess {String}   actions.status The new status of the issue (only if its a Status Change)
+ * @apiSuccess {String}   actions.content The content of the comment (only if its a Comment)
+ * @apiSuccess {Date}   createdAt The date of creation of the issue
+ *
+ * @apiSuccessExample Success-Response:
+ *[{
+    "__v": 0,
+    "status": "created",
+    "createdAt": "2016-03-04T13:13:12.038Z",
+    "author": "56cef06ac636642c090819e9",
+    "type": "56d00c958b514ca41df60499",
+    "description": "Test test",
+    "imgUrl": "img/photo.jpg",
+    "_id": "56d989e834b00920244c2bbb",
+    "actions": [],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        46.78067,
+        6.647367
+      ]
+    },
+    "tags": [
+      "56cece584a9f5ac80f820b68"
+    ]
+  }]
+ *
+ *
+ * @apiError Error404   The server has an unexpected error
+ *
+ */
+//POST /api/issues/period
+router.post('/getIssuesBetweenDates', function (req,res,next){
 
-    var startDate = new Date(req.body.startDate);
-    var endDate = new Date(req.body.endDate);
+  var startDate = new Date(req.body.startDate);
+  var endDate = new Date(req.body.endDate);
 
-    console.log(status);
-    console.log(startDate);
-    console.log(endDate);
+  console.log(status);
+  console.log(startDate);
+  console.log(endDate);
 
-    Issue.find({ "createdAt": {'$gte': startDate, '$lt': endDate}}, function(err, issues){
-      if (err){
-        res.status(500).send(err);
-        return;
-      }
-      res.send(issues);
-    });
+  Issue.find({ "createdAt": {'$gte': startDate, '$lt': endDate}}, function(err, issues){
+    if (err){
+      res.status(500).send(err);
+      return;
+    }
+    res.send(issues);
   });
+});
 
+
+/**
+ * @api {function} /issues Verify the Issue exists
+ * @apiVersion 0.0.0
+ * @apiName VerifyIssue
+ * @apiGroup Issue
+ *
+ * @apiDescription This allow to test if the issue sended is on the server. This function is used in all the routes who need a issue verification
+ *
+ * @apiExample Example usage:
+ * http://localhost/tags/56cece584a9f5ac80f820b68
+ *
+ * @apiSuccess {Schema.Types.ObjectId}   author            The Author-Id who create the Issue
+ * @apiSuccess {Schema.Types.ObjectId} type     The Type-Id of the Issue
+ * @apiSuccess {Schema.Types.ObjectId[]}   tags       The Tag-Id related to the Issue
+ * @apiSuccess {String}   description   The description of the Issue
+ * @apiSuccess {String}   location The type of the geographic coordinates
+ * @apiSuccess {Number[]} location.coordinates       The geographic coordinates of the Issue
+ * @apiSuccess {String}   status  The status of the Issue
+ * @apiSuccess {[]}   actions The actions done on the Issue
+ * @apiSuccess {String}   actions.type The type of the action (Comment or Status Change)
+ * @apiSuccess {Schema.Types.ObjectId}   actions.author The Author-Id of the action
+ * @apiSuccess {Date}   actions.date The date of the action
+ * @apiSuccess {String}   actions.status The new status of the issue (only if its a Status Change)
+ * @apiSuccess {String}   actions.content The content of the comment (only if its a Comment)
+ * @apiSuccess {Date}   createdAt The date of creation of the issue
+ *
+ * @apiError Error404  The server has an unexpected error
+ * @apiError IssueNotFound  The Issue not found
+ *
+ */
 
 function findIssue(req, res, next) {
   Issue.findById(req.params.id, function(err, issue) {

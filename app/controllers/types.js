@@ -35,7 +35,7 @@ module.exports = function (app) {
     }
  *
  *
- * @apiError UnexpectedToken The type has some parameters with uncorrect type
+ * @apiError UnexpectedToken The type has some parameters with unexpected token
  * @apiError ValidationError There are missing parameters
  * @apiError Error404   The server has an unexpected error
  *

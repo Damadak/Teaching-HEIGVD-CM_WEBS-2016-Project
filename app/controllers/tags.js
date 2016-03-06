@@ -26,7 +26,7 @@ module.exports = function (app) {
           "__v": 0
         }
  *
- *
+ * @apiError UnexpectedToken The type has some parameters with unexpected token
  * @apiError ValidationError The keyword(s) doesn't have the correct type or is required
  * @apiError Error404   The server has an unexpected error
  *
@@ -125,7 +125,7 @@ router.get('/', function (req, res, next) {
  * @apiSuccess {Date}   createdAt The date of the creation of the tag
  *
  * @apiError Error404  The server has an unexpected error
- * @apiError NotFound  The tag not found
+ * @apiError TagNotFound  The tag not found
  *
  */
 function findTag(req, res, next) {
@@ -166,7 +166,7 @@ function findTag(req, res, next) {
     }
  *
  * @apiError Error404  The server has an unexpected error
- * @apiError NotFound  The tag doesn't exist
+ * @apiError TagNotFound  The tag doesn't exist
  *
  */
 // GET /api/tags/:id
@@ -198,7 +198,7 @@ router.get('/:id', findTag, function(req, res, next) {
 
  *
  * @apiError Error404  The server has an unexpected error
- * @apiError NotFound  The tag doesn't exist
+ * @apiError TagNotFound  The tag doesn't exist
  * @apiError ValidationError  You have send wrong parameters or send a wrong type of data
  */
 // PATCH /api/tags/:id
@@ -228,10 +228,10 @@ router.patch('/:id', findTag, function(req, res, next) {
  * @apiExample Example usage:
  * http://localhost/tags/56cece584a9f5ac80f820b68
  *
- * @apiSuccess {204} 204 
+ * @apiSuccess {204} 204
  *
  * @apiError Error404  The server has an unexpected error
- * @apiError NotFound  The tag doesn't exist
+ * @apiError TagNotFound  The tag doesn't exist
  */
 // DELETE /api/tags/:id
 router.delete('/:id', findTag, function(req, res, next) {

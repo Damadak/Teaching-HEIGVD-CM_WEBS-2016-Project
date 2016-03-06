@@ -9,28 +9,55 @@ module.exports = function (app) {
   app.use('/api/users', router);
 };
 
-/*
-{
-  "name": "",
-  "lastName": "",
-  "email": "",
-  "userName": "",
-  "password": "",
-  "phoneNumber": "",
-  "adresse": {
-    "street": "",
-    "number": "",
-    "postal": "",
-    "country": ""
-  },
-  "role": {
-    "citizen": "",
-    "staff": ""
+/**
+  * @api {get} /users Get all the Users
+  * @apiVersion 0.0.0
+  * @apiName GetUsers
+  * @apiGroup User
+  *
+  * @apiDescription This allow to get all the existed users on the server
+  *
+  * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the user
+  * @apiSuccess {String}   name   The name of the user
+  * @apiSuccess {String}   lastname   The lastname of the user
+  * @apiSuccess {String}   email   The email of the user
+  * @apiSuccess {String}   username   The username of the user
+  * @apiSuccess {String}   password   The password of the user
+  * @apiSuccess {Date}   createdAt The date of the creation of the user
+  * @apiSuccess {Number}   phoneNumber   The phone number of the user
+  * @apiSuccess {String}   adresse.street   The street of the user
+  * @apiSuccess {Number}   adresse.number   The number street of the user
+  * @apiSuccess {Number}   adresse.postal   The postal code of the user
+  * @apiSuccess {String}   adresse.country   The country of the user
+  * @apiSuccess {Boolean}   role.citizen   If the user is a citizen
+  * @apiSuccess {Boolean}   role.staff   If the user is a staff
+  *
+  * @apiSuccessExample Success-Response:
+  *     {
+   "__v": 0,
+   "createdAt": "2016-03-03T19:27:06.372Z",
+   "name": "Tab",
+   "lastName": "H",
+   "email": "test@gmail.com",
+   "userName": "Tabata",
+   "password": "123456",
+   "phoneNumber": 22456789,
+   "_id": "56d8900a05bd2b841f89139f",
+   "role": {
+     "citizen": true,
+     "staff": false
+   },
+   "adresse": {
+     "street": "Route",
+     "number": 38,
+     "postal": 1258,
+     "country": "Suisse"
+   }
   }
-}
-
-*/
-
+  *
+  * @apiError Error404   The server has an unexpected error
+  *
+  */
 // GET /api/users
 router.get('/', function (req, res, next) {
   User.find(function(err, users) {
@@ -42,9 +69,55 @@ router.get('/', function (req, res, next) {
   });
 });
 
-
-
-
+/**
+ * @api {get} /users Get the Users with the most Issues
+ * @apiVersion 0.0.0
+ * @apiName GetMostIssuesUsers
+ * @apiGroup User
+ *
+ * @apiDescription This allow to filter the users by the number of issues posted
+ *
+ * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the user
+ * @apiSuccess {String}   name   The name of the user
+ * @apiSuccess {String}   lastname   The lastname of the user
+ * @apiSuccess {String}   email   The email of the user
+ * @apiSuccess {String}   username   The username of the user
+ * @apiSuccess {String}   password   The password of the user
+ * @apiSuccess {Date}   createdAt The date of the creation of the user
+ * @apiSuccess {Number}   phoneNumber   The phone number of the user
+ * @apiSuccess {String}   adresse.street   The street of the user
+ * @apiSuccess {Number}   adresse.number   The number street of the user
+ * @apiSuccess {Number}   adresse.postal   The postal code of the user
+ * @apiSuccess {String}   adresse.country   The country of the user
+ * @apiSuccess {Boolean}   role.citizen   If the user is a citizen
+ * @apiSuccess {Boolean}   role.staff   If the user is a staff
+ *
+ * @apiSuccessExample Success-Response:
+ *     [{
+  "__v": 0,
+  "createdAt": "2016-03-03T19:27:06.372Z",
+  "name": "Tab",
+  "lastName": "H",
+  "email": "test@gmail.com",
+  "userName": "Tabata",
+  "password": "123456",
+  "phoneNumber": 22456789,
+  "_id": "56d8900a05bd2b841f89139f",
+  "role": {
+    "citizen": true,
+    "staff": false
+  },
+  "adresse": {
+    "street": "Route",
+    "number": 38,
+    "postal": 1258,
+    "country": "Suisse"
+  }
+}]
+ *
+ * @apiError Error404   The server has an unexpected error
+ *
+ */
 router.get('/mostIssues', function (req, res, next){
   countIssues(function(err, issueCounts){
 
@@ -73,307 +146,6 @@ router.get('/mostIssues', function (req, res, next){
 
   });
 
-});
-
-
-
-// GET /api/users/:id
-router.get('/:id', findUser, function(req, res, next) {
-  res.send(req.user);
-});
-
-//GET /api/users/id/issues
-router.get('/:id/issues', findUser, function(req, res, next){
-  Issue.find({"author":req.params.id},function(err, issues){
-    res.send(issues);
-  });
-
-});
-
-
-
-
-/**
- * @api {post} /users Create a User
- * @apiVersion 0.0.0
- * @apiName CreateUser
- * @apiGroup User
- *
- * @apiDescription This allow to create a user with the right parameters
- *
- *
- * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the user
- * @apiSuccess {String}   name   The name of the user
- * @apiSuccess {String}   lastname   The lastname of the user
- * @apiSuccess {String}   email   The email of the user
- * @apiSuccess {String}   username   The username of the user
- * @apiSuccess {String}   password   The password of the user
- * @apiSuccess {Date}   createdAt The date of the creation of the user
- * @apiSuccess {Number}   phoneNumber   The phone number of the user
- * @apiSuccess {String}   adresse.street   The street of the user
- * @apiSuccess {Number}   adresse.number   The number street of the user
- * @apiSuccess {Number}   adresse.postal   The postal code of the user
- * @apiSuccess {String}   adresse.country   The country of the user
- * @apiSuccess {Boolean}   role.citizen   If the user is a citizen
- * @apiSuccess {Boolean}   role.staff   If the user is a staff
- *
- * @apiSuccessExample Success-Response:
- *     {
-  "__v": 0,
-  "createdAt": "2016-03-03T19:27:06.372Z",
-  "name": "Tab",
-  "lastName": "H",
-  "email": "test@gmail.com",
-  "userName": "Tabata",
-  "password": "123456",
-  "phoneNumber": 22456789,
-  "_id": "56d8900a05bd2b841f89139f",
-  "role": {
-    "citizen": true,
-    "staff": false
-  },
-  "adresse": {
-    "street": "Route",
-    "number": 38,
-    "postal": 1258,
-    "country": "Suisse"
-  }
-}
- *
- *
- * @apiError ValidationError The parameters don't have the correct type or there are missing required parameters
- * @apiError Error404   The server has an unexpected error
- *
- * @apiErrorExample Response (example):
- *     HTTP/1.1 401 Not Authenticated
- *     {
- *       "error": "NoAccessRight"
- *     }
- */
-
-router.post('/', function (req, res, next) {
-  var user = new User(req.body);
-  var now = new Date();
-  user.createdAt = now;
-
-  user.save(function (err, createdUser) {
-    if (err) {
-      res.status(500).send(err);
-      return;
-    }
-    res.send(createdUser);
-  });
-});
-
-
-
-
- function getUser(id, users) {
-  for (var i = 0; i < users.length; i++) {
-    if (users[i]._id.toString() == id) {
-      return users[i];
-    }
-  }
-
-  return null;
-}
-
-
-
-function countIssues(callback){
-  Issue.aggregate([
-  {
-    $group:{
-      _id:'$author',
-      total:{$sum:1}
-    }
-  },
-  {
-    $sort:{total:-1}
-  }
-  ], function(err, issueCounts){
-    if(err){
-      callback(err);
-    }else{
-      callback(undefined, issueCounts);
-    }
-  });
-}
-
-
-/**
- * @api {get} /users Get all the Users
- * @apiVersion 0.0.0
- * @apiName GetUsers
- * @apiGroup User
- *
- * @apiDescription This allow to get all the existed users on the server
- *
- * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the user
- * @apiSuccess {String}   name   The name of the user
- * @apiSuccess {String}   lastname   The lastname of the user
- * @apiSuccess {String}   email   The email of the user
- * @apiSuccess {String}   username   The username of the user
- * @apiSuccess {String}   password   The password of the user
- * @apiSuccess {Date}   createdAt The date of the creation of the user
- * @apiSuccess {Number}   phoneNumber   The phone number of the user
- * @apiSuccess {String}   adresse.street   The street of the user
- * @apiSuccess {Number}   adresse.number   The number street of the user
- * @apiSuccess {Number}   adresse.postal   The postal code of the user
- * @apiSuccess {String}   adresse.country   The country of the user
- * @apiSuccess {Boolean}   role.citizen   If the user is a citizen
- * @apiSuccess {Boolean}   role.staff   If the user is a staff
- *
- * @apiSuccessExample Success-Response:
- *     {
-  "__v": 0,
-  "createdAt": "2016-03-03T19:27:06.372Z",
-  "name": "Tab",
-  "lastName": "H",
-  "email": "test@gmail.com",
-  "userName": "Tabata",
-  "password": "123456",
-  "phoneNumber": 22456789,
-  "_id": "56d8900a05bd2b841f89139f",
-  "role": {
-    "citizen": true,
-    "staff": false
-  },
-  "adresse": {
-    "street": "Route",
-    "number": 38,
-    "postal": 1258,
-    "country": "Suisse"
-  }
- }
- *
- *
- * @apiError Error404   The server has an unexpected error
- *
- */
-// GET /api/users
-router.get('/', function (req, res, next) {
-  User.find(function(err, users) {
-    if (err){
-      res.status(500).send(err);
-      return;
-    }
-  });
-});
-
-
-
-
-
-/**
- * @api {function} /tags Verify the User exists
- * @apiVersion 0.0.0
- * @apiName VerifyUser
- * @apiGroup User
- *
- * @apiDescription This allow to test if the user sended is on the server. This function is used in all the routes who need tag verification
- *
- * @apiExample Example usage:
- * http://localhost/tags/56cece584a9f5ac80f820b68
- *
- * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the user
- * @apiSuccess {String}   name   The name of the user
- * @apiSuccess {String}   lastname   The lastname of the user
- * @apiSuccess {String}   email   The email of the user
- * @apiSuccess {String}   username   The username of the user
- * @apiSuccess {String}   password   The password of the user
- * @apiSuccess {Date}   createdAt The date of the creation of the user
- * @apiSuccess {Number}   phoneNumber   The phone number of the user
- * @apiSuccess {String}   adresse.street   The street of the user
- * @apiSuccess {Number}   adresse.number   The number street of the user
- * @apiSuccess {Number}   adresse.postal   The postal code of the user
- * @apiSuccess {String}   adresse.country   The country of the user
- * @apiSuccess {Boolean}   role.citizen   If the user is a citizen
- * @apiSuccess {Boolean}   role.staff   If the user is a staff
- *
- * @apiError Error404   The server has an unexpected error
- *
- */
-
-
-function findUser(req, res, next) {
-  User.findById(req.params.id, function(err, user) {
-    if (err) {
-      res.status(500).send(err);
-      return;
-    } else if (!user) {
-      res.status(404).send('User not found');
-      return;
-    }
-    req.user = user;
-    next();
-  });
-}
-
-
-/**
- * @api {get} /users/:id Find a specific User
- * @apiVersion 0.0.0
- * @apiName FindUser
- * @apiGroup User
- *
- * @apiDescription This allow to get a specific user with its id
- *
- * @apiExample Example usage:
- * http://localhost/users/56cece584a9f5ac80f820b68
- *
- * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the user
- * @apiSuccess {String}   name   The name of the user
- * @apiSuccess {String}   lastname   The lastname of the user
- * @apiSuccess {String}   email   The email of the user
- * @apiSuccess {String}   username   The username of the user
- * @apiSuccess {String}   password   The password of the user
- * @apiSuccess {Date}   createdAt The date of the creation of the user
- * @apiSuccess {Number}   phoneNumber   The phone number of the user
- * @apiSuccess {String}   adresse.street   The street of the user
- * @apiSuccess {Number}   adresse.number   The number street of the user
- * @apiSuccess {Number}   adresse.postal   The postal code of the user
- * @apiSuccess {String}   adresse.country   The country of the user
- * @apiSuccess {Boolean}   role.citizen   If the user is a citizen
- * @apiSuccess {Boolean}   role.staff   If the user is a staff
- *
- * @apiSuccessExample Success-Response:
- *     {
-  "__v": 0,
-  "createdAt": "2016-03-03T19:27:06.372Z",
-  "name": "Tab",
-  "lastName": "H",
-  "email": "test@gmail.com",
-  "userName": "Tabata",
-  "password": "123456",
-  "phoneNumber": 22456789,
-  "_id": "56d8900a05bd2b841f89139f",
-  "role": {
-    "citizen": true,
-    "staff": false
-  },
-  "adresse": {
-    "street": "Route",
-    "number": 38,
-    "postal": 1258,
-    "country": "Suisse"
-  }
- }
-
- *
- *
- * @apiError Error404   The server has an unexpected error
- * @apiError NotFound  The user doesn't exist
- *
- * @apiErrorExample Response (example):
- *     HTTP/1.1 401 Not Authenticated
- *     {
- *       "error": "NoAccessRight"
- *     }
- */
-// GET /api/users/:id
-router.get('/:id', findUser, function(req, res, next) {
-    res.send(req.user);
 });
 
 /**
@@ -416,21 +188,230 @@ router.get('/:id', findUser, function(req, res, next) {
  * @apiError NotFound  The user doesn't exist
  *
  */
-
 //GET /api/users/id/issues
-/**
 router.get('/:id/issues', findUser, function(req, res, next){
   Issue.find({"author":req.params.id},function(err, issues){
     res.send(issues);
   });
 
+});
+
+/**
+ * @api {post} /users Create a User
+ * @apiVersion 0.0.0
+ * @apiName CreateUser
+ * @apiGroup User
+ *
+ * @apiDescription This allow to create a user with the right parameters
+ *
+ * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the user
+ * @apiSuccess {String}   name   The name of the user
+ * @apiSuccess {String}   lastname   The lastname of the user
+ * @apiSuccess {String}   email   The email of the user
+ * @apiSuccess {String}   username   The username of the user
+ * @apiSuccess {String}   password   The password of the user
+ * @apiSuccess {Date}   createdAt The date of the creation of the user
+ * @apiSuccess {Number}   phoneNumber   The phone number of the user
+ * @apiSuccess {String}   adresse.street   The street of the user
+ * @apiSuccess {Number}   adresse.number   The number street of the user
+ * @apiSuccess {Number}   adresse.postal   The postal code of the user
+ * @apiSuccess {String}   adresse.country   The country of the user
+ * @apiSuccess {Boolean}   role.citizen   If the user is a citizen
+ * @apiSuccess {Boolean}   role.staff   If the user is a staff
+ *
+ * @apiSuccessExample Success-Response:
+ *     {
+  "__v": 0,
+  "createdAt": "2016-03-03T19:27:06.372Z",
+  "name": "Tab",
+  "lastName": "H",
+  "email": "test@gmail.com",
+  "userName": "Tabata",
+  "password": "123456",
+  "phoneNumber": 22456789,
+  "_id": "56d8900a05bd2b841f89139f",
+  "role": {
+    "citizen": true,
+    "staff": false
+  },
+  "adresse": {
+    "street": "Route",
+    "number": 38,
+    "postal": 1258,
+    "country": "Suisse"
+  }
+}
+ *
+ * @apiError ValidationError The parameters don't have the correct type or there are missing required parameters
+ * @apiError Error404   The server has an unexpected error
+ *
+ */
+router.post('/', function (req, res, next) {
+  var user = new User(req.body);
+  var now = new Date();
+  user.createdAt = now;
+
+  user.save(function (err, createdUser) {
+    if (err) {
+      res.status(500).send(err);
+      return;
+    }
+    res.send(createdUser);
+  });
+});
 
 
-**/
+
+/**
+ * @api {function} /users Create the array to count the number of Issues posted by an User
+ * @apiVersion 0.0.0
+ * @apiName CreateArrayIssuesUser
+ * @apiGroup User
+ *
+ * @apiDescription This allow create the array to count the number of Issues posted by an User
+ *
+ */
+function getUser(id, users) {
+  for (var i = 0; i < users.length; i++) {
+    if (users[i]._id.toString() == id) {
+      return users[i];
+    }
+  }
+
+  return null;
+}
 
 
+/**
+ * @api {function} /users Count the issue of an user
+ * @apiVersion 0.0.0
+ * @apiName CountIssuesUser
+ * @apiGroup User
+ *
+ * @apiDescription This allow to count the issues of an User
+ *
+ */
+function countIssues(callback){
+  Issue.aggregate([
+  {
+    $group:{
+      _id:'$author',
+      total:{$sum:1}
+    }
+  },
+  {
+    $sort:{total:-1}
+  }
+  ], function(err, issueCounts){
+    if(err){
+      callback(err);
+    }else{
+      callback(undefined, issueCounts);
+    }
+  });
+}
 
-//GET /api/users
+/**
+ * @api {function} /tags Verify the User exists
+ * @apiVersion 0.0.0
+ * @apiName VerifyUser
+ * @apiGroup User
+ *
+ * @apiDescription This allow to test if the user sended is on the server. This function is used in all the routes who need tag verification
+ *
+ * @apiExample Example usage:
+ * http://localhost/tags/56cece584a9f5ac80f820b68
+ *
+ * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the user
+ * @apiSuccess {String}   name   The name of the user
+ * @apiSuccess {String}   lastname   The lastname of the user
+ * @apiSuccess {String}   email   The email of the user
+ * @apiSuccess {String}   username   The username of the user
+ * @apiSuccess {String}   password   The password of the user
+ * @apiSuccess {Date}   createdAt The date of the creation of the user
+ * @apiSuccess {Number}   phoneNumber   The phone number of the user
+ * @apiSuccess {String}   adresse.street   The street of the user
+ * @apiSuccess {Number}   adresse.number   The number street of the user
+ * @apiSuccess {Number}   adresse.postal   The postal code of the user
+ * @apiSuccess {String}   adresse.country   The country of the user
+ * @apiSuccess {Boolean}   role.citizen   If the user is a citizen
+ * @apiSuccess {Boolean}   role.staff   If the user is a staff
+ *
+ * @apiError Error404   The server has an unexpected error
+ *
+ */
+function findUser(req, res, next) {
+  User.findById(req.params.id, function(err, user) {
+    if (err) {
+      res.status(500).send(err);
+      return;
+    } else if (!user) {
+      res.status(404).send('User not found');
+      return;
+    }
+    req.user = user;
+    next();
+  });
+}
+
+  /**
+   * @api {get} /users/:id Find a specific User
+   * @apiVersion 0.0.0
+   * @apiName FindUser
+   * @apiGroup User
+   *
+   * @apiDescription This allow to get a specific user with its id
+   *
+   * @apiExample Example usage:
+   * http://localhost/users/56cece584a9f5ac80f820b68
+   *
+   * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the user
+   * @apiSuccess {String}   name   The name of the user
+   * @apiSuccess {String}   lastname   The lastname of the user
+   * @apiSuccess {String}   email   The email of the user
+   * @apiSuccess {String}   username   The username of the user
+   * @apiSuccess {String}   password   The password of the user
+   * @apiSuccess {Date}   createdAt The date of the creation of the user
+   * @apiSuccess {Number}   phoneNumber   The phone number of the user
+   * @apiSuccess {String}   adresse.street   The street of the user
+   * @apiSuccess {Number}   adresse.number   The number street of the user
+   * @apiSuccess {Number}   adresse.postal   The postal code of the user
+   * @apiSuccess {String}   adresse.country   The country of the user
+   * @apiSuccess {Boolean}   role.citizen   If the user is a citizen
+   * @apiSuccess {Boolean}   role.staff   If the user is a staff
+   *
+   * @apiSuccessExample Success-Response:
+   *     {
+    "__v": 0,
+    "createdAt": "2016-03-03T19:27:06.372Z",
+    "name": "Tab",
+    "lastName": "H",
+    "email": "test@gmail.com",
+    "userName": "Tabata",
+    "password": "123456",
+    "phoneNumber": 22456789,
+    "_id": "56d8900a05bd2b841f89139f",
+    "role": {
+      "citizen": true,
+      "staff": false
+    },
+    "adresse": {
+      "street": "Route",
+      "number": 38,
+      "postal": 1258,
+      "country": "Suisse"
+    }
+   }
+   *
+   *
+   * @apiError Error404   The server has an unexpected error
+   * @apiError NotFound  The user doesn't exist
+   *
+   */
+// GET /api/users/:id
+router.get('/:id', findUser, function(req, res, next) {
+    res.send(req.user);
+});
 
 
 /**
