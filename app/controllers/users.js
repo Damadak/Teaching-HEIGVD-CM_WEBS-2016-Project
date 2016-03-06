@@ -60,6 +60,7 @@ module.exports = function (app) {
   */
 // GET /api/users
 router.get('/', function (req, res, next) {
+
   User.find(function(err, users) {
     if (err){
       res.status(500).send(err);
@@ -68,6 +69,42 @@ router.get('/', function (req, res, next) {
     res.send(users);
   });
 });
+
+
+
+router.get('/youpi', function (req, res, next){
+
+
+var oups;
+Issue.find({'actions.status':"solved"},{'actions.$': 1}, function(err, person) {
+      if (err){
+      res.status(500).send(err);
+      return;
+    }
+   
+    oups=person;
+    console.log(oups);
+
+     });
+
+});
+
+
+
+
+
+
+/**
+Issue.find({ 'actions.status': "solved" }, function(err, issues.actions){
+    if(err){
+      res.status(500).send(err);
+      return;
+    }
+    res.send(issues.actions);
+ 
+});
+**/
+
 
 /**
  * @api {get} /users Get the Users with the most Issues
@@ -119,7 +156,38 @@ router.get('/', function (req, res, next) {
  *
  */
 router.get('/mostIssues', function (req, res, next){
-  countIssues(function(err, issueCounts){
+  countAuthorIssues(function(err, issueCounts){
+
+    var usersIds=[];
+    for(var i=0;i <issueCounts.length; i++){
+      usersIds.push(issueCounts[i]._id);
+    }
+
+    var criteria={
+      _id:{$in:usersIds}
+    };
+
+    User.find(function(err, users){
+
+      var responseBody=[];
+      for(var i=0; i<issueCounts.length; i++){
+
+        var result=getUser(issueCounts[i]._id, users).toJSON();
+        result.numberOfIssues=issueCounts[i].total;
+
+        responseBody.push(result);
+      }
+      res.send(responseBody);
+      console.log("bon");
+    });
+
+  });
+
+});
+
+
+router.get('/mostIssuesSolved', function (req, res, next){
+  countIssuesSolvedByAuthor(function(err, issueCounts){
 
     var usersIds=[];
     for(var i=0;i <issueCounts.length; i++){
@@ -291,7 +359,7 @@ function getUser(id, users) {
  * @apiDescription This allow to count the issues of an User
  *
  */
-function countIssues(callback){
+function countAuthorIssues(callback){
   Issue.aggregate([
   {
     $group:{
@@ -307,8 +375,54 @@ function countIssues(callback){
       callback(err);
     }else{
       callback(undefined, issueCounts);
+      console.log("coucou");
+
     }
   });
+}
+
+
+
+function countIssuesSolvedByAuthor(callback){
+
+var oups;
+Issue.find({'actions.status':"solved"},{'actions.$': 1}, function(err, person) {
+      if (err){
+      res.status(500).send(err);
+      return;
+    }
+   
+    oups=person;
+    console.log(oups);
+
+     
+
+
+  oups.aggregate([
+  {
+
+  
+    $group:{
+      _id:'$author',
+      total:{$sum:1}
+
+    }
+  },
+  {
+    $sort:{total:-1}
+  }
+  ], function(err, issueCounts){
+    if(err){
+      callback(err);
+    }else{
+      callback(undefined, issueCounts);
+       console.log(issueCounts);
+       console.log("coucou");
+    }
+  });
+}
+);
+
 }
 
 /**

@@ -742,11 +742,10 @@ router.get('/:id/actions', findIssue, function(req, res) {
  */
 //POST /api/issues/periodSolved
 router.post('/getIssuesBetweenDatesWIthStatus', function (req,res,next){
-  var status = req.body.status;
+
   var startDate = new Date(req.body.startDate);
   var endDate = new Date(req.body.endDate);
 
-  console.log(status);
   console.log(startDate);
   console.log(endDate);
 
@@ -758,6 +757,28 @@ router.post('/getIssuesBetweenDatesWIthStatus', function (req,res,next){
     res.send(issues);
   });
 });
+
+
+
+//POST /api/issues/periodSolved
+router.post('/getIssuesUnsolvedBetweenDates', function (req,res,next){
+  var status = req.body.status;
+  var startDate = new Date(req.body.startDate);
+  var endDate = new Date(req.body.endDate);
+
+  console.log(status);
+  console.log(startDate);
+  console.log(endDate);
+
+  Issue.find({'status':{$ne:"solved"}, "createdAt": {'$gte': startDate, '$lt': endDate}}, function(err, issues){
+    if (err){
+      res.status(500).send(err);
+      return;
+    }
+    res.send(issues);
+  });
+});
+
 
 
 /**
