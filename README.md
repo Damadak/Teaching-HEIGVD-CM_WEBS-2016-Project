@@ -87,8 +87,7 @@ GET/POST /users
 GET/PATCH/DELETE /users/:id
 GET /users/:id/issues
 GET /users/mostIssuesCreatedByUser
-GET /users/mostIssuesCreatedByAuthor
-GET /users/mostIssuesSolvedByAuthor
+GET /users/mostIssuesSolvedByUser
 GET /users/leastIssuesAssignedTo
 ```
 
@@ -103,7 +102,15 @@ GET/PATCH/DELETE /tags:id
 GET/POST /types
 GET/PATCH/DELETE /types/:id
 GET /types/:id/issues
+Populate request available : GET /types?embed=author
 ```
+
+## JSOn resquest you can send
+
+### User
+### Issue
+### Type
+### Tag
 
 ## Project available on Heroku
 http://dry-everglades-13589.herokuapp.com

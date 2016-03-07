@@ -87,6 +87,9 @@ router.post('/', function (req, res, next) {
  *
  * @apiDescription This allow to get all the Types found on the server
  *
+ * @apiExample Populate request available
+ * http://localhost/api/types?embed=author
+ *
  * @apiSuccess {Schema.Types.ObjectId}   author   The id of the author of the type
  * @apiSuccess {String}   name   The name of the type
  * @apiSuccess {String}   description   The description of the type

@@ -82,13 +82,14 @@ Issue.find({ 'actions.status': "solved" }, function(err, issues.actions){
 **/
 
 
+
 /**
  * @api {get} /users/mostIssuesCreatedByUser Get the Users with the most Issues
  * @apiVersion 0.0.0
  * @apiName GetMostIssuesUsers
  * @apiGroup User
  *
- * @apiDescription This allow to filter the users by the number of issues posted
+ * @apiDescription This allow to filter the users by the number of the most issues posted
  *
  * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the user
  * @apiSuccess {String}   name   The name of the user
@@ -131,87 +132,8 @@ Issue.find({ 'actions.status': "solved" }, function(err, issues.actions){
  * @apiError Error404   The server has an unexpected error
  *
  */
-router.get('/mostIssuesCreatedByUser', function (req, res, next){
-  countAuthorIssues(function(err, issueCounts){
-
-    var usersIds=[];
-    for(var i=0;i <issueCounts.length; i++){
-      usersIds.push(issueCounts[i]._id);
-    }
-
-    var criteria={
-      _id:{$in:usersIds}
-    };
-
-    User.find(function(err, users){
-
-      var responseBody=[];
-      for(var i=0; i<issueCounts.length; i++){
-
-        var result=getUser(issueCounts[i]._id, users).toJSON();
-        result.numberOfIssues=issueCounts[i].total;
-
-        responseBody.push(result);
-      }
-      res.send(responseBody);
-      console.log("bon");
-    });
-
-  });
-
-});
-
-/**
- * @api {get} /users/mostIssuesCreatedByAuthor Get the Users with the most Issues
- * @apiVersion 0.0.0
- * @apiName GetMostIssuesUsers
- * @apiGroup User
- *
- * @apiDescription This allow to filter the users by the number of issues posted
- *
- * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the user
- * @apiSuccess {String}   name   The name of the user
- * @apiSuccess {String}   lastname   The lastname of the user
- * @apiSuccess {String}   email   The email of the user
- * @apiSuccess {String}   username   The username of the user
- * @apiSuccess {String}   password   The password of the user
- * @apiSuccess {Date}   createdAt The date of the creation of the user
- * @apiSuccess {Number}   phoneNumber   The phone number of the user
- * @apiSuccess {String}   adresse.street   The street of the user
- * @apiSuccess {Number}   adresse.number   The number street of the user
- * @apiSuccess {Number}   adresse.postal   The postal code of the user
- * @apiSuccess {String}   adresse.country   The country of the user
- * @apiSuccess {Boolean}   role.citizen   If the user is a citizen
- * @apiSuccess {Boolean}   role.staff   If the user is a staff
- *
- * @apiSuccessExample Success-Response:
- *     [{
-  "__v": 0,
-  "createdAt": "2016-03-03T19:27:06.372Z",
-  "name": "Tab",
-  "lastName": "H",
-  "email": "test@gmail.com",
-  "userName": "Tabata",
-  "password": "123456",
-  "phoneNumber": 22456789,
-  "_id": "56d8900a05bd2b841f89139f",
-  "role": {
-    "citizen": true,
-    "staff": false
-  },
-  "adresse": {
-    "street": "Route",
-    "number": 38,
-    "postal": 1258,
-    "country": "Suisse"
-  }
-}]
- *
- * @apiError Error404   The server has an unexpected error
- *
- */
-//get /api/users/mostIssuesCreatedByAuthor
-router.get('/mostIssuesCreatedByAuthor', function (req, res, next) {
+//get /api/users/mostIssuesCreatedByUser
+router.get('/mostIssuesCreatedByUser', function (req, res, next) {
   Issue.aggregate([{
     $group: {
       _id: "$author",
@@ -229,12 +151,12 @@ router.get('/mostIssuesCreatedByAuthor', function (req, res, next) {
   });
 
   /**
-   * @api {get} /users/mostIssuesCreatedByAuthor Get the Users with the most Issues
+   * @api {get} /users/mostIssuesSolvedByUser Get the Users with the most Issues solved
    * @apiVersion 0.0.0
-   * @apiName GetMostIssuesUsers
+   * @apiName GetMostIssuesSolvedUsers
    * @apiGroup User
    *
-   * @apiDescription This allow to filter the users by the number of issues posted
+   * @apiDescription This allow to filter the users by the number of issues solved
    *
    * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the user
    * @apiSuccess {String}   name   The name of the user
@@ -277,8 +199,8 @@ router.get('/mostIssuesCreatedByAuthor', function (req, res, next) {
    * @apiError Error404   The server has an unexpected error
    *
    */
-//get /api/users/mostIssuesSolvedByAuthor
-router.get('/mostIssuesSolvedByAuthor', function (req, res, next) {
+//get /api/users/mostIssuesSolvedByUser
+router.get('/mostIssuesSolvedByUser', function (req, res, next) {
   Issue.aggregate([{
     $match: {status: "solved"}},
     {
@@ -301,7 +223,7 @@ router.get('/mostIssuesSolvedByAuthor', function (req, res, next) {
    * @apiName GetMostIssuesUsers
    * @apiGroup User
    *
-   * @apiDescription This allow to filter the users by the number of issues assigned to them
+   * @apiDescription This allow to filter the users who have the least issues
    *
    * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the user
    * @apiSuccess {String}   name   The name of the user
@@ -528,8 +450,6 @@ function countAuthorIssues(callback){
     }
   });
 }
-
-
 
 /**
  * @api {function} /tags Verify the User exists
