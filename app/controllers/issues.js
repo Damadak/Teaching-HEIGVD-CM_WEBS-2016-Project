@@ -178,7 +178,6 @@ router.post('/', function (req, res, next) {
  * @apiError Error404   The server has an unexpected error
  *
  */
-//
 router.get('/', function(req, res, next) {
   var criteria = {};
   var latitude = req.query.latitude,
@@ -681,7 +680,7 @@ router.get('/:id/actions', findIssue, function(req, res) {
 
 
 /**
- * @api {post} /issues/getIssuesBetweenDatesWIthStatus Get solved Issues in a period of two dates
+ * @api {post} /issues/getIssuesBetweenDatesWithStatus Get solved Issues in a period of two dates
  * @apiVersion 0.0.0
  * @apiName getIssuesBetweenDatesWIthStatus
  * @apiGroup Issue
@@ -739,7 +738,7 @@ router.get('/:id/actions', findIssue, function(req, res) {
  *
  */
 //POST /api/issues/periodSolved
-router.post('/getIssuesBetweenDatesWIthStatus', function (req,res,next){
+router.post('/getIssuesBetweenDatesWithStatus', function (req,res,next){
 
   var startDate = new Date(req.body.startDate);
   var endDate = new Date(req.body.endDate);
@@ -863,9 +862,6 @@ router.post('/getIssuesBetweenDates', function (req,res,next){
  * @apiGroup Issue
  *
  * @apiDescription This allow to test if the issue sended is on the server. This function is used in all the routes who need a issue verification
- *
- * @apiExample Example usage:
- * http://localhost/tags/56cece584a9f5ac80f820b68
  *
  * @apiSuccess {Schema.Types.ObjectId}   author            The Author-Id who create the Issue
  * @apiSuccess {Schema.Types.ObjectId} type     The Type-Id of the Issue

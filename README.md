@@ -85,9 +85,11 @@ POST /issues/getIssuesBetweenDates
 ```
 GET/POST /users
 GET/PATCH/DELETE /users/:id
-GET /users/mostIssues
-GET /users/mostIssuesSolved
 GET /users/:id/issues
+GET /users/mostIssuesCreatedByUser
+GET /users/mostIssuesCreatedByAuthor
+GET /users/mostIssuesSolvedByAuthor
+GET /users/leastIssuesAssignedTo
 ```
 
 ### Tag
@@ -104,4 +106,4 @@ GET /types/:id/issues
 ```
 
 ## Project available on Heroku
-http://heroku.com/
+http://dry-everglades-13589.herokuapp.com

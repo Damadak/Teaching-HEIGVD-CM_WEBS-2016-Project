@@ -60,7 +60,6 @@ module.exports = function (app) {
   */
 // GET /api/users
 router.get('/', function (req, res, next) {
-
   User.find(function(err, users) {
     if (err){
       res.status(500).send(err);
@@ -71,16 +70,6 @@ router.get('/', function (req, res, next) {
 });
 
 
-
-
-
-
-
-
-
-
-
-
 /**
 Issue.find({ 'actions.status': "solved" }, function(err, issues.actions){
     if(err){
@@ -88,13 +77,13 @@ Issue.find({ 'actions.status': "solved" }, function(err, issues.actions){
       return;
     }
     res.send(issues.actions);
- 
+
 });
 **/
 
 
 /**
- * @api {get} /users Get the Users with the most Issues
+ * @api {get} /users/mostIssuesCreatedByUser Get the Users with the most Issues
  * @apiVersion 0.0.0
  * @apiName GetMostIssuesUsers
  * @apiGroup User
@@ -172,14 +161,62 @@ router.get('/mostIssuesCreatedByUser', function (req, res, next){
 
 });
 
-
+/**
+ * @api {get} /users/mostIssuesCreatedByAuthor Get the Users with the most Issues
+ * @apiVersion 0.0.0
+ * @apiName GetMostIssuesUsers
+ * @apiGroup User
+ *
+ * @apiDescription This allow to filter the users by the number of issues posted
+ *
+ * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the user
+ * @apiSuccess {String}   name   The name of the user
+ * @apiSuccess {String}   lastname   The lastname of the user
+ * @apiSuccess {String}   email   The email of the user
+ * @apiSuccess {String}   username   The username of the user
+ * @apiSuccess {String}   password   The password of the user
+ * @apiSuccess {Date}   createdAt The date of the creation of the user
+ * @apiSuccess {Number}   phoneNumber   The phone number of the user
+ * @apiSuccess {String}   adresse.street   The street of the user
+ * @apiSuccess {Number}   adresse.number   The number street of the user
+ * @apiSuccess {Number}   adresse.postal   The postal code of the user
+ * @apiSuccess {String}   adresse.country   The country of the user
+ * @apiSuccess {Boolean}   role.citizen   If the user is a citizen
+ * @apiSuccess {Boolean}   role.staff   If the user is a staff
+ *
+ * @apiSuccessExample Success-Response:
+ *     [{
+  "__v": 0,
+  "createdAt": "2016-03-03T19:27:06.372Z",
+  "name": "Tab",
+  "lastName": "H",
+  "email": "test@gmail.com",
+  "userName": "Tabata",
+  "password": "123456",
+  "phoneNumber": 22456789,
+  "_id": "56d8900a05bd2b841f89139f",
+  "role": {
+    "citizen": true,
+    "staff": false
+  },
+  "adresse": {
+    "street": "Route",
+    "number": 38,
+    "postal": 1258,
+    "country": "Suisse"
+  }
+}]
+ *
+ * @apiError Error404   The server has an unexpected error
+ *
+ */
 //get /api/users/mostIssuesCreatedByAuthor
 router.get('/mostIssuesCreatedByAuthor', function (req, res, next) {
   Issue.aggregate([{
     $group: {
       _id: "$author",
       nbIssues:{$sum:1}}},
-      { 
+      {
         $sort : {nbIssues:-1}}],
          function(err, results) {
 
@@ -191,47 +228,144 @@ router.get('/mostIssuesCreatedByAuthor', function (req, res, next) {
     });
   });
 
-
-  //get /api/users/mostIssuesSolvedByAuthor
-  router.get('/mostIssuesSolvedByAuthor', function (req, res, next) {
-    Issue.aggregate([{
-      $match: {status: "solved"}},
-      {
-        $group: {
-          _id: "$assignedTo",nbIssues:{$sum:1}}},
-          {
-           $sort : {nbIssues:-1}}],
-            function(err, results) {
-              if (err){
-                 res.status(500).send(err);
-                 return;
-            }
-          res.send(results);
-      });
-    });
-
-    //get /api/users/leastIssuesAssignedTo
-    router.get('/leastIssuesAssignedTo', function (req, res, next) {
-      Issue.aggregate([{
-        $match: {
-         $or: [{status:{$ne: "solved"}},
-        {status: {$ne: "rejected"}} ]}},
-        {$group: 
-          {_id: "$assignedTo",nbIssues:{$sum:1}}},
-        { $sort : {nbIssues:-1}}],
-           function(err, results) {
+  /**
+   * @api {get} /users/mostIssuesCreatedByAuthor Get the Users with the most Issues
+   * @apiVersion 0.0.0
+   * @apiName GetMostIssuesUsers
+   * @apiGroup User
+   *
+   * @apiDescription This allow to filter the users by the number of issues posted
+   *
+   * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the user
+   * @apiSuccess {String}   name   The name of the user
+   * @apiSuccess {String}   lastname   The lastname of the user
+   * @apiSuccess {String}   email   The email of the user
+   * @apiSuccess {String}   username   The username of the user
+   * @apiSuccess {String}   password   The password of the user
+   * @apiSuccess {Date}   createdAt The date of the creation of the user
+   * @apiSuccess {Number}   phoneNumber   The phone number of the user
+   * @apiSuccess {String}   adresse.street   The street of the user
+   * @apiSuccess {Number}   adresse.number   The number street of the user
+   * @apiSuccess {Number}   adresse.postal   The postal code of the user
+   * @apiSuccess {String}   adresse.country   The country of the user
+   * @apiSuccess {Boolean}   role.citizen   If the user is a citizen
+   * @apiSuccess {Boolean}   role.staff   If the user is a staff
+   *
+   * @apiSuccessExample Success-Response:
+   *     [{
+    "__v": 0,
+    "createdAt": "2016-03-03T19:27:06.372Z",
+    "name": "Tab",
+    "lastName": "H",
+    "email": "test@gmail.com",
+    "userName": "Tabata",
+    "password": "123456",
+    "phoneNumber": 22456789,
+    "_id": "56d8900a05bd2b841f89139f",
+    "role": {
+      "citizen": true,
+      "staff": false
+    },
+    "adresse": {
+      "street": "Route",
+      "number": 38,
+      "postal": 1258,
+      "country": "Suisse"
+    }
+  }]
+   *
+   * @apiError Error404   The server has an unexpected error
+   *
+   */
+//get /api/users/mostIssuesSolvedByAuthor
+router.get('/mostIssuesSolvedByAuthor', function (req, res, next) {
+  Issue.aggregate([{
+    $match: {status: "solved"}},
+    {
+      $group: {
+        _id: "$assignedTo",nbIssues:{$sum:1}}},
+        {
+         $sort : {nbIssues:-1}}],
+          function(err, results) {
             if (err){
-              res.status(500).send(err);
-              return;
-            }
-          res.send(results);
-        });
-      });
+               res.status(500).send(err);
+               return;
+          }
+        res.send(results);
+    });
+  });
+
+  /**
+   * @api {get} /users/leastIssuesAssignedTo Get the Users with the least Issues assigned
+   * @apiVersion 0.0.0
+   * @apiName GetMostIssuesUsers
+   * @apiGroup User
+   *
+   * @apiDescription This allow to filter the users by the number of issues assigned to them
+   *
+   * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the user
+   * @apiSuccess {String}   name   The name of the user
+   * @apiSuccess {String}   lastname   The lastname of the user
+   * @apiSuccess {String}   email   The email of the user
+   * @apiSuccess {String}   username   The username of the user
+   * @apiSuccess {String}   password   The password of the user
+   * @apiSuccess {Date}   createdAt The date of the creation of the user
+   * @apiSuccess {Number}   phoneNumber   The phone number of the user
+   * @apiSuccess {String}   adresse.street   The street of the user
+   * @apiSuccess {Number}   adresse.number   The number street of the user
+   * @apiSuccess {Number}   adresse.postal   The postal code of the user
+   * @apiSuccess {String}   adresse.country   The country of the user
+   * @apiSuccess {Boolean}   role.citizen   If the user is a citizen
+   * @apiSuccess {Boolean}   role.staff   If the user is a staff
+   *
+   * @apiSuccessExample Success-Response:
+   *     [{
+    "__v": 0,
+    "createdAt": "2016-03-03T19:27:06.372Z",
+    "name": "Tab",
+    "lastName": "H",
+    "email": "test@gmail.com",
+    "userName": "Tabata",
+    "password": "123456",
+    "phoneNumber": 22456789,
+    "_id": "56d8900a05bd2b841f89139f",
+    "role": {
+      "citizen": true,
+      "staff": false
+    },
+    "adresse": {
+      "street": "Route",
+      "number": 38,
+      "postal": 1258,
+      "country": "Suisse"
+    }
+  }]
+   *
+   * @apiError Error404   The server has an unexpected error
+   *
+   */
+//get /api/users/leastIssuesAssignedTo
+router.get('/leastIssuesAssignedTo', function (req, res, next) {
+  Issue.aggregate([{
+    $match: {
+     $or: [{status:{$ne: "solved"}},
+    {status: {$ne: "rejected"}} ]}},
+    {$group:
+      {_id: "$assignedTo",nbIssues:{$sum:1}}},
+    { $sort : {nbIssues:-1}}],
+       function(err, results) {
+        if (err){
+          res.status(500).send(err);
+          return;
+        }
+      res.send(results);
+    });
+  });
 
 
 
 /**
- * @api {get} /users Get all the issues posted by a user
+ * @api {get} /users/:id/issues Get all the issues posted by a user
  * @apiVersion 0.0.0
  * @apiName GetUserIssues
  * @apiGroup User
