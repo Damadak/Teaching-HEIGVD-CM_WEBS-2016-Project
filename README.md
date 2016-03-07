@@ -79,6 +79,7 @@ GET /issues/:id/actions
 POST /issues/getIssuesBetweenDatesWithStatus
 POST /issues/getIssuesUnsolvedBetweenDates
 POST /issues/getIssuesBetweenDates
+GET /issues/paginate
 ```
 
 ### User
