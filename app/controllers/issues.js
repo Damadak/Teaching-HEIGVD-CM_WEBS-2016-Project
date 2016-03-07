@@ -599,18 +599,16 @@ router.delete('/:id', findIssue, function(req, res, next) {
  */
 // POST /api/issues/:id/actions
 router.post('/:id/actions', findIssue, function(req, res) {
-  //console.log(req.body);
-  //console.log(req.issue);
+
  var issueChange=req.issue;
  var action = req.body.type;
  var status = req.body.status;
- //console.log(issueChange);
- //console.log(action);
-if(action=="Status change"){
-    issueChange.status=status;
-}
-  req.issue.actions.push(req.body);
 
+if(action=="Status change"){
+  issueChange.status=status;
+}
+
+  req.issue.actions.push(req.body);
   req.issue.save(function(err, updatedIssue) {
     if (err) {
       res.status(500).send(err);
