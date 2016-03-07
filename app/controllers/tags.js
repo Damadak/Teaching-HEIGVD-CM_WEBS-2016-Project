@@ -17,9 +17,8 @@ module.exports = function (app) {
  * @apiExample Example usage :
  * Post in JSOn
  {
-     "keyword": ""
+   "keyword": ""
  }
-
  *
  * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the tag
  * @apiSuccess {String}   keyword   The keyword of the tag
@@ -27,9 +26,9 @@ module.exports = function (app) {
  *
  * @apiSuccessExample Success-Response:
  * {
-      "_id": "56cece584a9f5ac80f820b68",
-      "keyword": "route abimée",
-      "__v": 0
+    "_id": "56cece584a9f5ac80f820b68",
+    "keyword": "route abimée",
+    "__v": 0
  }
  *
  * @apiError UnexpectedToken The type has some parameters with unexpected token

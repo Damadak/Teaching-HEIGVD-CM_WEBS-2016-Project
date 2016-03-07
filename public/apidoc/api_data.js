@@ -10,7 +10,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example usage:",
-        "content": "http://localhost/api/issues/56d989e834b00920244c2bbb/actions",
+        "content": "http://localhost/api/issues/56d989e834b00920244c2bbb/actions\n JSOn post\n {\n  \"type\": \"Status Change\",\n  \"author\": \"56cef06ac636642c090819e9\",\n  \"status\": \"acknowledgement\"\n}",
         "type": "json"
       }
     ],
@@ -480,7 +480,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "[{\n    \"__v\": 0,\n    \"status\": \"created\",\n    \"createdAt\": \"2016-03-04T13:13:12.038Z\",\n    \"author\": \"56cef06ac636642c090819e9\",\n    \"type\": \"56d00c958b514ca41df60499\",\n    \"description\": \"Test test\",\n    \"imgUrl\": \"img/photo.jpg\",\n    \"_id\": \"56d989e834b00920244c2bbb\",\n    \"actions\": [],\n    \"location\": {\n      \"type\": \"Point\",\n      \"coordinates\": [\n        46.78067,\n        6.647367\n      ]\n    },\n    \"tags\": [\n      \"56cece584a9f5ac80f820b68\"\n    ]\n  }]",
+          "content": "[\n  {\n    \"type\": \"Status Change\",\n    \"author\": \"56cef06ac636642c090819e9\",\n    \"status\": \"assigned\",\n    \"date\": \"2012-12-01T00:00:00.000Z\",\n    \"content\": \"\",\n    \"_id\": \"56d022c28d26ee840dbd790b\"\n  },\n  {\n    \"type\": \"Status Change\",\n    \"author\": \"56cef06ac636642c090819e9\",\n    \"status\": \"solved\",\n    \"date\": \"2012-12-01T00:00:00.000Z\",\n    \"content\": \"\",\n    \"_id\": \"56d022da8d26ee840dbd790d\"\n  }\n]",
           "type": "json"
         }
       ]
@@ -509,7 +509,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/issues/:id",
-    "title": "Find a specific Issues",
+    "title": "Find a specific Issue",
     "version": "0.0.0",
     "name": "GetIssue",
     "group": "Issue",
@@ -821,7 +821,7 @@ define({ "api": [
   {
     "type": "post",
     "url": "/issues/getIssuesBetweenDates",
-    "title": "Get Issues in a period",
+    "title": "Get Issues in a period of time",
     "version": "0.0.0",
     "name": "GetIssuesBetweenDates",
     "group": "Issue",
@@ -830,6 +830,147 @@ define({ "api": [
       {
         "title": "Example usage:",
         "content": "Post JSOn\n {\n \"startDate\":\"2015-12-12\",\n \"endDate\":\"2016-12-12\"\n}",
+        "type": "json"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Schema.Types.ObjectId",
+            "optional": false,
+            "field": "author",
+            "description": "<p>The Author-Id who create the Issue</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Schema.Types.ObjectId",
+            "optional": false,
+            "field": "type",
+            "description": "<p>The Type-Id of the Issue</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Schema.Types.ObjectId[]",
+            "optional": false,
+            "field": "tags",
+            "description": "<p>The Tag-Id related to the Issue</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>The description of the Issue</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "location",
+            "description": "<p>The type of the geographic coordinates</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number[]",
+            "optional": false,
+            "field": "location.coordinates",
+            "description": "<p>The geographic coordinates of the Issue</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "status",
+            "description": "<p>The status of the Issue</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "[]",
+            "optional": false,
+            "field": "actions",
+            "description": "<p>The actions done on the Issue</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "actions.type",
+            "description": "<p>The type of the action (Comment or Status Change)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Schema.Types.ObjectId",
+            "optional": false,
+            "field": "actions.author",
+            "description": "<p>The Author-Id of the action</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "actions.date",
+            "description": "<p>The date of the action</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "actions.status",
+            "description": "<p>The new status of the issue (only if its a Status Change)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "actions.content",
+            "description": "<p>The content of the comment (only if its a Comment)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "createdAt",
+            "description": "<p>The date of creation of the issue</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "[{\n    \"__v\": 0,\n    \"status\": \"created\",\n    \"createdAt\": \"2016-03-04T13:13:12.038Z\",\n    \"author\": \"56cef06ac636642c090819e9\",\n    \"type\": \"56d00c958b514ca41df60499\",\n    \"description\": \"Test test\",\n    \"imgUrl\": \"img/photo.jpg\",\n    \"_id\": \"56d989e834b00920244c2bbb\",\n    \"actions\": [],\n    \"location\": {\n      \"type\": \"Point\",\n      \"coordinates\": [\n        46.78067,\n        6.647367\n      ]\n    },\n    \"tags\": [\n      \"56cece584a9f5ac80f820b68\"\n    ]\n  }]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Error404",
+            "description": "<p>The server has an unexpected error</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/controllers/issues.js",
+    "groupTitle": "Issue"
+  },
+  {
+    "type": "post",
+    "url": "/issues/getIssuesBetweenDatesWithStatus",
+    "title": "Get solved Issues in a period of two dates",
+    "version": "0.0.0",
+    "name": "GetIssuesBetweenDatesWithStatus",
+    "group": "Issue",
+    "description": "<p>This allow to get all the solved Issues in a period of two dates. You can change solved by all other types of status</p>",
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "Post JSOn\n {\n \"status\":\"solved\",\n \"startDate\":\"2015-12-12\",\n \"endDate\":\"2016-12-12\"\n }",
         "type": "json"
       }
     ],
@@ -1221,7 +1362,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "[{\n    \"__v\": 0,\n    \"status\": \"created\",\n    \"createdAt\": \"2016-03-04T13:13:12.038Z\",\n    \"author\": \"56cef06ac636642c090819e9\",\n    \"type\": \"56d00c958b514ca41df60499\",\n    \"description\": \"Test test\",\n    \"imgUrl\": \"img/photo.jpg\",\n    \"_id\": \"56d989e834b00920244c2bbb\",\n    \"actions\": [],\n    \"location\": {\n      \"type\": \"Point\",\n      \"coordinates\": [\n        46.78067,\n        6.647367\n      ]\n    },\n    \"tags\": [\n      \"56cece584a9f5ac80f820b68\"\n    ]\n  }]",
+          "content": "[{\n    \"__v\": 0,\n    \"status\": \"solved\",\n    \"createdAt\": \"2016-03-04T13:13:12.038Z\",\n    \"author\": \"56cef06ac636642c090819e9\",\n    \"type\": \"56d00c958b514ca41df60499\",\n    \"description\": \"Test test\",\n    \"imgUrl\": \"img/photo.jpg\",\n    \"_id\": \"56d989e834b00920244c2bbb\",\n    \"actions\": [],\n    \"location\": {\n      \"type\": \"Point\",\n      \"coordinates\": [\n        46.78067,\n        6.647367\n      ]\n    },\n    \"tags\": [\n      \"56cece584a9f5ac80f820b68\"\n    ]\n  }]",
           "type": "json"
         }
       ]
@@ -1244,7 +1385,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/issues/paginate",
-    "title": "",
+    "title": "Pagination of Issues",
     "version": "0.0.0",
     "name": "PaginationIssues",
     "group": "Issue",
@@ -1657,16 +1798,16 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/issues/getIssuesBetweenDatesWithStatus",
-    "title": "Get solved Issues in a period of two dates",
+    "url": "/issues/getIssuesUnsolvedBetweenDates",
+    "title": "Get unsolved Issues in a period of two dates",
     "version": "0.0.0",
-    "name": "getIssuesBetweenDatesWIthStatus",
+    "name": "getIssuesUnsolvedBetweenDates",
     "group": "Issue",
-    "description": "<p>This allow to get all the solved Issues in a period of two dates. You can change solved by all other types of status</p>",
+    "description": "<p>This allow to get all the unsolved Issues in a period of two dates. You can change solved by all other types of status</p>",
     "examples": [
       {
         "title": "Example usage:",
-        "content": "Post JSOn\n {\n \"status\":\"solved\",\n \"startDate\":\"2015-12-12\",\n \"endDate\":\"2016-12-12\"\n }",
+        "content": "Post JSOn\n {\n \"status\":\"unsolved\",\n \"startDate\":\"2015-12-12\",\n \"endDate\":\"2016-12-12\"\n }",
         "type": "json"
       }
     ],
@@ -1776,7 +1917,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "[{\n    \"__v\": 0,\n    \"status\": \"created\",\n    \"createdAt\": \"2016-03-04T13:13:12.038Z\",\n    \"author\": \"56cef06ac636642c090819e9\",\n    \"type\": \"56d00c958b514ca41df60499\",\n    \"description\": \"Test test\",\n    \"imgUrl\": \"img/photo.jpg\",\n    \"_id\": \"56d989e834b00920244c2bbb\",\n    \"actions\": [],\n    \"location\": {\n      \"type\": \"Point\",\n      \"coordinates\": [\n        46.78067,\n        6.647367\n      ]\n    },\n    \"tags\": [\n      \"56cece584a9f5ac80f820b68\"\n    ]\n  }]",
+          "content": "[{\n    \"__v\": 0,\n    \"status\": \"unsolved\",\n    \"createdAt\": \"2016-03-04T13:13:12.038Z\",\n    \"author\": \"56cef06ac636642c090819e9\",\n    \"type\": \"56d00c958b514ca41df60499\",\n    \"description\": \"Test test\",\n    \"imgUrl\": \"img/photo.jpg\",\n    \"_id\": \"56d989e834b00920244c2bbb\",\n    \"actions\": [],\n    \"location\": {\n      \"type\": \"Point\",\n      \"coordinates\": [\n        46.78067,\n        6.647367\n      ]\n    },\n    \"tags\": [\n      \"56cece584a9f5ac80f820b68\"\n    ]\n  }]",
           "type": "json"
         }
       ]
@@ -1807,7 +1948,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example usage :",
-        "content": "Post in JSOn\n {\n     \"keyword\": \"\"\n }",
+        "content": "Post in JSOn\n {\n   \"keyword\": \"\"\n }",
         "type": "json"
       }
     ],
@@ -1840,7 +1981,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n }",
+          "content": "{\n    \"_id\": \"56cece584a9f5ac80f820b68\",\n    \"keyword\": \"route abimée\",\n    \"__v\": 0\n }",
           "type": "json"
         }
       ]
@@ -2250,7 +2391,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "\n {\n\"__v\": 0,\n\"createdAt\": \"2016-03-03T19:09:04.598Z\",\n\"name\": \"Route 2\",\n\"description\": \"Tous les problèmes liés à la route\",\n\"author\": \"56cef06ac636642c090819e9\",\n\"_id\": \"56d88bd0ed816d3014765b17\"\n}",
+          "content": "\n{\n  \"__v\": 0,\n  \"createdAt\": \"2016-03-03T19:09:04.598Z\",\n  \"name\": \"Route 2\",\n  \"description\": \"Tous les problèmes liés à la route\",\n  \"author\": \"56cef06ac636642c090819e9\",\n  \"_id\": \"56d88bd0ed816d3014765b17\"\n}",
           "type": "json"
         }
       ]
@@ -2297,7 +2438,7 @@ define({ "api": [
   {
     "type": "delete",
     "url": "/types/:id",
-    "title": "Delete a specific Type",
+    "title": "Delete a Type",
     "version": "0.0.0",
     "name": "DeleteType",
     "group": "Type",
@@ -2500,7 +2641,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/types/:id",
-    "title": "Find a Type",
+    "title": "Find a specific Type",
     "version": "0.0.0",
     "name": "GetType",
     "group": "Type",
@@ -2625,7 +2766,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "[\n     {\n    \"__v\": 0,\n    \"createdAt\": \"2016-03-03T19:09:04.598Z\",\n    \"name\": \"Route 2\",\n    \"description\": \"Tous les problèmes liés à la route\",\n    \"author\": \"56cef06ac636642c090819e9\",\n    \"_id\": \"56d88bd0ed816d3014765b17\"\n    }\n  ]",
+          "content": "[\n     {\n      \"__v\": 0,\n      \"createdAt\": \"2016-03-03T19:09:04.598Z\",\n      \"name\": \"Route 2\",\n      \"description\": \"Tous les problèmes liés à la route\",\n      \"author\": \"56cef06ac636642c090819e9\",\n      \"_id\": \"56d88bd0ed816d3014765b17\"\n    }\n  ]",
           "type": "json"
         }
       ]
@@ -3151,6 +3292,140 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/users/leastIssuesAssignedTo",
+    "title": "Get the Users with the least Issues assigned",
+    "version": "0.0.0",
+    "name": "GetLeastIssuesUsers",
+    "group": "User",
+    "description": "<p>This allow to filter the users who have the least issues</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Schema.Types.ObjectId",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>The id of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The name of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "lastname",
+            "description": "<p>The lastname of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>The email of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "username",
+            "description": "<p>The username of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>The password of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "createdAt",
+            "description": "<p>The date of the creation of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "phoneNumber",
+            "description": "<p>The phone number of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "adresse.street",
+            "description": "<p>The street of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "adresse.number",
+            "description": "<p>The number street of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "adresse.postal",
+            "description": "<p>The postal code of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "adresse.country",
+            "description": "<p>The country of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "role.citizen",
+            "description": "<p>If the user is a citizen</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "role.staff",
+            "description": "<p>If the user is a staff</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "  [{\n  \"__v\": 0,\n  \"createdAt\": \"2016-03-03T19:27:06.372Z\",\n  \"name\": \"Tab\",\n  \"lastName\": \"H\",\n  \"email\": \"test@gmail.com\",\n  \"userName\": \"Tabata\",\n  \"password\": \"123456\",\n  \"phoneNumber\": 22456789,\n  \"_id\": \"56d8900a05bd2b841f89139f\",\n  \"role\": {\n    \"citizen\": true,\n    \"staff\": false\n  },\n  \"adresse\": {\n    \"street\": \"Route\",\n    \"number\": 38,\n    \"postal\": 1258,\n    \"country\": \"Suisse\"\n  }\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Error404",
+            "description": "<p>The server has an unexpected error</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/controllers/users.js",
+    "groupTitle": "User"
+  },
+  {
+    "type": "get",
     "url": "/users/mostIssuesSolvedByUser",
     "title": "Get the Users with the most Issues solved",
     "version": "0.0.0",
@@ -3398,140 +3673,6 @@ define({ "api": [
         {
           "title": "Success-Response:",
           "content": "    [{\n  \"__v\": 0,\n  \"createdAt\": \"2016-03-03T19:27:06.372Z\",\n  \"name\": \"Tab\",\n  \"lastName\": \"H\",\n  \"email\": \"test@gmail.com\",\n  \"userName\": \"Tabata\",\n  \"password\": \"123456\",\n  \"phoneNumber\": 22456789,\n  \"_id\": \"56d8900a05bd2b841f89139f\",\n  \"role\": {\n    \"citizen\": true,\n    \"staff\": false\n  },\n  \"adresse\": {\n    \"street\": \"Route\",\n    \"number\": 38,\n    \"postal\": 1258,\n    \"country\": \"Suisse\"\n  }\n}]",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "Error404",
-            "description": "<p>The server has an unexpected error</p>"
-          }
-        ]
-      }
-    },
-    "filename": "app/controllers/users.js",
-    "groupTitle": "User"
-  },
-  {
-    "type": "get",
-    "url": "/users/leastIssuesAssignedTo",
-    "title": "Get the Users with the least Issues assigned",
-    "version": "0.0.0",
-    "name": "GetMostIssuesUsers",
-    "group": "User",
-    "description": "<p>This allow to filter the users who have the least issues</p>",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Schema.Types.ObjectId",
-            "optional": false,
-            "field": "_id",
-            "description": "<p>The id of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "name",
-            "description": "<p>The name of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "lastname",
-            "description": "<p>The lastname of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "email",
-            "description": "<p>The email of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "username",
-            "description": "<p>The username of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "password",
-            "description": "<p>The password of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Date",
-            "optional": false,
-            "field": "createdAt",
-            "description": "<p>The date of the creation of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "phoneNumber",
-            "description": "<p>The phone number of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "adresse.street",
-            "description": "<p>The street of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "adresse.number",
-            "description": "<p>The number street of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "adresse.postal",
-            "description": "<p>The postal code of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "adresse.country",
-            "description": "<p>The country of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Boolean",
-            "optional": false,
-            "field": "role.citizen",
-            "description": "<p>If the user is a citizen</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Boolean",
-            "optional": false,
-            "field": "role.staff",
-            "description": "<p>If the user is a staff</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "  [{\n  \"__v\": 0,\n  \"createdAt\": \"2016-03-03T19:27:06.372Z\",\n  \"name\": \"Tab\",\n  \"lastName\": \"H\",\n  \"email\": \"test@gmail.com\",\n  \"userName\": \"Tabata\",\n  \"password\": \"123456\",\n  \"phoneNumber\": 22456789,\n  \"_id\": \"56d8900a05bd2b841f89139f\",\n  \"role\": {\n    \"citizen\": true,\n    \"staff\": false\n  },\n  \"adresse\": {\n    \"street\": \"Route\",\n    \"number\": 38,\n    \"postal\": 1258,\n    \"country\": \"Suisse\"\n  }\n}]",
           "type": "json"
         }
       ]

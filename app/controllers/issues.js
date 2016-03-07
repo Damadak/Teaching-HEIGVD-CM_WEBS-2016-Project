@@ -126,7 +126,7 @@ router.post('/', function (req, res, next) {
 
 
 /**
- * @api {get} /issues/paginate
+ * @api {get} /issues/paginate Pagination of Issues
  * @apiVersion 0.0.0
  * @apiName PaginationIssues
  * @apiGroup Issue
@@ -414,7 +414,7 @@ router.get('/date', function(req, res, next){
  * @apiSuccessExample Success-Response:
  *[{
     "__v": 0,
-    "status": "created",
+    "status": "solved",
     "createdAt": "2016-03-04T13:13:12.038Z",
     "author": "56cef06ac636642c090819e9",
     "type": "56d00c958b514ca41df60499",
@@ -449,10 +449,8 @@ Issue.find({"status":"solved"},function(err, issues){
     });
 });
 
-
-
 /**
- * @api {get} /issues/:id Find a specific Issues
+ * @api {get} /issues/:id Find a specific Issue
  * @apiVersion 0.0.0
  * @apiName GetIssue
  * @apiGroup Issue
@@ -624,6 +622,12 @@ router.delete('/:id', findIssue, function(req, res, next) {
  *
  * @apiExample Example usage:
  * http://localhost/api/issues/56d989e834b00920244c2bbb/actions
+ JSOn post
+ {
+  "type": "Status Change",
+  "author": "56cef06ac636642c090819e9",
+  "status": "acknowledgement"
+}
  *
  * @apiSuccess {Schema.Types.ObjectId}   author            The Author-Id who create the Issue
  * @apiSuccess {Schema.Types.ObjectId} type     The Type-Id of the Issue
@@ -720,27 +724,24 @@ if(action=="Status change"){
  * @apiSuccess {Date}   createdAt The date of creation of the issue
  *
  * @apiSuccessExample Success-Response:
- *[{
-    "__v": 0,
-    "status": "created",
-    "createdAt": "2016-03-04T13:13:12.038Z",
+ *[
+  {
+    "type": "Status Change",
     "author": "56cef06ac636642c090819e9",
-    "type": "56d00c958b514ca41df60499",
-    "description": "Test test",
-    "imgUrl": "img/photo.jpg",
-    "_id": "56d989e834b00920244c2bbb",
-    "actions": [],
-    "location": {
-      "type": "Point",
-      "coordinates": [
-        46.78067,
-        6.647367
-      ]
-    },
-    "tags": [
-      "56cece584a9f5ac80f820b68"
-    ]
-  }]
+    "status": "assigned",
+    "date": "2012-12-01T00:00:00.000Z",
+    "content": "",
+    "_id": "56d022c28d26ee840dbd790b"
+  },
+  {
+    "type": "Status Change",
+    "author": "56cef06ac636642c090819e9",
+    "status": "solved",
+    "date": "2012-12-01T00:00:00.000Z",
+    "content": "",
+    "_id": "56d022da8d26ee840dbd790d"
+  }
+]
  *
  *
  * @apiError IssueNotFound Not found the Issue
@@ -756,7 +757,7 @@ router.get('/:id/actions', findIssue, function(req, res) {
 /**
  * @api {post} /issues/getIssuesBetweenDatesWithStatus Get solved Issues in a period of two dates
  * @apiVersion 0.0.0
- * @apiName getIssuesBetweenDatesWIthStatus
+ * @apiName GetIssuesBetweenDatesWithStatus
  * @apiGroup Issue
  *
  * @apiDescription This allow to get all the solved Issues in a period of two dates. You can change solved by all other types of status
@@ -811,7 +812,7 @@ router.get('/:id/actions', findIssue, function(req, res) {
  * @apiError Error404   The server has an unexpected error
  *
  */
-//POST /api/issues/periodSolved
+//POST /api/issues/getIssuesBetweenDatesWithStatus
 router.post('/getIssuesBetweenDatesWithStatus', function (req,res,next){
 
   var startDate = new Date(req.body.startDate);
@@ -830,8 +831,65 @@ router.post('/getIssuesBetweenDatesWithStatus', function (req,res,next){
 });
 
 
-
-//POST /api/issues/periodSolved
+/**
+ * @api {post} /issues/getIssuesUnsolvedBetweenDates Get unsolved Issues in a period of two dates
+ * @apiVersion 0.0.0
+ * @apiName getIssuesUnsolvedBetweenDates
+ * @apiGroup Issue
+ *
+ * @apiDescription This allow to get all the unsolved Issues in a period of two dates. You can change solved by all other types of status
+ *
+ * @apiExample Example usage:
+ * Post JSOn
+ {
+ "status":"unsolved",
+ "startDate":"2015-12-12",
+ "endDate":"2016-12-12"
+ }
+ *
+ * @apiSuccess {Schema.Types.ObjectId}   author            The Author-Id who create the Issue
+ * @apiSuccess {Schema.Types.ObjectId} type     The Type-Id of the Issue
+ * @apiSuccess {Schema.Types.ObjectId[]}   tags       The Tag-Id related to the Issue
+ * @apiSuccess {String}   description   The description of the Issue
+ * @apiSuccess {String}   location The type of the geographic coordinates
+ * @apiSuccess {Number[]} location.coordinates       The geographic coordinates of the Issue
+ * @apiSuccess {String}   status  The status of the Issue
+ * @apiSuccess {[]}   actions The actions done on the Issue
+ * @apiSuccess {String}   actions.type The type of the action (Comment or Status Change)
+ * @apiSuccess {Schema.Types.ObjectId}   actions.author The Author-Id of the action
+ * @apiSuccess {Date}   actions.date The date of the action
+ * @apiSuccess {String}   actions.status The new status of the issue (only if its a Status Change)
+ * @apiSuccess {String}   actions.content The content of the comment (only if its a Comment)
+ * @apiSuccess {Date}   createdAt The date of creation of the issue
+ *
+ * @apiSuccessExample Success-Response:
+ *[{
+    "__v": 0,
+    "status": "unsolved",
+    "createdAt": "2016-03-04T13:13:12.038Z",
+    "author": "56cef06ac636642c090819e9",
+    "type": "56d00c958b514ca41df60499",
+    "description": "Test test",
+    "imgUrl": "img/photo.jpg",
+    "_id": "56d989e834b00920244c2bbb",
+    "actions": [],
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        46.78067,
+        6.647367
+      ]
+    },
+    "tags": [
+      "56cece584a9f5ac80f820b68"
+    ]
+  }]
+ *
+ *
+ * @apiError Error404   The server has an unexpected error
+ *
+ */
+//POST /api/issues/getIssuesUnsolvedBetweenDates
 router.post('/getIssuesUnsolvedBetweenDates', function (req,res,next){
 
   var startDate = new Date(req.body.startDate);
@@ -850,10 +908,8 @@ router.post('/getIssuesUnsolvedBetweenDates', function (req,res,next){
   });
 });
 
-
-
 /**
- * @api {post} /issues/getIssuesBetweenDates Get Issues in a period
+ * @api {post} /issues/getIssuesBetweenDates Get Issues in a period of time
  * @apiVersion 0.0.0
  * @apiName GetIssuesBetweenDates
  * @apiGroup Issue
@@ -909,7 +965,7 @@ router.post('/getIssuesUnsolvedBetweenDates', function (req,res,next){
  * @apiError Error404   The server has an unexpected error
  *
  */
-//POST /api/issues/period
+//POST /api/issues/getIssuesBetweenDates
 router.post('/getIssuesBetweenDates', function (req,res,next){
 
   var startDate = new Date(req.body.startDate);

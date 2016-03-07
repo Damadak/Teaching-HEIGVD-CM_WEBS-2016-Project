@@ -45,6 +45,7 @@ module.exports = function (app) {
   * @apiSuccess {String}   password   The password of the user
   * @apiSuccess {Date}   createdAt The date of the creation of the user
   * @apiSuccess {Number}   phoneNumber   The phone number of the user
+  * @apiSuccess {{}}   adresse   The adresse of the user
   * @apiSuccess {String}   adresse.street   The street of the user
   * @apiSuccess {Number}   adresse.number   The number street of the user
   * @apiSuccess {Number}   adresse.postal   The postal code of the user
@@ -117,6 +118,7 @@ Issue.find({ 'actions.status': "solved" }, function(err, issues.actions){
  * @apiSuccess {String}   password   The password of the user
  * @apiSuccess {Date}   createdAt The date of the creation of the user
  * @apiSuccess {Number}   phoneNumber   The phone number of the user
+ * @apiSuccess {{}}   adresse   The adresse of the user
  * @apiSuccess {String}   adresse.street   The street of the user
  * @apiSuccess {Number}   adresse.number   The number street of the user
  * @apiSuccess {Number}   adresse.postal   The postal code of the user
@@ -184,6 +186,7 @@ router.get('/mostIssuesCreatedByUser', function (req, res, next) {
    * @apiSuccess {String}   password   The password of the user
    * @apiSuccess {Date}   createdAt The date of the creation of the user
    * @apiSuccess {Number}   phoneNumber   The phone number of the user
+   * @apiSuccess {{}}   adresse   The adresse of the user
    * @apiSuccess {String}   adresse.street   The street of the user
    * @apiSuccess {Number}   adresse.number   The number street of the user
    * @apiSuccess {Number}   adresse.postal   The postal code of the user
@@ -238,7 +241,7 @@ router.get('/mostIssuesSolvedByUser', function (req, res, next) {
   /**
    * @api {get} /users/leastIssuesAssignedTo Get the Users with the least Issues assigned
    * @apiVersion 0.0.0
-   * @apiName GetMostIssuesUsers
+   * @apiName GetLeastIssuesUsers
    * @apiGroup User
    *
    * @apiDescription This allow to filter the users who have the least issues
@@ -251,6 +254,7 @@ router.get('/mostIssuesSolvedByUser', function (req, res, next) {
    * @apiSuccess {String}   password   The password of the user
    * @apiSuccess {Date}   createdAt The date of the creation of the user
    * @apiSuccess {Number}   phoneNumber   The phone number of the user
+   * @apiSuccess {{}}   adresse   The adresse of the user
    * @apiSuccess {String}   adresse.street   The street of the user
    * @apiSuccess {Number}   adresse.number   The number street of the user
    * @apiSuccess {Number}   adresse.postal   The postal code of the user
@@ -360,6 +364,26 @@ router.get('/:id/issues', findUser, function(req, res, next){
  *
  * @apiDescription This allow to create a user with the right parameters
  *
+ *@apiExample Example usage :
+ {
+  "name": "",
+  "lastName": "",
+  "email": "",
+  "userName": "",
+  "password": "",
+  "phoneNumber": "",
+  "adresse": {
+    "street": "",
+    "number": "",
+    "postal": "",
+    "country": ""
+  },
+  "role": {
+    "citizen": "",
+    "staff": ""
+  }
+}
+ *
  * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the user
  * @apiSuccess {String}   name   The name of the user
  * @apiSuccess {String}   lastname   The lastname of the user
@@ -368,6 +392,7 @@ router.get('/:id/issues', findUser, function(req, res, next){
  * @apiSuccess {String}   password   The password of the user
  * @apiSuccess {Date}   createdAt The date of the creation of the user
  * @apiSuccess {Number}   phoneNumber   The phone number of the user
+ * @apiSuccess {{}}   adresse   The adresse of the user
  * @apiSuccess {String}   adresse.street   The street of the user
  * @apiSuccess {Number}   adresse.number   The number street of the user
  * @apiSuccess {Number}   adresse.postal   The postal code of the user
@@ -531,6 +556,7 @@ function findUser(req, res, next) {
    * @apiSuccess {String}   password   The password of the user
    * @apiSuccess {Date}   createdAt The date of the creation of the user
    * @apiSuccess {Number}   phoneNumber   The phone number of the user
+   * @apiSuccess {{}}   adresse   The adresse of the user
    * @apiSuccess {String}   adresse.street   The street of the user
    * @apiSuccess {Number}   adresse.number   The number street of the user
    * @apiSuccess {Number}   adresse.postal   The postal code of the user
@@ -591,6 +617,7 @@ router.get('/:id', findUser, function(req, res, next) {
  * @apiSuccess {String}   password   The password of the user
  * @apiSuccess {Date}   createdAt The date of the creation of the user
  * @apiSuccess {Number}   phoneNumber   The phone number of the user
+ * @apiSuccess {{}}   adresse   The adresse of the user
  * @apiSuccess {String}   adresse.street   The street of the user
  * @apiSuccess {Number}   adresse.number   The number street of the user
  * @apiSuccess {Number}   adresse.postal   The postal code of the user

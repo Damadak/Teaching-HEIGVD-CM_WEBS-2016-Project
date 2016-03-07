@@ -31,13 +31,13 @@ module.exports = function (app) {
  *
  * @apiSuccessExample Success-Response:
  *
-     {
-    "__v": 0,
-    "createdAt": "2016-03-03T19:09:04.598Z",
-    "name": "Route 2",
-    "description": "Tous les problèmes liés à la route",
-    "author": "56cef06ac636642c090819e9",
-    "_id": "56d88bd0ed816d3014765b17"
+    {
+      "__v": 0,
+      "createdAt": "2016-03-03T19:09:04.598Z",
+      "name": "Route 2",
+      "description": "Tous les problèmes liés à la route",
+      "author": "56cef06ac636642c090819e9",
+      "_id": "56d88bd0ed816d3014765b17"
     }
  *
  *
@@ -104,12 +104,12 @@ router.post('/', function (req, res, next) {
  * @apiSuccessExample Success-Response:
  *     [
          {
-        "__v": 0,
-        "createdAt": "2016-03-03T19:09:04.598Z",
-        "name": "Route 2",
-        "description": "Tous les problèmes liés à la route",
-        "author": "56cef06ac636642c090819e9",
-        "_id": "56d88bd0ed816d3014765b17"
+          "__v": 0,
+          "createdAt": "2016-03-03T19:09:04.598Z",
+          "name": "Route 2",
+          "description": "Tous les problèmes liés à la route",
+          "author": "56cef06ac636642c090819e9",
+          "_id": "56d88bd0ed816d3014765b17"
         }
       ]
  *
@@ -168,7 +168,7 @@ function findType(req, res, next) {
 }
 
 /**
- * @api {get} /types/:id Find a Type
+ * @api {get} /types/:id Find a specific Type
  * @apiVersion 0.0.0
  * @apiName GetType
  * @apiGroup Type
@@ -315,10 +315,8 @@ router.patch('/:id',findType, function(req, res, next) {
 
 });
 
-
-
 /**
- * @api {delete} /types/:id Delete a specific Type
+ * @api {delete} /types/:id Delete a Type
  * @apiVersion 0.0.0
  * @apiName DeleteType
  * @apiGroup Type
