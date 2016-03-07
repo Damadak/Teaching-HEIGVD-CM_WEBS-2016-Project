@@ -17,6 +17,12 @@ module.exports = function (app) {
  *
  * @apiDescription This allow to create a type with the right parameters
  *
+ * @apiExample Example usage :
+ {
+   "name": "",
+   "description": "",
+   "author": ""
+ }
  *
  * @apiSuccess {Schema.Types.ObjectId}   author   The id of the author of the type
  * @apiSuccess {String}   name   The name of the type

@@ -39,7 +39,6 @@ module.exports = function (app) {
      "content": ""
    }
  ],
-
  "assignedTo": "",
  "imgUrl": ""
 }
@@ -159,7 +158,7 @@ router.post('/', function (req, res, next) {
  * @apiName GetIssuesByCoordinates
  * @apiGroup Issue
  *
- * @apiDescription This allow to search the near Issues with geographic coordinates 
+ * @apiDescription This allow to search the near Issues with geographic coordinates
  *
  * @apiExample Example usage:
  * http://localhost:3001/api/issues?longitude=46.778744&latitude=6.657598&distance=10000000

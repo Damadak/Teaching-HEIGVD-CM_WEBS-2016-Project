@@ -17,6 +17,26 @@ module.exports = function (app) {
   *
   * @apiDescription This allow to get all the existed users on the server
   *
+  * @apiExample Example usage :
+  *{
+    "name": "",
+    "lastName": "",
+    "email": "",
+    "userName": "",
+    "password": "",
+    "phoneNumber": "",
+    "adresse": {
+      "street": "",
+      "number": "",
+      "postal": "",
+      "country": ""
+    },
+    "role": {
+      "citizen": "",
+      "staff": ""
+    }
+  }
+  *
   * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the user
   * @apiSuccess {String}   name   The name of the user
   * @apiSuccess {String}   lastname   The lastname of the user
@@ -80,8 +100,6 @@ Issue.find({ 'actions.status': "solved" }, function(err, issues.actions){
 
 });
 **/
-
-
 
 /**
  * @api {get} /users/mostIssuesCreatedByUser Get the Users with the most Issues

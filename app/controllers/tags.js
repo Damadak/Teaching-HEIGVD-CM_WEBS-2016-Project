@@ -14,17 +14,23 @@ module.exports = function (app) {
  * @apiGroup Tag
  *
  * @apiDescription This allow to create an tag with the right parameters
+ * @apiExample Example usage :
+ * Post in JSOn
+ {
+     "keyword": ""
+ }
+
  *
  * @apiSuccess {Schema.Types.ObjectId}   _id   The id of the tag
  * @apiSuccess {String}   keyword   The keyword of the tag
  * @apiSuccess {Date}   createdAt The date of the creation of the tag
  *
  * @apiSuccessExample Success-Response:
- *  {
-          "_id": "56cece584a9f5ac80f820b68",
-          "keyword": "route abimée",
-          "__v": 0
-        }
+ * {
+      "_id": "56cece584a9f5ac80f820b68",
+      "keyword": "route abimée",
+      "__v": 0
+ }
  *
  * @apiError UnexpectedToken The type has some parameters with unexpected token
  * @apiError ValidationError The keyword(s) doesn't have the correct type or is required

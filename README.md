@@ -105,12 +105,67 @@ GET /types/:id/issues
 Populate request available : GET /types?embed=author
 ```
 
-## JSOn resquest you can send
+## JSOn post examples
 
 ### User
+```
+{
+  "name": "Tab",
+  "lastName": "H",
+  "email": "email@gmail.com",
+  "userName": "Tab",
+  "password": "123456",
+  "phoneNumber": "0222222",
+  "adresse": {
+    "street": "Route",
+    "number": "38",
+    "postal": "1258",
+    "country": "Suisse"
+  },
+  "role": {
+    "citizen": "true",
+    "staff": "false"
+  }
+}
+```
+
 ### Issue
+Don't forget to put real Author/Type/Tag id in this request to use it. You can find theme in your database
+```
+{
+ "author": "56cef06ac636642c090819e9",
+ "type": "56d00c958b514ca41df60499",
+ "description": "Trou sur la route",
+ "imgUrl": "img/photo.jpg",
+ "actions": [],
+ "location": {
+   "type": "Point",
+   "coordinates": [
+     46.78067,
+     6.647367
+   ]
+ },
+ "tags": [
+   "56cece584a9f5ac80f820b68"
+ ]
+}
+```
 ### Type
+Don't forget to put real Author id in this request to use it. You can find theme in your database
+
+```
+{
+  "name": "Route",
+  "description": "Tous les problèmes liés à la route",
+  "author": "56cef06ac636642c090819e9"
+}
+```
 ### Tag
+```
+{
+  "keyword": "lampadaire"
+}
+```
 
 ## Project available on Heroku
 http://dry-everglades-13589.herokuapp.com
