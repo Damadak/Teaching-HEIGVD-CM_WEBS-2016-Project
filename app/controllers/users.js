@@ -72,22 +72,9 @@ router.get('/', function (req, res, next) {
 
 
 
-router.get('/youpi', function (req, res, next){
 
 
-var oups;
-Issue.find({'actions.status':"solved"},{'actions.$': 1}, function(err, person) {
-      if (err){
-      res.status(500).send(err);
-      return;
-    }
-   
-    oups=person;
-    console.log(oups);
 
-     });
-
-});
 
 
 
@@ -155,7 +142,7 @@ Issue.find({ 'actions.status': "solved" }, function(err, issues.actions){
  * @apiError Error404   The server has an unexpected error
  *
  */
-router.get('/mostIssues', function (req, res, next){
+router.get('/mostIssuesCreatedByUser', function (req, res, next){
   countAuthorIssues(function(err, issueCounts){
 
     var usersIds=[];
@@ -186,35 +173,62 @@ router.get('/mostIssues', function (req, res, next){
 });
 
 
-router.get('/mostIssuesSolved', function (req, res, next){
-  countIssuesSolvedByAuthor(function(err, issueCounts){
+//get /api/users/mostIssuesCreatedByAuthor
+router.get('/mostIssuesCreatedByAuthor', function (req, res, next) {
+  Issue.aggregate([{
+    $group: {
+      _id: "$author",
+      nbIssues:{$sum:1}}},
+      { 
+        $sort : {nbIssues:-1}}],
+         function(err, results) {
 
-    var usersIds=[];
-    for(var i=0;i <issueCounts.length; i++){
-      usersIds.push(issueCounts[i]._id);
-    }
-
-    var criteria={
-      _id:{$in:usersIds}
-    };
-
-    User.find(function(err, users){
-
-      var responseBody=[];
-      for(var i=0; i<issueCounts.length; i++){
-
-        var result=getUser(issueCounts[i]._id, users).toJSON();
-        result.numberOfIssues=issueCounts[i].total;
-
-        responseBody.push(result);
-      }
-      res.send(responseBody);
-      console.log("bon");
+          if (err){
+            res.status(500).send(err);
+            return;
+          }
+        res.send(results);
     });
-
   });
 
-});
+
+  //get /api/users/mostIssuesSolvedByAuthor
+  router.get('/mostIssuesSolvedByAuthor', function (req, res, next) {
+    Issue.aggregate([{
+      $match: {status: "solved"}},
+      {
+        $group: {
+          _id: "$assignedTo",nbIssues:{$sum:1}}},
+          {
+           $sort : {nbIssues:-1}}],
+            function(err, results) {
+              if (err){
+                 res.status(500).send(err);
+                 return;
+            }
+          res.send(results);
+      });
+    });
+
+    //get /api/users/leastIssuesAssignedTo
+    router.get('/leastIssuesAssignedTo', function (req, res, next) {
+      Issue.aggregate([{
+        $match: {
+         $or: [{status:{$ne: "solved"}},
+        {status: {$ne: "rejected"}} ]}},
+        {$group: 
+          {_id: "$assignedTo",nbIssues:{$sum:1}}},
+        { $sort : {nbIssues:-1}}],
+           function(err, results) {
+            if (err){
+              res.status(500).send(err);
+              return;
+            }
+          res.send(results);
+        });
+      });
+
+
 
 /**
  * @api {get} /users Get all the issues posted by a user
@@ -382,48 +396,6 @@ function countAuthorIssues(callback){
 }
 
 
-
-function countIssuesSolvedByAuthor(callback){
-
-var oups;
-Issue.find({'actions.status':"solved"},{'actions.$': 1}, function(err, person) {
-      if (err){
-      res.status(500).send(err);
-      return;
-    }
-   
-    oups=person;
-    console.log(oups);
-
-     
-
-
-  oups.aggregate([
-  {
-
-  
-    $group:{
-      _id:'$author',
-      total:{$sum:1}
-
-    }
-  },
-  {
-    $sort:{total:-1}
-  }
-  ], function(err, issueCounts){
-    if(err){
-      callback(err);
-    }else{
-      callback(undefined, issueCounts);
-       console.log(issueCounts);
-       console.log("coucou");
-    }
-  });
-}
-);
-
-}
 
 /**
  * @api {function} /tags Verify the User exists
