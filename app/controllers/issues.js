@@ -127,7 +127,7 @@ router.post('/', function (req, res, next) {
 
 
 
-  //get api/v1/issues/paginate
+  //GET /api/issues/paginate
   router.get('/paginate', function (req, res, next) {
     var page = req.query.page ? parseInt(req.query.page, 10) :1,
         pageSize = req.query.pageSize ? parseInt(req.query.pageSize, 10): 30;
@@ -159,7 +159,7 @@ router.post('/', function (req, res, next) {
  * @apiName GetIssuesByCoordinates
  * @apiGroup Issue
  *
- * @apiDescription This allow to search the near Issues with geographic coordinates
+ * @apiDescription This allow to search the near Issues with geographic coordinates 
  *
  * @apiExample Example usage:
  * http://localhost:3001/api/issues?longitude=46.778744&latitude=6.657598&distance=10000000
