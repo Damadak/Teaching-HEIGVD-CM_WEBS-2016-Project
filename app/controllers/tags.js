@@ -138,7 +138,7 @@ function findTag(req, res, next) {
       return;
     }
     req.tag = tag;
-    console.log("test");
+
     next();
   });
 }

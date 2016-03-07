@@ -126,6 +126,33 @@ router.post('/', function (req, res, next) {
 });
 
 
+
+  //get api/v1/issues/paginate
+  router.get('/paginate', function (req, res, next) {
+    var page = req.query.page ? parseInt(req.query.page, 10) :1,
+        pageSize = req.query.pageSize ? parseInt(req.query.pageSize, 10): 30;
+
+    var offset = (page - 1) * pageSize,
+        limit = pageSize;
+        Issue.count(function(err, totalCount){
+          if (err){
+            res.status(500).send(err);
+            return;
+          }
+          res.set('X-Pagination-Page', page);
+          res.set('X-Pagination-Page-Size', pageSize);
+          res.set('X-Pagination-Total', totalCount);
+          Issue.find(function(err, issue){
+            if (err){
+              res.status(500).send(err);
+              return;
+            }
+            res.send(issue);
+          });
+        });
+  });
+
+
 /**
  * @api {get} /issues?longitude=valuelatitude=value&distance=value Get the Issues near the georgraphic coordinates
  * @apiVersion 0.0.0
@@ -760,7 +787,7 @@ router.post('/getIssuesBetweenDatesWIthStatus', function (req,res,next){
 
 //POST /api/issues/periodSolved
 router.post('/getIssuesUnsolvedBetweenDates', function (req,res,next){
-  var status = req.body.status;
+
   var startDate = new Date(req.body.startDate);
   var endDate = new Date(req.body.endDate);
 
