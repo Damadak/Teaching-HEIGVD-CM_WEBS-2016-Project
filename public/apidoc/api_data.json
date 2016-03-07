@@ -169,7 +169,7 @@
     "examples": [
       {
         "title": "Example usage:",
-        "content": "Post in JSOn\n {\n \"author\": \"\",\n \"date\": \"\",\n \"type\":\"\",\n \"tags\":[\n   \"\"\n ],\n \"description\":\"\",\n \"coordinates\": {\n   \"x\":\"\",\n   \"y\":\"\"\n },\n \"status\": \"\",\n \"actions\": [\n   {\n     \"type\": \"\",\n     \"author\": \"\",\n     \"date\": \"\",\n     \"status\": \"\",\n     \"content\": \"\"\n   }\n ],\n\n \"assignedTo\": \"\",\n \"imgUrl\": \"\"\n}",
+        "content": "Post in JSOn\n {\n \"author\": \"\",\n \"date\": \"\",\n \"type\":\"\",\n \"tags\":[\n   \"\"\n ],\n \"description\":\"\",\n \"coordinates\": {\n   \"x\":\"\",\n   \"y\":\"\"\n },\n \"status\": \"\",\n \"actions\": [\n   {\n     \"type\": \"\",\n     \"author\": \"\",\n     \"date\": \"\",\n     \"status\": \"\",\n     \"content\": \"\"\n   }\n ],\n \"assignedTo\": \"\",\n \"imgUrl\": \"\"\n}",
         "type": "json"
       }
     ],
@@ -1242,6 +1242,140 @@
     "groupTitle": "Issue"
   },
   {
+    "type": "get",
+    "url": "/issues/paginate",
+    "title": "",
+    "version": "0.0.0",
+    "name": "PaginationIssues",
+    "group": "Issue",
+    "description": "<p>This allow to give an example of pagination</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Schema.Types.ObjectId",
+            "optional": false,
+            "field": "author",
+            "description": "<p>The Author-Id who create the Issue</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Schema.Types.ObjectId",
+            "optional": false,
+            "field": "type",
+            "description": "<p>The Type-Id of the Issue</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Schema.Types.ObjectId[]",
+            "optional": false,
+            "field": "tags",
+            "description": "<p>The Tag-Id related to the Issue</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>The description of the Issue</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "location",
+            "description": "<p>The type of the geographic coordinates</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number[]",
+            "optional": false,
+            "field": "location.coordinates",
+            "description": "<p>The geographic coordinates of the Issue</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "status",
+            "description": "<p>The status of the Issue</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "[]",
+            "optional": false,
+            "field": "actions",
+            "description": "<p>The actions done on the Issue</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "actions.type",
+            "description": "<p>The type of the action (Comment or Status Change)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Schema.Types.ObjectId",
+            "optional": false,
+            "field": "actions.author",
+            "description": "<p>The Author-Id of the action</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "actions.date",
+            "description": "<p>The date of the action</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "actions.status",
+            "description": "<p>The new status of the issue (only if its a Status Change)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "actions.content",
+            "description": "<p>The content of the comment (only if its a Comment)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "createdAt",
+            "description": "<p>The date of creation of the issue</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n  \"__v\": 0,\n  \"status\": \"created\",\n  \"createdAt\": \"2016-03-04T13:13:12.038Z\",\n  \"author\": \"56cef06ac636642c090819e9\",\n  \"type\": \"56d00c958b514ca41df60499\",\n  \"description\": \"Test test\",\n  \"imgUrl\": \"img/photo.jpg\",\n  \"_id\": \"56d989e834b00920244c2bbb\",\n  \"actions\": [],\n  \"location\": {\n    \"type\": \"Point\",\n    \"coordinates\": [\n      46.78067,\n      6.647367\n    ]\n  },\n  \"tags\": [\n    \"56cece584a9f5ac80f820b68\"\n  ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Error404",
+            "description": "<p>The server has an unexpected error</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/controllers/issues.js",
+    "groupTitle": "Issue"
+  },
+  {
     "type": "patch",
     "url": "/issues/:id",
     "title": "Update a Issue",
@@ -1670,6 +1804,13 @@
     "name": "CreateTag",
     "group": "Tag",
     "description": "<p>This allow to create an tag with the right parameters</p>",
+    "examples": [
+      {
+        "title": "Example usage :",
+        "content": "Post in JSOn\n {\n     \"keyword\": \"\"\n }",
+        "type": "json"
+      }
+    ],
     "success": {
       "fields": {
         "Success 200": [
@@ -1699,7 +1840,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "{\n         \"_id\": \"56cece584a9f5ac80f820b68\",\n         \"keyword\": \"route abimée\",\n         \"__v\": 0\n       }",
+          "content": "{\n      \"_id\": \"56cece584a9f5ac80f820b68\",\n      \"keyword\": \"route abimée\",\n      \"__v\": 0\n }",
           "type": "json"
         }
       ]
@@ -2066,6 +2207,13 @@
     "name": "CreateType",
     "group": "Type",
     "description": "<p>This allow to create a type with the right parameters</p>",
+    "examples": [
+      {
+        "title": "Example usage :",
+        "content": "{\n  \"name\": \"\",\n  \"description\": \"\",\n  \"author\": \"\"\n}",
+        "type": "json"
+      }
+    ],
     "success": {
       "fields": {
         "Success 200": [
@@ -2437,7 +2585,7 @@
     "examples": [
       {
         "title": "Populate request available",
-        "content": "http://localhost:3001/api/types?embed=author",
+        "content": "http://localhost/api/types?embed=author",
         "type": "json"
       }
     ],
@@ -3003,12 +3151,12 @@
   },
   {
     "type": "get",
-    "url": "/users/leastIssuesAssignedTo",
-    "title": "Get the Users with the least Issues assigned",
+    "url": "/users/mostIssuesSolvedByUser",
+    "title": "Get the Users with the most Issues solved",
     "version": "0.0.0",
-    "name": "GetMostIssuesUsers",
+    "name": "GetMostIssuesSolvedUsers",
     "group": "User",
-    "description": "<p>This allow to filter the users by the number of issues assigned to them</p>",
+    "description": "<p>This allow to filter the users by the number of issues solved</p>",
     "success": {
       "fields": {
         "Success 200": [
@@ -3116,274 +3264,6 @@
         {
           "title": "Success-Response:",
           "content": "  [{\n  \"__v\": 0,\n  \"createdAt\": \"2016-03-03T19:27:06.372Z\",\n  \"name\": \"Tab\",\n  \"lastName\": \"H\",\n  \"email\": \"test@gmail.com\",\n  \"userName\": \"Tabata\",\n  \"password\": \"123456\",\n  \"phoneNumber\": 22456789,\n  \"_id\": \"56d8900a05bd2b841f89139f\",\n  \"role\": {\n    \"citizen\": true,\n    \"staff\": false\n  },\n  \"adresse\": {\n    \"street\": \"Route\",\n    \"number\": 38,\n    \"postal\": 1258,\n    \"country\": \"Suisse\"\n  }\n}]",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "Error404",
-            "description": "<p>The server has an unexpected error</p>"
-          }
-        ]
-      }
-    },
-    "filename": "app/controllers/users.js",
-    "groupTitle": "User"
-  },
-  {
-    "type": "get",
-    "url": "/users/mostIssuesCreatedByAuthor",
-    "title": "Get the Users with the most Issues",
-    "version": "0.0.0",
-    "name": "GetMostIssuesUsers",
-    "group": "User",
-    "description": "<p>This allow to filter the users by the number of issues posted</p>",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Schema.Types.ObjectId",
-            "optional": false,
-            "field": "_id",
-            "description": "<p>The id of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "name",
-            "description": "<p>The name of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "lastname",
-            "description": "<p>The lastname of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "email",
-            "description": "<p>The email of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "username",
-            "description": "<p>The username of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "password",
-            "description": "<p>The password of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Date",
-            "optional": false,
-            "field": "createdAt",
-            "description": "<p>The date of the creation of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "phoneNumber",
-            "description": "<p>The phone number of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "adresse.street",
-            "description": "<p>The street of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "adresse.number",
-            "description": "<p>The number street of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "adresse.postal",
-            "description": "<p>The postal code of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "adresse.country",
-            "description": "<p>The country of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Boolean",
-            "optional": false,
-            "field": "role.citizen",
-            "description": "<p>If the user is a citizen</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Boolean",
-            "optional": false,
-            "field": "role.staff",
-            "description": "<p>If the user is a staff</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "  [{\n  \"__v\": 0,\n  \"createdAt\": \"2016-03-03T19:27:06.372Z\",\n  \"name\": \"Tab\",\n  \"lastName\": \"H\",\n  \"email\": \"test@gmail.com\",\n  \"userName\": \"Tabata\",\n  \"password\": \"123456\",\n  \"phoneNumber\": 22456789,\n  \"_id\": \"56d8900a05bd2b841f89139f\",\n  \"role\": {\n    \"citizen\": true,\n    \"staff\": false\n  },\n  \"adresse\": {\n    \"street\": \"Route\",\n    \"number\": 38,\n    \"postal\": 1258,\n    \"country\": \"Suisse\"\n  }\n}]",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "Error404",
-            "description": "<p>The server has an unexpected error</p>"
-          }
-        ]
-      }
-    },
-    "filename": "app/controllers/users.js",
-    "groupTitle": "User"
-  },
-  {
-    "type": "get",
-    "url": "/users/mostIssuesCreatedByAuthor",
-    "title": "Get the Users with the most Issues",
-    "version": "0.0.0",
-    "name": "GetMostIssuesUsers",
-    "group": "User",
-    "description": "<p>This allow to filter the users by the number of issues posted</p>",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Schema.Types.ObjectId",
-            "optional": false,
-            "field": "_id",
-            "description": "<p>The id of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "name",
-            "description": "<p>The name of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "lastname",
-            "description": "<p>The lastname of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "email",
-            "description": "<p>The email of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "username",
-            "description": "<p>The username of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "password",
-            "description": "<p>The password of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Date",
-            "optional": false,
-            "field": "createdAt",
-            "description": "<p>The date of the creation of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "phoneNumber",
-            "description": "<p>The phone number of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "adresse.street",
-            "description": "<p>The street of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "adresse.number",
-            "description": "<p>The number street of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "adresse.postal",
-            "description": "<p>The postal code of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "adresse.country",
-            "description": "<p>The country of the user</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Boolean",
-            "optional": false,
-            "field": "role.citizen",
-            "description": "<p>If the user is a citizen</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Boolean",
-            "optional": false,
-            "field": "role.staff",
-            "description": "<p>If the user is a staff</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "    [{\n  \"__v\": 0,\n  \"createdAt\": \"2016-03-03T19:27:06.372Z\",\n  \"name\": \"Tab\",\n  \"lastName\": \"H\",\n  \"email\": \"test@gmail.com\",\n  \"userName\": \"Tabata\",\n  \"password\": \"123456\",\n  \"phoneNumber\": 22456789,\n  \"_id\": \"56d8900a05bd2b841f89139f\",\n  \"role\": {\n    \"citizen\": true,\n    \"staff\": false\n  },\n  \"adresse\": {\n    \"street\": \"Route\",\n    \"number\": 38,\n    \"postal\": 1258,\n    \"country\": \"Suisse\"\n  }\n}]",
           "type": "json"
         }
       ]
@@ -3410,7 +3290,7 @@
     "version": "0.0.0",
     "name": "GetMostIssuesUsers",
     "group": "User",
-    "description": "<p>This allow to filter the users by the number of issues posted</p>",
+    "description": "<p>This allow to filter the users by the number of the most issues posted</p>",
     "success": {
       "fields": {
         "Success 200": [
@@ -3518,6 +3398,140 @@
         {
           "title": "Success-Response:",
           "content": "    [{\n  \"__v\": 0,\n  \"createdAt\": \"2016-03-03T19:27:06.372Z\",\n  \"name\": \"Tab\",\n  \"lastName\": \"H\",\n  \"email\": \"test@gmail.com\",\n  \"userName\": \"Tabata\",\n  \"password\": \"123456\",\n  \"phoneNumber\": 22456789,\n  \"_id\": \"56d8900a05bd2b841f89139f\",\n  \"role\": {\n    \"citizen\": true,\n    \"staff\": false\n  },\n  \"adresse\": {\n    \"street\": \"Route\",\n    \"number\": 38,\n    \"postal\": 1258,\n    \"country\": \"Suisse\"\n  }\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Error404",
+            "description": "<p>The server has an unexpected error</p>"
+          }
+        ]
+      }
+    },
+    "filename": "app/controllers/users.js",
+    "groupTitle": "User"
+  },
+  {
+    "type": "get",
+    "url": "/users/leastIssuesAssignedTo",
+    "title": "Get the Users with the least Issues assigned",
+    "version": "0.0.0",
+    "name": "GetMostIssuesUsers",
+    "group": "User",
+    "description": "<p>This allow to filter the users who have the least issues</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Schema.Types.ObjectId",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>The id of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The name of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "lastname",
+            "description": "<p>The lastname of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>The email of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "username",
+            "description": "<p>The username of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>The password of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "createdAt",
+            "description": "<p>The date of the creation of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "phoneNumber",
+            "description": "<p>The phone number of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "adresse.street",
+            "description": "<p>The street of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "adresse.number",
+            "description": "<p>The number street of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "adresse.postal",
+            "description": "<p>The postal code of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "adresse.country",
+            "description": "<p>The country of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "role.citizen",
+            "description": "<p>If the user is a citizen</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "role.staff",
+            "description": "<p>If the user is a staff</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "  [{\n  \"__v\": 0,\n  \"createdAt\": \"2016-03-03T19:27:06.372Z\",\n  \"name\": \"Tab\",\n  \"lastName\": \"H\",\n  \"email\": \"test@gmail.com\",\n  \"userName\": \"Tabata\",\n  \"password\": \"123456\",\n  \"phoneNumber\": 22456789,\n  \"_id\": \"56d8900a05bd2b841f89139f\",\n  \"role\": {\n    \"citizen\": true,\n    \"staff\": false\n  },\n  \"adresse\": {\n    \"street\": \"Route\",\n    \"number\": 38,\n    \"postal\": 1258,\n    \"country\": \"Suisse\"\n  }\n}]",
           "type": "json"
         }
       ]
@@ -3692,6 +3706,13 @@
     "name": "GetUsers",
     "group": "User",
     "description": "<p>This allow to get all the existed users on the server</p>",
+    "examples": [
+      {
+        "title": "Example usage :",
+        "content": "{\n    \"name\": \"\",\n    \"lastName\": \"\",\n    \"email\": \"\",\n    \"userName\": \"\",\n    \"password\": \"\",\n    \"phoneNumber\": \"\",\n    \"adresse\": {\n      \"street\": \"\",\n      \"number\": \"\",\n      \"postal\": \"\",\n      \"country\": \"\"\n    },\n    \"role\": {\n      \"citizen\": \"\",\n      \"staff\": \"\"\n    }\n  }",
+        "type": "json"
+      }
+    ],
     "success": {
       "fields": {
         "Success 200": [

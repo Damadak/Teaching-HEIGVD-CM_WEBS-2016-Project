@@ -126,14 +126,12 @@ router.post('/', function (req, res, next) {
 
 
 /**
- * @api {post} /issues/paginate
+ * @api {get} /issues/paginate
  * @apiVersion 0.0.0
  * @apiName PaginationIssues
  * @apiGroup Issue
  *
  * @apiDescription This allow to give an example of pagination
- *
- * @apiExample Example usage:
  *
  * @apiSuccess {Schema.Types.ObjectId}   author            The Author-Id who create the Issue
  * @apiSuccess {Schema.Types.ObjectId} type     The Type-Id of the Issue
