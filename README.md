@@ -30,7 +30,6 @@ npm install -g bower grunt-cli yo
 npm install -g generator-express
 
 ```
-Grunt
 
 ## Run the project
 ### Run the database (MongoDb)
@@ -40,7 +39,6 @@ First :
 ```
 cd /c/
 "C:/YourPath/MongoDB/Server/3.2/bin/mongod.exe"
-
 ```
 Then :
 ```
@@ -54,7 +52,6 @@ cd /c/
 ```
 cd "YourPathToTheProject"
 grunt
-
 ```
 
 Oder
@@ -62,7 +59,6 @@ Oder
 ```
 cd "YourPathToTheProject"
 npm start
-
 ```
 
 ## API Documentation
@@ -73,6 +69,7 @@ It will appear at launch of the project : http://localhost:3000 (for exemple)
 ## Routes
 
 ### Issue
+```
 GET/POST /issues
 GET/PATCH/DELETE /issues/:id
 GET /issues?longitude=value&latitude=value&distance=value
@@ -82,22 +79,29 @@ GET /issues/:id/actions
 POST /issues/getIssuesBetweenDatesWithStatus
 POST /issues/getIssuesUnsolvedBetweenDates
 POST /issues/getIssuesBetweenDates
+```
 
 ### User
+```
 GET/POST /users
 GET/PATCH/DELETE /users/:id
 GET /users/mostIssues
 GET /users/mostIssuesSolved
 GET /users/:id/issues
+```
 
 ### Tag
+```
 GET/POST /tags
 GET/PATCH/DELETE /tags:id
+```
 
 ### Type
+```
 GET/POST /types
 GET/PATCH/DELETE /types/:id
 GET /types/:id/issues
+```
 
 ## Project available on Heroku
 http://heroku.com/
